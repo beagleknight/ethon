@@ -3,7 +3,7 @@
 **/
 var Ethon = (function(){
   //args: an object containing arguments for the singleton
-  function Singleton(args) {
+  function Singleton(canvas, args) {
     //set args variable to args passed or empty object if none provided.
     var args = args || {};
 
@@ -19,13 +19,13 @@ var Ethon = (function(){
     //methods
     this.start = function() {
       this.init();
-      this.setLoop(this.loop, 1000/30).startLoop();
+      this.intervalId = setInterval(this.loop, 1000/30);
       this.running = true; 
     };
 
     this.loop = function() {
-      this.draw();
-      this.update();
+      Ethon.getInstance().draw();
+      Ethon.getInstance().update();
     };
   }
    
@@ -37,9 +37,9 @@ var Ethon = (function(){
     name: 'Ethon',
     //This is a method for getting an instance
     //It returns a singleton instance of a singleton object
-    getInstance: function (args){
+    getInstance: function (canvas, args){
       if (instance === undefined) {
-        instance = new Singleton(args);
+        instance = new Singleton(canvas, args);
       }
       return instance;
     }
@@ -47,22 +47,11 @@ var Ethon = (function(){
   return _static;
 })();
  
+jQuery.fn.ethon = function(args) {
+  return Ethon.getInstance(this, args);
+}
 
-
-
-  //methods
-  start: function() {
-    this.init();
-    this.setLoop(this.loop, 1000/30).startLoop();
-    this.running = true; 
-  },
-
-  loop: function() {
-    this.draw();
-    this.update();
-  }
-});
-
+//OLD Implementation, is like a zombie
 //var Game = (function() {
 //  var instance = null;
 //
