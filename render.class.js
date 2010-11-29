@@ -9,17 +9,14 @@ var CIRCLE_EMPTY = 3;
 var BOX = 4;
 var BOX_FILLED = 5;
 
-var Render = new Class({
-  initialize: function(canvas) {
-    this.ctx = canvas[0].getContext("2d");
-    this.canvas_width = canvas.width();
-    this.canvas_height = canvas.height();
-  },
-
+function Render(canvas) {
   //attributes
+  this.ctx = canvas[0].getContext("2d");
+  this.canvas_width = canvas.width();
+  this.canvas_height = canvas.height();
 
   //methods
-  basicShape: function(shape, pos, w, h, scale, fillColor, strokeColor) {
+  this.basicShape = function(shape, pos, w, h, scale, fillColor, strokeColor) {
     this.ctx.fillStyle = fillColor;
 
     if(strokeColor != null) {
@@ -60,22 +57,24 @@ var Render = new Class({
       default:
         alert('Basic shape not supported.');
     }
-  },
+  };
 
-  renderImage: function(img, pos) {
+  this.renderImage = function(img, pos) {
     this.ctx.drawImage(img,pos.x,pos.y);
-  },
+  };
 
-  drawText: function(text, pos_x, pos_y, color) {
+  this.drawText = function(text, pos_x, pos_y, color) {
     this.ctx.fillStyle = color;
     this.ctx.fillText(text, pos_x, pos_y);
-  },
+  };
 
-  clear: function(color) {
+  this.clear = function(color) {
     this.ctx.clearRect(0, 0, this.canvas_width, this.canvas_height);
     if(color != null) {
       this.ctx.fillStyle = color;
       this.ctx.fillRect(0, 0, this.canvas_width, this.canvas_height);
     }
-  }
-});
+  };
+
+  console.log('Render loaded succesfully');
+};

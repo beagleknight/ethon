@@ -4,13 +4,14 @@
 var Ethon = (function(){
   //args: an object containing arguments for the singleton
   function Singleton(canvas, args) {
+    console.log('Initializing game...');
     //set args variable to args passed or empty object if none provided.
     var args = args || {};
 
     this.init = args.init
     this.draw = args.draw
     this.update = args.update
-    //this.render = new Render(jQuery(selector));
+    this.render = new Render(canvas);
     
     //attributes
     this.debug = false;
@@ -18,6 +19,7 @@ var Ethon = (function(){
 
     //methods
     this.start = function() {
+      console.log('Game started!');
       this.init();
       this.intervalId = setInterval(this.loop, 1000/30);
       this.running = true; 
