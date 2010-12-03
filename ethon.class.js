@@ -8,10 +8,12 @@ var Ethon = (function(){
     //set args variable to args passed or empty object if none provided.
     var args = args || {};
 
-    this.init = args.init
-    this.draw = args.draw
-    this.update = args.update
-    this.render = new Render(canvas);
+    this.init = args.init;
+    this.draw = args.draw;
+    this.update = args.update;
+    this.elapsed_time = new Date();
+    this.render_manager = new RenderManager(canvas);
+    this.timer_manager = new TimerManager();
     
     //attributes
     this.debug = false;
@@ -21,13 +23,20 @@ var Ethon = (function(){
     this.start = function() {
       console.log('Game started!');
       this.init();
-      this.intervalId = setInterval(this.loop, 1000/30);
+      this.timer_manager.addTimer('game_loop',this.loop, 1000/30);
       this.running = true; 
     };
 
     this.loop = function() {
-      Ethon.getInstance().draw();
-      Ethon.getInstance().update();
+      var ethon = Ethon.getInstance();
+
+      var now = new Date();
+      var elapsed_time = 
+        new Date(now.getTime()-ethon.elapsed_time.getTime()).getMilliseconds()/1000; 
+      ethon.elapsed_time = now;
+
+      ethon.update(elapsed_time);
+      ethon.draw();
     };
   }
    

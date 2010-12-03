@@ -1,5 +1,5 @@
 /**
-  Class Render
+  Class RenderManager
 **/
 
 var TRIANGLE_UP = 0;
@@ -9,7 +9,7 @@ var CIRCLE_EMPTY = 3;
 var BOX = 4;
 var BOX_FILLED = 5;
 
-function Render(canvas) {
+function RenderManager(canvas) {
   //attributes
   this.ctx = canvas[0].getContext("2d");
   this.canvas_width = canvas.width();
