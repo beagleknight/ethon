@@ -2,22 +2,14 @@
  * Class Timer
  */
 
-function Timer(func, time) {
-  this.func = func;
-  this.time = time;
-  this.intervalId = setInterval(this.func,this.time);
-}
+function Timer() {
+  this.elapsed_time = new Date();
 
-Timer.prototype.changeTime = function(time) {
-  this.stop();
-  this.time = time;
-  this.intervalId = setInterval(this.func, this.time);
-}
-
-Timer.prototype.stop = function() {
-  clearInterval(this.intervalId);
-}
-
-Timer.prototype.resume = function() {
-  this.intervalId = setInterval(this.func, this.time);
+  this.update = function() {
+    var now = new Date();
+    var elapsed_time = 
+      new Date(now.getTime()-this.elapsed_time.getTime()).getMilliseconds()/1000; 
+    this.elapsed_time = now;
+    return elapsed_time;
+  }
 }
