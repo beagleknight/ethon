@@ -76,5 +76,5 @@ function RenderManager(canvas) {
     }
   };
 
-  console.log('Render loaded succesfully');
+  console.log('Render manager loaded succesfully');
 };
