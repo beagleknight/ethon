@@ -10,19 +10,29 @@ function KeyboardInput() {
 }
 
 function keyboardOnKeyDown(event) {
-  //alert(event.keyCode);
   if(event.keyCode == LEFT_ARROW || event.keyCode == RIGHT_ARROW || event.keyCode == DOWN_ARROW || event.keyCode == UP_ARROW || event.keyCode == SPACE || event.keyCode == ESCAPE) {
     event.preventDefault();
   }
 
-  this.keys.push(event.keyCode);
-  this.keys = jQuery.unique(this.keys);
+  var event_manager = Ethon.getInstance().event_manager;
+  var keyboard_events = event_manager.registered_events.getItem(KEYBOARD);
+  for(id in keyboard_events.items) {
+    if(keyboard_events.getItem(id).value == event.keyCode) {
+      event_manager.happening_events.setItem(id, true);
+      return;
+    }
+  }
 }
 
 function keyboardOnKeyUp(event) {
-  this.keys = jQuery.grep(this.keys, function(n, i) {
-    return n != event.keyCode;
-  });
+  var event_manager = Ethon.getInstance().event_manager;
+  var keyboard_events = event_manager.registered_events.getItem(KEYBOARD);
+  for(id in keyboard_events.items) {
+    if(keyboard_events.getItem(id).value == event.keyCode) {
+      event_manager.happening_events.removeItem(id);
+      return;
+    }
+  }
 }
 
 // Key list
