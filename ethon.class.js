@@ -12,6 +12,7 @@ var Ethon = (function(){
 
     this.timer = new Timer();
     this.render_manager = new RenderManager(canvas);
+    this.event_manager = new EventManager();
     
     //attributes
     this.debug = false;
@@ -27,7 +28,8 @@ var Ethon = (function(){
 
     this.loop = function() {
       var ethon = Ethon.getInstance();
-      ethon.update(ethon.timer.update());
+      var dt = ethon.timer.update();
+      ethon.update(dt);
       ethon.draw();
     };
   }
@@ -53,3 +55,15 @@ var Ethon = (function(){
 jQuery.fn.ethon = function(args) {
   return Ethon.getInstance(this, args);
 }
+
+$(document).keydown(onKeyDown);
+$(document).keyup(onKeyUp);
+
+function onKeyDown(event) {
+  Ethon.getInstance().event_manager.keyboardInput.onKeyDown(event);
+}
+
+function onKeyUp(event) {
+  Ethon.getInstance().event_manager.keyboardInput.onKeyUp(event);
+}
+
