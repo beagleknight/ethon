@@ -2,7 +2,11 @@
   Class Object2D
 */
 
+var id = 0;
+
 function Object2D(x,y,w,h) {
+  console.log('Object with id #'+id+' created.');
+  this.id = id++;
   this.pos = new Vector2D(x,y);
   this.vel = new Vector2D(0,0);
   this.w = w;
