@@ -18,7 +18,7 @@ function EventManager() {
     event.id = id;
     setup_event(event);
     this.registered_events.getItem(event.type).setItem(id, event);
-    console.log('Event "'+id+'" registered successfully');
+    //console.log('Event "'+id+'" registered successfully');
   }
 
   this.happens = function(id) {
@@ -27,6 +27,10 @@ function EventManager() {
 
   this.update = function(id, dt) {
     this.registered_events.getItem(TIMED).getItem(id).update(dt);    
+  }
+ 
+  this.clear = function() {
+    this.happening_events.clear();
   }
 
   console.log('Event manager loaded successfully');

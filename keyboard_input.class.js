@@ -3,40 +3,34 @@
 */
 
 function KeyboardInput() {
-  this.onKeyDown = keyboardOnKeyDown;
-  this.onKeyUp = keyboardOnKeyUp;
-  this.disable_input = false;
-  this.keys = new Array();
-}
-
-function keyboardOnKeyDown(event) {
-  if(event.keyCode == LEFT_ARROW || event.keyCode == RIGHT_ARROW || event.keyCode == DOWN_ARROW || event.keyCode == UP_ARROW || event.keyCode == SPACE || event.keyCode == ESCAPE) {
-    event.preventDefault();
-  }
-
-  var event_manager = Ethon.getInstance().event_manager;
-  var keyboard_events = event_manager.registered_events.getItem(KEYBOARD);
-  for(id in keyboard_events.items) {
-    if(keyboard_events.getItem(id).value == event.keyCode) {
-      event_manager.happening_events.setItem(id, true);
-      return;
+  this.onKeyDown = function(event) {
+    if(event.keyCode == LEFT_ARROW || event.keyCode == RIGHT_ARROW || event.keyCode == DOWN_ARROW || event.keyCode == UP_ARROW || event.keyCode == SPACE || event.keyCode == ESCAPE) {
+      event.preventDefault();
+    }
+  
+    var event_manager = Ethon.getInstance().event_manager;
+    var keyboard_events = event_manager.registered_events.getItem(KEYBOARD);
+    for(id in keyboard_events.items) {
+      if(keyboard_events.getItem(id).value == event.keyCode) {
+        event_manager.happening_events.setItem(id, true);
+        return;
+      }
     }
   }
-}
-
-function keyboardOnKeyUp(event) {
-  var event_manager = Ethon.getInstance().event_manager;
-  var keyboard_events = event_manager.registered_events.getItem(KEYBOARD);
-  for(id in keyboard_events.items) {
-    if(keyboard_events.getItem(id).value == event.keyCode) {
-      event_manager.happening_events.removeItem(id);
-      return;
+  
+  this.onKeyUp = function(event) {
+    var event_manager = Ethon.getInstance().event_manager;
+    var keyboard_events = event_manager.registered_events.getItem(KEYBOARD);
+    for(id in keyboard_events.items) {
+      if(keyboard_events.getItem(id).value == event.keyCode) {
+        event_manager.happening_events.removeItem(id);
+        return;
+      }
     }
   }
 }
 
 // Key list
-
 var LEFT_ARROW = 37;
 var RIGHT_ARROW = 39;
 var UP_ARROW = 38;

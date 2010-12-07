@@ -13,6 +13,7 @@ var Ethon = (function(){
     this.timer = new Timer();
     this.render_manager = new RenderManager(canvas);
     this.event_manager = new EventManager();
+    this.collision_manager = new CollisionManager();
     
     //attributes
     this.debug = false;
@@ -31,6 +32,7 @@ var Ethon = (function(){
       var dt = ethon.timer.update();
       ethon.update(dt);
       ethon.draw();
+      ethon.event_manager.clear();
     };
   }
    
