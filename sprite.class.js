@@ -2,34 +2,36 @@
   Class Sprite
 */
 
+var sprite_id = 0;
+
 function Sprite(w,h,speed) {
+  this.id = sprite_id++;
   this.w = w;
   this.h = h;
   this.image = new Image();
   this.current = 0;
+  this.n_frames = 0;
 
   this.ethon = Ethon.getInstance();
 
-  this.ethon.event_manager.register('animation', function(event) {
+  this.ethon.event_manager.register('animation_'+this.id, function(event) {
     event.set_time(speed);
   });
 
   this.draw = function(pos) {
-    var crop = new Vector2D();
-    crop.x = this.current*this.w;
-    crop.y = 0;
-    var dimension = new Vector2D(this.w, this.h);
-    Ethon.getInstance().render_manager.renderImage(this.image, pos, crop, dimension);
+    Ethon.getInstance().render_manager.renderImage(this.image, pos, 
+      new Vector2D(this.current*this.w,0), new Vector2D(this.w,this.h));
   };
 
   this.update = function(dt) {
-    this.ethon.event_manager.update('animation',dt);
-    if(this.ethon.event_manager.happens('animation')) {
-      this.current = (this.current+1) % 5;    
+    this.ethon.event_manager.update('animation_'+this.id,dt);
+    if(this.ethon.event_manager.happens('animation_'+this.id)) {
+      this.current = (this.current+1) % this.n_frames;    
     }
   };
 
-  this.load_frames = function(url) {
+  this.load_frames = function(url,n_frames) {
     this.image.src = url;
+    this.n_frames = n_frames;
   };
 };

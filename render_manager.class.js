@@ -66,20 +66,6 @@ function RenderManager(canvas) {
     else {
       this.ctx.drawImage(img, crop.x, crop.y, dimension.x, dimension.y, pos.x, pos.y, dimension.x, dimension.y);
     }
-
-    // Get the pixels.
-    var imgd = this.ctx.getImageData(pos.x, pos.y, dimension.x+10, dimension.y+10);
-    var pix = imgd.data;
- 
-    // Loop over each pixel and invert the color.
-    for (var i = 0, n = pix.length; i < n; i += 4) {
-      if(pix[i ] == 0 && pix[i+1] == 64 && pix[i+2] == 128) {
-        pix[i+3] = 0;
-      }
-    }
- 
-    // Draw the ImageData object.
-    this.ctx.putImageData(imgd, pos.x, pos.y);
   };
 
   this.drawText = function(text, pos_x, pos_y, color) {
