@@ -14,6 +14,7 @@ var Ethon = (function(){
     this.render_manager = new RenderManager(canvas);
     this.event_manager = new EventManager();
     this.collision_manager = new CollisionManager();
+    this.sound_manager = new SoundManager(canvas);
     
     //attributes
     this.debug = false;

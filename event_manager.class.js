@@ -18,7 +18,12 @@ function EventManager() {
     event.id = id;
     setup_event(event);
     this.registered_events.getItem(event.type).setItem(id, event);
-    //console.log('Event "'+id+'" registered successfully');
+    //console.log('Event "'+id+'" registered');
+  }
+
+  this.unregister = function(id) {
+    this.registered_events.removeItem(id);
+    //console.log('Event "'+id+'" unregistered');
   }
 
   this.happens = function(id) {

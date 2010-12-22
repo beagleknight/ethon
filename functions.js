@@ -1,4 +1,3 @@
-function rand ( n )
-{
-  return ( Math.floor ( Math.random ( ) * n + 1 ) );
+function rand(n,m) {
+  return (n+Math.floor(Math.random()*(m-n)));
 }
