@@ -14,7 +14,7 @@ function EventManager() {
   this.happening_events = new Hash();
 
   this.register = function(id, type, value) {
-    var event = new Event(type, value);
+    var event = new Event(id,type,value);
     this.registered_events.getItem(type).setItem(id, event);
     //console.log('Event "'+id+'" registered');
   }

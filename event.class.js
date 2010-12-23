@@ -6,7 +6,8 @@ var KEYBOARD = 0;
 var MOUSE = 1;
 var TIMED = 2; 
 
-function Event(type, value) {
+function Event(id, type, value) {
+  this.id = id;
   this.type = type;
   this.value = value;
   

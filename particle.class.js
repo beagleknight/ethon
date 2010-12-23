@@ -4,10 +4,14 @@
 
 Particle.prototype = new Object2D();
 
-function Particle(pos,vx,vy,scale,life,die,r,g,b) {
+function Particle(pos,vel,scale,life,die,r,g,b) {
+  this.alive = true;
+
   Object2D.call(this,pos.x,pos.y,0,0);
-  this.vx = vx;
-  this.vy = vy;
+
+  this.ethon = Ethon.getInstance();
+
+  this.vel = vel;
   this.scale = scale;
   this.life = life;
   this.max_life = life;
@@ -15,15 +19,16 @@ function Particle(pos,vx,vy,scale,life,die,r,g,b) {
   this.r = r;
   this.g = g;
   this.b = b;
-}
 
-Particle.prototype.draw = function(render) {
-  var color = 'rgba('+this.r+','+this.g+','+this.b+','+(this.life/this.max_life)+')';
-  render.basicShape(CIRCLE, this.pos, 0, 0, this.scale, color);
-}
+  this.draw = function() {
+    var color = 'rgba('+this.r+','+this.g+','+this.b+','+(this.life/this.max_life)+')';
+    this.ethon.render_manager.basicShape(CIRCLE, this.pos, 0, 0, this.scale, color);
+  }
 
-Particle.prototype.update = function() {
-  this.move(new Vector2D(this.vx,this.vy))
-  this.life = this.life - this.die;
-  this.alive = this.life > 0;
+  this.update = function(dt) {
+    this.pos.x = this.pos.x+this.vel.x*dt;
+    this.pos.y = this.pos.y+this.vel.y*dt;
+    this.life = this.life - this.die;
+    this.alive = this.life > 0;
+  }
 }
