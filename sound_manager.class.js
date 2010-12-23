@@ -20,12 +20,15 @@ function SoundManager(ethon,canvas) {
     }
   }
 
-  this.play_fx = function(src) {
-    this.canvas.parent().append('<audio id="fx_'+id+'"></audio>');
-    var fx_audio_tag = this.canvas.parent().find('audio#fx_'+id);
-    fx_audio_tag.attr('autoplay',true);
+  this.play_fx = function(id,src) {
+    var fx_audio_tag = this.canvas.parent().find('audio#'+id);
+    if(fx_audio_tag.length != 0) {
+      fx_audio_tag.remove();
+    }
+    this.canvas.parent().append('<audio id="'+id+'"></audio>');
+    var fx_audio_tag = this.canvas.parent().find('audio#'+id);
     fx_audio_tag.attr('src',this.ethon.path+src);
-    fx_audio_tag.remove();
+    fx_audio_tag[0].play();
   }
 
   //console.log('Sound manager loaded succesfully');

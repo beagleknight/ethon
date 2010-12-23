@@ -70,18 +70,17 @@ function RenderManager(canvas) {
 
   this.drawText = function(text, pos_x, pos_y,fillColor,strokeColor, size) {
     if(size == undefined)
-      size = 20;
+      size = 14;
 
     this.ctx.font = size+"pt Patagonia";
     this.ctx.fillStyle = fillColor;
-    this.ctx.lineWidth = 5;
+
     if(strokeColor != undefined) {
       this.ctx.strokeStyle = strokeColor;
+      this.ctx.lineWidth = 5;
+      this.ctx.strokeText(text, pos_x, pos_y);
     }
-    else {
-      this.ctx.strokeStyle = 'rgb(255,255,255)';
-    }
-    this.ctx.strokeText(text, pos_x, pos_y);
+
     this.ctx.fillText(text, pos_x, pos_y);
   };
 
