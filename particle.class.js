@@ -28,7 +28,7 @@ function Particle(pos,vel,scale,life,die,r,g,b) {
   this.update = function(dt) {
     this.pos.x = this.pos.x+this.vel.x*dt;
     this.pos.y = this.pos.y+this.vel.y*dt;
-    this.life = this.life - this.die;
+    this.life = this.life - this.die*dt;
     this.alive = this.life > 0;
   }
 }

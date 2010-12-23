@@ -12,16 +12,16 @@ function Explosion(pos, n) {
   this.particles = new Array();
   for(var i = 0; i < n; i++) {
     var vel = new Vector2D(rand(1,50),rand(1,50));
-    if(rand(100)%2 == 0) {
+    if(rand(0,100)%2 == 0) {
       vel.x = -vel.x;
     }
-    if(rand(100)%2 == 0) {
+    if(rand(0,100)%2 == 0) {
       vel.y = -vel.y;
     }
 
-    //var particle = new Particle(this.pos, vel, rand(3), rand(60), rand(3), 213-rand(10), 243, 255);
-    //var particle = new Particle(this.pos, vel, rand(1,3), rand(0,60), rand(0,3), 255,0,0);
-    var particle = new Particle(this.pos, vel, 3, 60, 3, 255,0,0);
+    var particle = new Particle(this.pos, vel, 
+        rand(1,4), rand(1,10), rand(3,5), 
+        rand(0,255),rand(0,255),rand(0,255));
     this.particles.push(particle);
   }
 
