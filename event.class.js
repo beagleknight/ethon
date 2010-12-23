@@ -5,6 +5,8 @@
 var KEYBOARD = 0;
 var MOUSE = 1;
 var TIMED = 2; 
+var MOUSE_OVER = 3;
+var MOUSE_OUT = 4;
 
 function Event(id, type, value) {
   this.id = id;

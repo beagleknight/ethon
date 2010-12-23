@@ -68,8 +68,11 @@ function RenderManager(canvas) {
     }
   };
 
-  this.drawText = function(text, pos_x, pos_y,fillColor,strokeColor) {
-    this.ctx.font = "20pt Patagonia";
+  this.drawText = function(text, pos_x, pos_y,fillColor,strokeColor, size) {
+    if(size == undefined)
+      size = 20;
+
+    this.ctx.font = size+"pt Patagonia";
     this.ctx.fillStyle = fillColor;
     this.ctx.lineWidth = 5;
     if(strokeColor != undefined) {

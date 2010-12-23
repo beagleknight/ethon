@@ -9,6 +9,8 @@ function EventManager() {
   this.registered_events = new Hash();
   this.registered_events.setItem(KEYBOARD, new Hash());
   this.registered_events.setItem(MOUSE, new Hash());
+  this.registered_events.setItem(MOUSE_OVER, new Hash());
+  this.registered_events.setItem(MOUSE_OUT, new Hash());
   this.registered_events.setItem(TIMED, new Hash());
 
   this.happening_events = new Hash();

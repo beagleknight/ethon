@@ -72,6 +72,7 @@ jQuery.fn.ethon = function(args) {
 $(document).keydown(onKeyDown);
 $(document).keyup(onKeyUp);
 $(document).click(onClick);
+$(document).mousemove(onMouseMove);
 
 function onKeyDown(event) {
   Ethon.getInstance().event_manager.keyboard_input.onKeyDown(event);
@@ -83,4 +84,8 @@ function onKeyUp(event) {
 
 function onClick(event) {
   Ethon.getInstance().event_manager.mouse_input.onClick(event);
+}
+
+function onMouseMove(event) {
+  Ethon.getInstance().event_manager.mouse_input.onMouseMove(event);
 }
