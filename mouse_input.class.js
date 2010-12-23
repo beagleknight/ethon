@@ -4,8 +4,10 @@
 
 function MouseInput() {
   this.onClick = function(event) {
+    var offsetX = Ethon.getInstance().render_manager.ctx.canvas.offsetLeft;
     var point = new Object();
-    point.pos = new Vector2D(event.offsetX, event.offsetY);
+
+    point.pos = new Vector2D(event.clientX-offsetX, event.clientY);
     point.w = 1
     point.h = 1
     
