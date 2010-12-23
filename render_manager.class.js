@@ -90,5 +90,5 @@ function RenderManager(canvas) {
     }
   };
 
-  console.log('Render manager loaded succesfully');
+  //console.log('Render manager loaded succesfully');
 };

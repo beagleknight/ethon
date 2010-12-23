@@ -3,7 +3,7 @@
 **/
 var Ethon = (function(){
   function Singleton(canvas, args) {
-    console.log('Initializing game...');
+    //console.log('Initializing game...');
     var args = args || {};
 
     this.path = args.path;
@@ -23,7 +23,7 @@ var Ethon = (function(){
 
     //methods
     this.start = function() {
-      console.log('Game started!');
+      //console.log('Game started!');
       this.init();
       this.game_loop_id = setInterval(this.loop, 1000/30);
       this.running = true; 

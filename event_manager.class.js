@@ -40,5 +40,5 @@ function EventManager() {
     this.happening_events.clear();
   }
 
-  console.log('Event manager loaded successfully');
+  //console.log('Event manager loaded successfully');
 }

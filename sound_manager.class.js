@@ -27,5 +27,6 @@ function SoundManager(ethon,canvas) {
     fx_audio_tag.attr('src',this.ethon.path+src);
     fx_audio_tag.remove();
   }
-  console.log('Sound manager loaded succesfully');
+
+  //console.log('Sound manager loaded succesfully');
 }
