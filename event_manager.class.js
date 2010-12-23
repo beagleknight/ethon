@@ -32,6 +32,10 @@ function EventManager() {
     this.registered_events.getItem(TIMED).getItem(id).update(dt);    
   }
  
+  this.reset = function(id) {
+    this.registered_events.getItem(TIMED).getItem(id).reset();    
+  }
+ 
   this.clear = function() {
     this.happening_events.clear();
   }

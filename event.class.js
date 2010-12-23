@@ -23,4 +23,8 @@ function Event(id, type, value) {
       this.counter = 0;
     }
   }
+
+  this.reset = function() {
+    this.counter = 0;
+  }
 }

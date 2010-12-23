@@ -31,4 +31,12 @@ function Sprite(texture_id,w,h,init_x,init_y,n_frames,speed) {
       this.current = (this.current+1) % this.n_frames;    
     }
   };
+
+  this.set_current = function(current) {
+    this.current = current;
+  }
+
+  this.get_current = function() {
+    return this.current;
+  }
 };
