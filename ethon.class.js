@@ -7,14 +7,13 @@ var Ethon = (function(){
     var args = args || {};
 
     this.init = args.init;
-    this.draw = args.draw;
-    this.update = args.update;
 
     this.timer = new Timer();
     this.render_manager = new RenderManager(canvas);
     this.event_manager = new EventManager();
     this.collision_manager = new CollisionManager();
     this.sound_manager = new SoundManager(canvas);
+    this.scene_manager = new SceneManager();
     
     //attributes
     this.debug = false;
@@ -27,6 +26,15 @@ var Ethon = (function(){
       this.game_loop_id = setInterval(this.loop, 1000/30);
       this.running = true; 
     };
+
+    this.draw = function() {
+      this.render_manager.clear();
+      this.scene_manager.draw();
+    },
+
+    this.update = function(dt) {
+      this.scene_manager.update(dt);
+    }
 
     this.loop = function() {
       var ethon = Ethon.getInstance();
