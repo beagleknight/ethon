@@ -59,12 +59,28 @@ function RenderManager(canvas) {
     }
   };
 
-  this.renderImage = function(img, pos) {
-    this.ctx.drawImage(img,pos.x,pos.y);
+  this.renderImage = function(img, pos, crop, dimension) {
+    if(crop == undefined) {
+      this.ctx.drawImage(img,pos.x,pos.y);
+    }
+    else {
+      this.ctx.drawImage(img, crop.x, crop.y, dimension.x, dimension.y, pos.x, pos.y, dimension.x, dimension.y);
+    }
   };
 
-  this.drawText = function(text, pos_x, pos_y, color) {
-    this.ctx.fillStyle = color;
+  this.drawText = function(text, pos_x, pos_y,fillColor,strokeColor, size) {
+    if(size == undefined)
+      size = 14;
+
+    this.ctx.font = size+"pt Patagonia";
+    this.ctx.fillStyle = fillColor;
+
+    if(strokeColor != undefined) {
+      this.ctx.strokeStyle = strokeColor;
+      this.ctx.lineWidth = 5;
+      this.ctx.strokeText(text, pos_x, pos_y);
+    }
+
     this.ctx.fillText(text, pos_x, pos_y);
   };
 
@@ -76,5 +92,5 @@ function RenderManager(canvas) {
     }
   };
 
-  console.log('Render loaded succesfully');
+  //console.log('Render manager loaded succesfully');
 };

@@ -2,51 +2,45 @@
   Class EventManager
 */
 
-var KEYBOARD = 0;
-var MOUSE = 1;
-var TIMED = 2;
-
 function EventManager() {
-  this.keyboardInput = new KeyboardInput();
-  this.events = new Array();
+  this.keyboard_input = new KeyboardInput();
+  this.mouse_input = new MouseInput();
 
-  this.assign = function(id, type, value, object_id) {
-    if(object_id != undefined) {
-      id = id+'_'+object_id;
-    }
-    console.log('Event '+id+' assigned to '+type+' > '+value);
-    if(type == TIMED) {
-      this.events.push(new TimedEvent(type,id,value)); 
-    }
-    else {
-      this.events.push(new Event(type,id,value));
-    }
+  this.registered_events = new Hash();
+  this.registered_events.setItem(KEYBOARD, new Hash());
+  this.registered_events.setItem(MOUSE, new Hash());
+  this.registered_events.setItem(MOUSE_OVER, new Hash());
+  this.registered_events.setItem(MOUSE_OUT, new Hash());
+  this.registered_events.setItem(TIMED, new Hash());
+
+  this.happening_events = new Hash();
+
+  this.register = function(id, type, value) {
+    var event = new Event(id,type,value);
+    this.registered_events.getItem(type).setItem(id, event);
+    //console.log('Event "'+id+'" registered');
   }
 
-  this.happens = function(id, object_id) {
-    if(object_id != undefined) {
-      id = id+'_'+object_id;
-    }
-    for(i = 0; i < this.events.length; i++) {
-      if(this.events[i].id == id) {
-        if(this.events[i].type == KEYBOARD) {
-          return jQuery.inArray(this.events[i].value, this.keyboardInput.keys) != -1;
-        }
-        else if(this.events[i].type == TIMED) {
-	  return this.events[i].happens();
-        }
-      }
-    }
+  this.unregister = function(id) {
+    this.registered_events.removeItem(id);
+    //console.log('Event "'+id+'" unregistered');
   }
 
-  this.update = function(id, object_id, dt) {
-    if(object_id != undefined) {
-      id = id+'_'+object_id;
-    }
-    for(i = 0; i < this.events.length; i++) {
-      if(this.events[i].id == id) {
-        this.events[i].update(dt);
-      }
-    }
+  this.happens = function(id) {
+    return this.happening_events.getItem(id); 
   }
+
+  this.update = function(id, dt) {
+    this.registered_events.getItem(TIMED).getItem(id).update(dt);    
+  }
+ 
+  this.reset = function(id) {
+    this.registered_events.getItem(TIMED).getItem(id).reset();    
+  }
+ 
+  this.clear = function() {
+    this.happening_events.clear();
+  }
+
+  //console.log('Event manager loaded successfully');
 }

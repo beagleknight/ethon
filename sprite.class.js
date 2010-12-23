@@ -2,33 +2,41 @@
   Class Sprite
 */
 
-Sprite.prototype = new Object2D();
+var sprite_id = 0;
 
-function Sprite(x,y,w,h) {
-  Object2D.call(this, x, y, w, h);
-  this.frames = new Array();
+function Sprite(texture_id,w,h,init_x,init_y,n_frames,speed) {
+  this.ethon = Ethon.getInstance();
+
+  this.id = sprite_id++;
+  this.w = w;
+  this.h = h;
+  this.image = this.ethon.texture_manager.get_texture(texture_id);
   this.current = 0;
 
-  this.draw = function() {
-    //render.renderImage(this.frames[this.current], this.pos);
-    //Object2D.prototype.draw.call(this,render);
+  this.init_x = init_x;
+  this.init_y = init_y;
+  this.n_frames = n_frames;
+
+  this.ethon.event_manager.register('animation_'+this.id, TIMED, speed);
+
+  this.draw = function(pos) {
+    var crop = new Vector2D(this.init_x+(this.current*this.w),this.init_y+0);
+    var dimension = new Vector2D(this.w,this.h);
+    Ethon.getInstance().render_manager.renderImage(this.image,pos,crop,dimension);
   };
 
-  this.update = function() {
-
+  this.update = function(dt) {
+    this.ethon.event_manager.update('animation_'+this.id,dt);
+    if(this.ethon.event_manager.happens('animation_'+this.id)) {
+      this.current = (this.current+1) % this.n_frames;    
+    }
   };
 
-  this.add_frame = function() {
-    //var img = new Image();
-    //img.src = url;
-    //this.frames.push(img);
-  };
+  this.set_current = function(current) {
+    this.current = current % this.n_frames;
+  }
 
-  this.current_frame = function() {
-    //return this.frames[this.current];
-  };
-
-  this.next_frame = function() {
-    //this.current = (this.current+1) % this.frames.length;    
-  };
+  this.get_current = function() {
+    return this.current;
+  }
 };

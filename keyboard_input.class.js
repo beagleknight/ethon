@@ -3,30 +3,34 @@
 */
 
 function KeyboardInput() {
-  this.onKeyDown = keyboardOnKeyDown;
-  this.onKeyUp = keyboardOnKeyUp;
-  this.disable_input = false;
-  this.keys = new Array();
-}
-
-function keyboardOnKeyDown(event) {
-  //alert(event.keyCode);
-  if(event.keyCode == LEFT_ARROW || event.keyCode == RIGHT_ARROW || event.keyCode == DOWN_ARROW || event.keyCode == UP_ARROW || event.keyCode == SPACE || event.keyCode == ESCAPE) {
-    event.preventDefault();
+  this.onKeyDown = function(event) {
+    if(event.keyCode == LEFT_ARROW || event.keyCode == RIGHT_ARROW || event.keyCode == DOWN_ARROW || event.keyCode == UP_ARROW || event.keyCode == SPACE || event.keyCode == ESCAPE) {
+      event.preventDefault();
+    }
+  
+    var event_manager = Ethon.getInstance().event_manager;
+    var keyboard_events = event_manager.registered_events.getItem(KEYBOARD);
+    for(id in keyboard_events.items) {
+      if(keyboard_events.getItem(id).value == event.keyCode) {
+        event_manager.happening_events.setItem(id, true);
+        return;
+      }
+    }
   }
-
-  this.keys.push(event.keyCode);
-  this.keys = jQuery.unique(this.keys);
-}
-
-function keyboardOnKeyUp(event) {
-  this.keys = jQuery.grep(this.keys, function(n, i) {
-    return n != event.keyCode;
-  });
+  
+  this.onKeyUp = function(event) {
+    var event_manager = Ethon.getInstance().event_manager;
+    var keyboard_events = event_manager.registered_events.getItem(KEYBOARD);
+    for(id in keyboard_events.items) {
+      if(keyboard_events.getItem(id).value == event.keyCode) {
+        event_manager.happening_events.removeItem(id);
+        return;
+      }
+    }
+  }
 }
 
 // Key list
-
 var LEFT_ARROW = 37;
 var RIGHT_ARROW = 39;
 var UP_ARROW = 38;
