@@ -4,12 +4,11 @@
 
 Button.prototype = new Object2D();
 
-function Button(x,y,w,h,path,onclick) {
+function Button(texture_id,x,y,w,h,onclick) {
   Object2D.call(this,x,y,w,h);
 
   this.ethon = Ethon.getInstance();
-  this.sprite = new Sprite(this.w,this.h);
-  this.sprite.load_frames(path);
+  this.sprite = new Sprite(texture_id,this.w,this.h,0,0,1,0);
   this.onclick = onclick;
 
   this.ethon.event_manager.register('click_button_'+this.id, MOUSE, this);

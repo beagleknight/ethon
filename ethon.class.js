@@ -6,14 +6,16 @@ var Ethon = (function(){
     console.log('Initializing game...');
     var args = args || {};
 
+    this.path = args.path;
     this.init = args.init;
 
     this.timer = new Timer();
     this.render_manager = new RenderManager(canvas);
     this.event_manager = new EventManager();
     this.collision_manager = new CollisionManager();
-    this.sound_manager = new SoundManager(canvas);
+    this.sound_manager = new SoundManager(this,canvas);
     this.scene_manager = new SceneManager();
+    this.texture_manager = new TextureManager(this);
     
     //attributes
     this.debug = false;
