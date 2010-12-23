@@ -13,9 +13,16 @@ function MouseInput() {
     var mouse_events = event_manager.registered_events.getItem(MOUSE);
     for(id in mouse_events.items) {
       var objects = mouse_events.getItem(id).value;
-      for(var i = 0; i < objects.length; i++) {
-        if(Ethon.getInstance().collision_manager.sprite_collision(objects[i],point)) {
-	  event_manager.happening_events.setItem(id,objects[i]);
+      if(objects.length > 0) {
+        for(var i = 0; i < objects.length; i++) {
+          if(Ethon.getInstance().collision_manager.sprite_collision(objects[i],point)) {
+            event_manager.happening_events.setItem(id,objects[i]);
+          }
+        }
+      }
+      else {
+        if(Ethon.getInstance().collision_manager.sprite_collision(objects,point)) {
+          event_manager.happening_events.setItem(id,objects);
         }
       }
     }

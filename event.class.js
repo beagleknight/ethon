@@ -6,20 +6,11 @@ var KEYBOARD = 0;
 var MOUSE = 1;
 var TIMED = 2; 
 
-function Event() {
-  this.key_pressed = function(key) {
-    this.type = KEYBOARD;
-    this.value = key;
-  }
-
-  this.mouse_click = function(group) {
-    this.type = MOUSE;
-    this.value = group;
-  }
-
-  this.set_time = function(time) {
-    this.type = TIMED;
-    this.value = time;
+function Event(type, value) {
+  this.type = type;
+  this.value = value;
+  
+  if(this.type == TIMED) {
     this.counter = 0;
   }
  

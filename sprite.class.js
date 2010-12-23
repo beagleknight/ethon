@@ -14,9 +14,7 @@ function Sprite(w,h,speed) {
 
   this.ethon = Ethon.getInstance();
 
-  this.ethon.event_manager.register('animation_'+this.id, function(event) {
-    event.set_time(speed);
-  });
+  this.ethon.event_manager.register('animation_'+this.id, TIMED, speed);
 
   this.draw = function(pos) {
     Ethon.getInstance().render_manager.renderImage(this.image, pos, 
