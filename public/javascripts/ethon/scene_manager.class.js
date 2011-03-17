@@ -6,8 +6,8 @@ function SceneManager() {
   this.active_scene = null;
   this.scenes = new Hash();
 
-  this.add_scene = function(id, draw, update) {
-    this.scenes.setItem(id, new Scene(draw,update)); 
+  this.add_scene = function(id, params) {
+    this.scenes.setItem(id, new Scene(params)); 
   }
 
   this.set_active = function(id) {

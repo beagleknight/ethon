@@ -1,0 +1,5 @@
+- content_for :ethon do
+  = javascript_include_tag '<%= name.downcase %>/main'
+
+%h1 Game <%= name.capitalize %>
+%canvas{:id => "game", :width => "700", :height => "700"}

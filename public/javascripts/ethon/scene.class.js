@@ -2,8 +2,11 @@
  * Class Scene
 */
 
-function Scene(draw,update) {
+function Scene(params) {
   this.ethon = Ethon.getInstance();
-  this.draw = draw;
-  this.update = update;
+  this.init = params.init;
+  this.draw = params.draw;
+  this.update = params.update;
+
+  this.init();
 }

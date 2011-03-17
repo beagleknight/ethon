@@ -1,0 +1,11 @@
+===============================================================================
+
+Some setup you must do manually if you haven't yet:
+
+  1. Add javascript include tags for ethon in your layout:
+    <head>
+      <%= javascript_include_tag_for_ethon %>
+      <%= yield :ethon %>
+    </head>
+
+===============================================================================

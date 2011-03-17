@@ -22,7 +22,7 @@ function Sprite(texture_id,w,h,init_x,init_y,n_frames,speed) {
   this.draw = function(pos) {
     var crop = new Vector2D(this.init_x+(this.current*this.w),this.init_y+0);
     var dimension = new Vector2D(this.w,this.h);
-    Ethon.getInstance().render_manager.renderImage(this.image,pos,crop,dimension);
+    this.ethon.render_manager.renderImage(this.image,pos,crop,dimension);
   };
 
   this.update = function(dt) {

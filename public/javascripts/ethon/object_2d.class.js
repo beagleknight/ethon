@@ -21,11 +21,7 @@ function Object2D(x,y,w,h) {
   };
 
   this.update = function() {
-
-  };
-
-  this.move = function() {
-    //this.pos.sum(v);
+    this.pos.sum(this.vel);
   };
 
   this.insideCanvas = function() {
