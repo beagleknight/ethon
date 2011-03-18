@@ -1,6 +1,6 @@
 module EthonHelper
   def javascript_include_tag_for_ethon
-    files = [ 'jquery-1.4.4.min.js',
+    files = [ 'jquery.js',
               'ethon/functions', 
               'ethon/vector2d.class.js', 
               'ethon/hash.class.js', 

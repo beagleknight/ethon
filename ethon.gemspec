@@ -6,11 +6,11 @@ Gem::Specification.new do |s|
   s.name        = "ethon"
   s.version     = Ethon::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["TODO: Write your name"]
-  s.email       = ["TODO: Write your email address"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.authors     = ["David Morcillo"]
+  s.email       = ["david@imesmes.com"]
+  s.homepage    = "http://www.imesmes.com"
+  s.summary     = %q{Rails engine wrapper for Ethon engine}
+  s.description = %q{Ethon engine is an HTML5 game engine build with Javascript}
 
   s.rubyforge_project = "ethon"
 
