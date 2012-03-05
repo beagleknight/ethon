@@ -23,13 +23,15 @@ TestCase("RenderManagerTest", {
     assertEquals(4, fillRect.args.length);
   },
 
-  "test draw circle should use canvas context arc": function() {
+  "test draw circle should use canvas context arc and fill": function() {
     var arc = stubFn();
-    this.canvas.getContext = stubFn({ arc: arc });
+    var fill = stubFn();
+    this.canvas.getContext = stubFn({ arc: arc, fill: fill });
 
     ethon.render_manager.init(this.canvas);
     ethon.render_manager.draw_circle(100, 100, 5);
     assertTrue(arc.called);
     assertEquals(6, arc.args.length);
+    assertTrue(fill.called);
   }
 });

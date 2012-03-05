@@ -15,6 +15,7 @@ ethon.render_manager = (function() {
 
   function draw_circle(x, y, radius) {
     this.ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+    this.ctx.fill();
   }
 
   return {
