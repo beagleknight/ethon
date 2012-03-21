@@ -1,9 +1,7 @@
-TestCase("TestEthon", {
-  "test should be an object": function() {
-    assertObject(ethon);
-  },
-
-  "test engine should be an object": function() {
-    assertObject(ethon.engine);
-  }
+describe("Ethon", function() {
+  describe("engine", function() {
+    it("should be defined", function() {
+      expect(ethon.engine).toBeDefined();
+    });
+  });
 });

@@ -1,7 +1,7 @@
-describe("RenderManagerTest", function() {
+describe("RenderManager", function() {
   var canvas, ctx;
 
-  beforeEach(function () {
+  beforeEach(function() {
     canvas = document.createElement('canvas');
     ctx = canvas.getContext("2d");
   });

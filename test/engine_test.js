@@ -1,34 +1,33 @@
-TestCase("TestEngine", {
-  "test start method should start the engine": function() {
-    var engine = ethon.engine;
-    var renderCallback = function() {};
-    var updateCallback = function() {};
-    engine.init(renderCallback, updateCallback);
-    engine.start();
-    assert(engine.running);
-  },
+describe("Engine", function() {
+  var engine, renderCallback, updateCallback;
 
-  "test render should call renderCallback method": function() {
-    var engine = ethon.engine;
-    var rendered = false;
-    var renderCallback = function() { 
-      rendered = true; 
-    };
-    var updateCallback = function() {};
+  beforeEach(function() {
+    renderCallback = function() {};
+    updateCallback = function() {};
+    engine = ethon.engine;
     engine.init(renderCallback, updateCallback);
-    engine.render();
-    assertTrue(rendered);
-  },
+  });
 
-  "test update should call updateCallback method": function() {
-    var engine = ethon.engine;
-    var updated = false;
-    var renderCallback = function() {};
-    var updateCallback = function() { 
-      updated = true; 
-    };
-    engine.init(renderCallback, updateCallback);
-    engine.update();
-    assertTrue(updated);
-  }
+  describe("start", function() {
+    it("should start the engine", function() {
+      engine.start();
+      expect(engine.running).toBeTruthy();
+    });
+  });
+
+  describe("render", function() {
+    it("should call renderCallback method", function() {
+      spyOn(engine, 'renderCallback');
+      engine.render();
+      expect(engine.renderCallback).toHaveBeenCalled();
+    });
+  });
+
+  describe("update", function() {
+    it("should call updateCallback method", function() {
+      spyOn(engine, 'updateCallback');
+      engine.update();
+      expect(engine.updateCallback).toHaveBeenCalled();
+    });
+  });
 });
