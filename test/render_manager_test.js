@@ -1,37 +1,43 @@
-TestCase("RenderManagerTest", {
-  setUp: function() {
-    this.canvas = document.createElement('canvas');
-  },
+describe("RenderManagerTest", function() {
+  var canvas, ctx;
 
-  "test should be an object": function() {
-    assertObject(ethon.render_manager);
-  },
+  beforeEach(function () {
+    canvas = document.createElement('canvas');
+    ctx = canvas.getContext("2d");
+  });
 
-  "test init should receive a canvas element": function() {
-    assertException(function() {
-      ethon.render_manager.init("wrong");
-    }, "TypeError");
-  },
+  describe("init", function() {
+    it("should receive a canvas element", function() {
+      expect(function() {
+        ethon.render_manager.init("wrong");
+      }).toThrow(new TypeError("init must receive a CanvasElement"));
+    });
+  });
 
-  "test draw box should use canvas context fillRect": function() {
-    var fillRect = stubFn();
-    this.canvas.getContext = stubFn({ fillRect: fillRect });
+  describe("draw_box", function() {
+    it("should call canvas context fillRect with correct arguments", function() {
+      spyOn(ctx, 'fillRect');
+      ethon.render_manager.init(canvas);
+      ethon.render_manager.draw_box(25, 25, 100, 100);
+      expect(ctx.fillRect).toHaveBeenCalledWith(25, 25, 100, 100);
+    });
+  });
 
-    ethon.render_manager.init(this.canvas);
-    ethon.render_manager.draw_box(25, 25, 100, 100);
-    assertTrue(fillRect.called);
-    assertEquals(4, fillRect.args.length);
-  },
+  describe("draw_circle", function() {
+    beforeEach(function () {
+      ethon.render_manager.init(canvas);
+    });
 
-  "test draw circle should use canvas context arc and fill": function() {
-    var arc = stubFn();
-    var fill = stubFn();
-    this.canvas.getContext = stubFn({ arc: arc, fill: fill });
+    it("should call canvas context arc with correct arguments", function() {
+      spyOn(ctx, 'arc');
+      ethon.render_manager.draw_circle(100, 100, 5);
+      expect(ctx.arc).toHaveBeenCalledWith(100, 100, 5, 0, 2 * Math.PI, true);
+    });
 
-    ethon.render_manager.init(this.canvas);
-    ethon.render_manager.draw_circle(100, 100, 5);
-    assertTrue(arc.called);
-    assertEquals(6, arc.args.length);
-    assertTrue(fill.called);
-  }
+    it("should call canvas context fill", function() {
+      spyOn(ctx, 'fill');
+      ethon.render_manager.draw_circle(100, 100, 5);
+      expect(ctx.fill).toHaveBeenCalled();
+    });
+  });
 });
