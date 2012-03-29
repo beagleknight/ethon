@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="../src/ethon.js"></script>
+    <script type="text/javascript" src="../src/engine.js"></script>
+    <script type="text/javascript" src="../src/render_manager.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        var canvas = document.getElementById('game');
+        ethon.render_manager.init(canvas);
+        ethon.render_manager.setDefaultStyle({
+          fillStyle: "#ff0000"
+        });
+        // Draw some boxes
+        ethon.render_manager.drawBox(10, 10, 50, 50);
+        ethon.render_manager.drawBox(200, 200, 100, 150, {
+          fillStyle: "#00ff00"
+        });
+        ethon.render_manager.drawBox(100, 300, 15, 50, {
+          fillStyle: "#0000ff"
+        });
+        // Draw some circes
+        ethon.render_manager.drawCircle(100, 20, 10);
+        ethon.render_manager.drawCircle(400, 200, 40, {
+          strokeStyle: "#ff00ff"
+        });
+        ethon.render_manager.drawCircle(400, 400, 20, {
+          strokeStyle: "#0000ff"
+        });
+
+        var img    = canvas.toDataURL("image/png");
+        $('#game').after('<a style="display: block" href="'+img+'">Download image</a>');
+      });
+    </script>
+  </head>
+  <body>
+    <div style="float: left; width: 600px; display: inline">
+      <h2>Test</h2>
+      <canvas id="game" style="border: 1px solid #000"></canvas>
+    </div>
+    <div style="float: left; width: 600px; display: inline">
+      <h2>Should be</h2>
+      <img src="render_manager_test.png" style="border: 1px solid #000000" />
+    </div>
+  </body>
+</html>

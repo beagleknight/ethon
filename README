@@ -1,0 +1,5 @@
+Server
+=====
+
+bin/server.sh -j PATH/TO/JSTD -p 4224
+
