@@ -1,11 +1,15 @@
 ethon.render_manager = (function() {
   var canvas, ctx;
-  var fillStyle, strokeStyle;
+  var fillStyle, strokeStyle, lineWidth;
+  var debugMode;
 
   function init(canvas) {
     if(!(canvas instanceof HTMLCanvasElement)) {
       throw new TypeError("init must receive a CanvasElement");
     }
+
+    debugMode = false;
+
     canvas = canvas;
     canvas.width = 500;
     canvas.height= 500;
@@ -13,6 +17,7 @@ ethon.render_manager = (function() {
 
     fillStyle = "#ffffff";
     strokeStyle = "#000000";
+    lineWidth = 1;
   }
 
   function clear() {
@@ -21,15 +26,17 @@ ethon.render_manager = (function() {
 
   function setDefaultStyle(options)
   {
-    if(options.fillStyle != undefined)    fillStyle = options.fillStyle;
+    if(options.fillStyle != undefined)    fillStyle   = options.fillStyle;
     if(options.strokeStyle != undefined)  strokeStyle = options.strokeStyle;
+    if(options.lineWidth != undefined)    lineWidth   = options.lineWidth;
   }
 
   function getDefaultStyle()
   {
     return {
       fillStyle: fillStyle,
-      strokeStyle: strokeStyle
+      strokeStyle: strokeStyle,
+      lineWidth: lineWidth
     };
   }
 
@@ -52,6 +59,11 @@ ethon.render_manager = (function() {
       ctx.strokeStyle = options.strokeStyle;
     else
       ctx.strokeStyle = strokeStyle;
+
+    if(options.lineWidth != undefined)
+      ctx.lineWidth = options.lineWidth;
+    else
+      ctx.lineWidth = lineWidth;
   }
 
   function endDrawContext() {
@@ -78,6 +90,7 @@ ethon.render_manager = (function() {
 
     this.beginDrawContext(x, y, options);
     ctx.fillRect(0, 0, width, height);  
+    if(debugMode) drawAxis.call(this, width, height);
     this.endDrawContext();
   }
 
@@ -87,7 +100,13 @@ ethon.render_manager = (function() {
     ctx.beginPath();
     ctx.arc(0, 0, radius, 0, 2 * Math.PI, true);
     ctx.stroke();
+    if(debugMode) drawAxis.call(this, radius * 2, radius * 2);
     this.endDrawContext();
+  }
+
+  function drawAxis(width, height) {
+    this.drawLine(0, 0, width + 10, 0, { strokeStyle: "#ff0000", lineWidth: 2 });
+    this.drawLine(0, 0, 0, height + 10, { strokeStyle: "#00ff00", lineWidth: 2 });
   }
 
   return {
