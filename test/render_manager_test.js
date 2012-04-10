@@ -86,14 +86,16 @@ describe("RenderManager", function() {
 
   describe("drawBox", function() {
     it("should call beginDrawContext with given arguments", function() {
-      spyon(ethon.render_manager, 'beginDrawContext');
+      spyOn(ethon.render_manager, 'beginDrawContext');
       ethon.render_manager.drawBox(25, 25, 100, 100, {
         fillStyle: "#ff0000",
         rotate: 45
       });
       expect(ethon.render_manager.beginDrawContext).toHaveBeenCalledWith(25, 25, {
         fillStyle: "#ff0000",
-        rotate: 45
+        rotate: 45,
+        width: 100,
+        height: 100
       });
     });
 
@@ -105,18 +107,21 @@ describe("RenderManager", function() {
     });
 
     it("should call endDrawContext", function() {
-      spyon(ethon.render_manager, 'beginDrawContext');
-      ethon.render_manager.drawBox(25, 25, 100, 100, {
-        fillStyle: "#ff0000",
-        rotate: 45
-      });
+      spyOn(ethon.render_manager, 'endDrawContext');
+      ethon.render_manager.drawBox(25, 25, 100, 100);
       expect(ethon.render_manager.endDrawContext).toHaveBeenCalled();
     });
   });
 
   describe("drawCircle", function() {
-    beforeEach(function () {
-      ethon.render_manager.init(canvas);
+    it("should call beginDrawContext with given arguments", function() {
+      spyOn(ethon.render_manager, 'beginDrawContext');
+      ethon.render_manager.drawCircle(100, 100, 5, {
+        strokeStyle: "#ff0000"
+      });
+      expect(ethon.render_manager.beginDrawContext).toHaveBeenCalledWith(100, 100, {
+        strokeStyle: "#ff0000"
+      });
     });
 
     it("should begin a new path for canvas context", function() {
@@ -128,7 +133,7 @@ describe("RenderManager", function() {
     it("should call canvas context arc with correct arguments", function() {
       spyOn(ctx, 'arc');
       ethon.render_manager.drawCircle(100, 100, 5);
-      expect(ctx.arc).toHaveBeenCalledWith(100, 100, 5, 0, 2 * Math.PI, true);
+      expect(ctx.arc).toHaveBeenCalledWith(0, 0, 5, 0, 2 * Math.PI, true);
     });
 
     it("should call canvas context stroke", function() {
@@ -137,30 +142,10 @@ describe("RenderManager", function() {
       expect(ctx.stroke).toHaveBeenCalled();
     });
 
-    describe("with default style arguments", function() {
-      it("should take manager default strokeStyle value", function() {
-        spyOn(ctx, 'strokeStyle');
-        ethon.render_manager.init(canvas);
-        ethon.render_manager.setDefaultStyle({
-          strokeStyle: "#ff0000"
-        });
-        ethon.render_manager.drawCircle(100, 100, 5);
-        expect(ctx.strokeStyle).toBe("#ff0000");
-      });
-    });
-
-    describe("with explicit strokeStyle argument", function() {
-      it("should use strokeStyle argument value", function() {
-        spyOn(ctx, 'strokeStyle');
-        ethon.render_manager.init(canvas);
-        ethon.render_manager.setDefaultStyle({
-          strokeStyle: "#ff0000"
-        });
-        ethon.render_manager.drawCircle(100, 100, 5, {
-          strokeStyle: "#0000ff"
-        });
-        expect(ctx.strokeStyle).toBe("#0000ff");
-      });
+    it("should call endDrawContext", function() {
+      spyOn(ethon.render_manager, 'endDrawContext');
+      ethon.render_manager.drawCircle(100, 100, 5);
+      expect(ethon.render_manager.endDrawContext).toHaveBeenCalled();
     });
   });
 });

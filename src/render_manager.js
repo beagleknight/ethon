@@ -21,8 +21,8 @@ ethon.render_manager = (function() {
 
   function setDefaultStyle(options)
   {
-    fillStyle = options.fillStyle;
-    strokeStyle = options.strokeStyle;
+    if(options.fillStyle != undefined)    fillStyle = options.fillStyle;
+    if(options.strokeStyle != undefined)  strokeStyle = options.strokeStyle;
   }
 
   function getDefaultStyle()
@@ -33,39 +33,48 @@ ethon.render_manager = (function() {
     };
   }
 
-  function setStyle(options)
-  {
-    if(options != undefined) {
-      ctx.fillStyle = options.fillStyle;
-      ctx.strokeStyle = options.strokeStyle;
-    }
-    else {
-      ctx.fillStyle = fillStyle;
-      ctx.strokeStyle = strokeStyle;
-    }
-  }
-
-  function drawBox(x, y, width, height, options) {
-    setStyle(options);
-
+  function beginDrawContext(x, y, options) {
     ctx.save();
     ctx.translate(x, y);
 
-    if(options != undefined && options.rotate != undefined && options.rotate != 0) {
-      ctx.translate(width / 2, height / 2);
+    if(options.rotate != undefined && options.rotate != 0) {
+      ctx.translate(options.width / 2, options.height / 2);
       ctx.rotate(options.rotate * (Math.PI / 180))  
-      ctx.translate(-width / 2, -height / 2);
+      ctx.translate(-options.width / 2, -options.height / 2);
     }
 
-    ctx.fillRect(0, 0, width, height);  
+    if(options.fillStyle != undefined)    
+      ctx.fillStyle = options.fillStyle;
+    else
+      ctx.fillStyle = fillStyle;
+
+    if(options.strokeStyle != undefined) 
+      ctx.strokeStyle = options.strokeStyle;
+    else
+      ctx.strokeStyle = strokeStyle;
+  }
+
+  function endDrawContext() {
     ctx.restore();
   }
 
+  function drawBox(x, y, width, height, options) {
+    if(options == undefined) options = {};
+    options.width = width;
+    options.height = height;
+
+    this.beginDrawContext(x, y, options);
+    ctx.fillRect(0, 0, width, height);  
+    this.endDrawContext();
+  }
+
   function drawCircle(x, y, radius, options) {
+    if(options == undefined) options = {};
+    this.beginDrawContext(x, y, options);
     ctx.beginPath();
-    setStyle(options);
-    ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+    ctx.arc(0, 0, radius, 0, 2 * Math.PI, true);
     ctx.stroke();
+    this.endDrawContext();
   }
 
   return {
@@ -73,6 +82,8 @@ ethon.render_manager = (function() {
     clear: clear,
     setDefaultStyle: setDefaultStyle,
     getDefaultStyle: getDefaultStyle,
+    beginDrawContext: beginDrawContext,
+    endDrawContext: endDrawContext,
     drawBox: drawBox,
     drawCircle: drawCircle 
   };
