@@ -15,6 +15,10 @@ ethon.render_manager = (function() {
     strokeStyle = "#000000";
   }
 
+  function clear() {
+    ctx.clearRect(0, 0, 500, 500);
+  }
+
   function setDefaultStyle(options)
   {
     fillStyle = options.fillStyle;
@@ -43,7 +47,18 @@ ethon.render_manager = (function() {
 
   function drawBox(x, y, width, height, options) {
     setStyle(options);
-    ctx.fillRect(x, y, width, height);  
+
+    ctx.save();
+    ctx.translate(x, y);
+
+    if(options != undefined && options.rotate != undefined && options.rotate != 0) {
+      ctx.translate(width / 2, height / 2);
+      ctx.rotate(options.rotate * (Math.PI / 180))  
+      ctx.translate(-width / 2, -height / 2);
+    }
+
+    ctx.fillRect(0, 0, width, height);  
+    ctx.restore();
   }
 
   function drawCircle(x, y, radius, options) {
@@ -55,6 +70,7 @@ ethon.render_manager = (function() {
 
   return {
     init: init,
+    clear: clear,
     setDefaultStyle: setDefaultStyle,
     getDefaultStyle: getDefaultStyle,
     drawBox: drawBox,

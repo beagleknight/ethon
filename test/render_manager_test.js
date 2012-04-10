@@ -31,8 +31,25 @@ describe("RenderManager", function() {
       spyOn(ctx, 'fillRect');
       ethon.render_manager.init(canvas);
       ethon.render_manager.drawBox(25, 25, 100, 100);
-      expect(ctx.fillRect).toHaveBeenCalledWith(25, 25, 100, 100);
+      expect(ctx.fillRect).toHaveBeenCalledWith(0, 0, 100, 100);
     });
+
+    it("should call canvas translate method with given x and y", function() {
+      spyOn(ctx, 'translate');
+      ethon.render_manager.init(canvas);
+      ethon.render_manager.drawBox(25, 25, 100, 100);
+      expect(ctx.translate).toHaveBeenCalledWith(25, 25);
+    });
+
+    it("should save and restore current transformation matrix", function() {
+      spyOn(ctx, 'save');
+      spyOn(ctx, 'restore');
+      ethon.render_manager.init(canvas);
+      ethon.render_manager.drawBox(25, 25, 100, 100);
+      expect(ctx.save).toHaveBeenCalled();
+      expect(ctx.restore).toHaveBeenCalled();
+    });
+
 
     describe("with default style arguments", function() {
       it("should take manager default fillStyle value", function() {
@@ -57,6 +74,17 @@ describe("RenderManager", function() {
           fillStyle: "#00ff00"
         });
         expect(ctx.fillStyle).toBe("#00ff00");
+      });
+    });
+
+    describe("if rotate option is given", function() {
+      it("should call context rotate with given argument transformed to radians", function() {
+        spyOn(ctx, 'rotate');
+        ethon.render_manager.init(canvas);
+        ethon.render_manager.drawBox(25, 25, 100, 100, {
+          rotate: 90
+        });
+        expect(ctx.rotate).toHaveBeenCalledWith(Math.PI / 2);
       });
     });
   });

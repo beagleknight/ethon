@@ -13,11 +13,18 @@
         });
         // Draw some boxes
         ethon.render_manager.drawBox(10, 10, 50, 50);
-        ethon.render_manager.drawBox(200, 200, 100, 150, {
+        ethon.render_manager.drawBox(200, 100, 100, 150, {
           fillStyle: "#00ff00"
         });
         ethon.render_manager.drawBox(100, 300, 15, 50, {
           fillStyle: "#0000ff"
+        });
+        ethon.render_manager.drawBox(200, 300, 50, 50, {
+          fillStyle: "#666600",
+        });
+        ethon.render_manager.drawBox(200, 300, 50, 50, {
+          fillStyle: "#ffff00",
+          rotate: 45
         });
         // Draw some circes
         ethon.render_manager.drawCircle(100, 20, 10);
@@ -28,8 +35,13 @@
           strokeStyle: "#0000ff"
         });
 
-        var img    = canvas.toDataURL("image/png");
+        var img = canvas.toDataURL("image/png");
         $('#game').after('<a style="display: block" href="'+img+'">Download image</a>');
+        $('#game').bind('mousemove', function(event) {
+          $('#debug').html('');
+          $('#debug').append('X: ' + event.offsetX);
+          $('#debug').append('Y: ' + event.offsetY);
+        });
       });
     </script>
   </head>
@@ -42,5 +54,6 @@
       <h2>Should be</h2>
       <img src="render_manager_test.png" style="border: 1px solid #000000" />
     </div>
+    <div id="debug" />
   </body>
 </html>
