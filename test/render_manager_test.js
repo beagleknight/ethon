@@ -84,6 +84,50 @@ describe("RenderManager", function() {
     });
   });
 
+  describe("drawLine", function() {
+    it("should call beginDrawContext with given arguments", function() {
+      spyOn(ethon.render_manager, 'beginDrawContext');
+      ethon.render_manager.drawLine(100, 100, 200, 200, {
+        strokeStyle: "#ff0000"
+      });
+      expect(ethon.render_manager.beginDrawContext).toHaveBeenCalledWith(100, 100, {
+        strokeStyle: "#ff0000",
+        width: 100,
+        height: 100
+      });
+    });
+
+    it("should begin a new path for canvas context", function() {
+      spyOn(ctx, 'beginPath');
+      ethon.render_manager.drawLine(100, 100, 200, 200);
+      expect(ctx.beginPath).toHaveBeenCalled();
+    });
+
+    it("should call canvas moveTo with current matrix origin", function() {
+      spyOn(ctx, 'moveTo');
+      ethon.render_manager.drawLine(100, 100, 200, 200);
+      expect(ctx.moveTo).toHaveBeenCalledWith(0, 0);
+    });
+
+    it("should call canvas lineTo with correct arguments", function() {
+      spyOn(ctx, 'lineTo');
+      ethon.render_manager.drawLine(100, 100, 200, 200);
+      expect(ctx.lineTo).toHaveBeenCalledWith(100, 100);
+    });
+
+    it("should call canvas context stroke", function() {
+      spyOn(ctx, 'stroke');
+      ethon.render_manager.drawLine(100, 100, 200, 200);
+      expect(ctx.stroke).toHaveBeenCalled();
+    });
+
+    it("should call endDrawContext", function() {
+      spyOn(ethon.render_manager, 'endDrawContext');
+      ethon.render_manager.drawCircle(100, 100, 5);
+      expect(ethon.render_manager.endDrawContext).toHaveBeenCalled();
+    });
+  });
+
   describe("drawBox", function() {
     it("should call beginDrawContext with given arguments", function() {
       spyOn(ethon.render_manager, 'beginDrawContext');

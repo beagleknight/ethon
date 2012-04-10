@@ -58,6 +58,19 @@ ethon.render_manager = (function() {
     ctx.restore();
   }
 
+  function drawLine(x1, y1, x2, y2, options) {
+    if(options == undefined) options = {};
+    options.width = Math.abs(x2 - x1);
+    options.height = Math.abs(y2 - y1);
+
+    this.beginDrawContext(x1, y1, options);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);  
+    ctx.lineTo(x2 - x1, y2 - y1);  
+    ctx.stroke();
+    this.endDrawContext();
+  }
+
   function drawBox(x, y, width, height, options) {
     if(options == undefined) options = {};
     options.width = width;
@@ -84,6 +97,7 @@ ethon.render_manager = (function() {
     getDefaultStyle: getDefaultStyle,
     beginDrawContext: beginDrawContext,
     endDrawContext: endDrawContext,
+    drawLine: drawLine,
     drawBox: drawBox,
     drawCircle: drawCircle 
   };
