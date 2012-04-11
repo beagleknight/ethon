@@ -5,7 +5,7 @@ ethon.render_manager = (function() {
 
   function init(canvas) {
     if(!(canvas instanceof HTMLCanvasElement)) {
-      throw new TypeError("init must receive a CanvasElement");
+      throw new TypeError("init must receive a HTMLCanvasElement");
     }
 
     debugMode = false;
@@ -82,6 +82,7 @@ ethon.render_manager = (function() {
     options.y = y1;
     options.width = Math.abs(x2 - x1);
     options.height = Math.abs(y2 - y1);
+
     this.onDrawContext(options, function() {
       ctx.beginPath();
       ctx.moveTo(0, 0);  
@@ -96,6 +97,7 @@ ethon.render_manager = (function() {
     options.y = y;
     options.width = width;
     options.height = height;
+
     this.onDrawContext(options, function() {
       ctx.fillRect(0, 0, width, height);  
       if(debugMode) drawAxis.call(this, width, height);
@@ -106,6 +108,7 @@ ethon.render_manager = (function() {
     if(options == undefined) options = {};
     options.x = x;
     options.y = y;
+
     this.onDrawContext(options, function() {
       ctx.beginPath();
       ctx.arc(0, 0, radius, 0, 2 * Math.PI, true);
@@ -119,6 +122,23 @@ ethon.render_manager = (function() {
     this.drawLine(0, 0, 0, height + 10, { strokeStyle: "#00ff00", lineWidth: 2 });
   }
 
+  function drawImage(image, x, y, options) {
+    if(options == undefined) options = {};
+    options.x = x;
+    options.y = y;
+    options.width = image.width;
+    options.height = image.height;
+
+    if(!(image instanceof Image)) {
+      throw new TypeError("drawImage must receive an Image");
+    }
+
+    this.onDrawContext(options, function() {
+      ctx.drawImage(image, 0, 0);
+      if(debugMode) drawAxis.call(this, image.width, image.height);
+    });
+  };
+
   return {
     init: init,
     clear: clear,
@@ -129,6 +149,7 @@ ethon.render_manager = (function() {
     onDrawContext: onDrawContext,
     drawLine: drawLine,
     drawBox: drawBox,
-    drawCircle: drawCircle 
+    drawCircle: drawCircle,
+    drawImage: drawImage
   };
 })();

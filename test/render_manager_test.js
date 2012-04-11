@@ -8,10 +8,10 @@ describe("RenderManager", function() {
   });
 
   describe("init", function() {
-    it("should receive a canvas element", function() {
+    it("should receive a HTMLCanvasElement", function() {
       expect(function() {
         ethon.render_manager.init("wrong");
-      }).toThrow(new TypeError("init must receive a CanvasElement"));
+      }).toThrow(new TypeError("init must receive a HTMLCanvasElement"));
     });
   });
 
@@ -108,7 +108,7 @@ describe("RenderManager", function() {
   });
 
   describe("drawLine", function() {
-    it("should call onDrawContext with correct arguments", function() {
+    it("should call onDrawContext", function() {
       spyOn(ethon.render_manager, 'onDrawContext');
       ethon.render_manager.drawLine(100, 100, 200, 200, { strokeStyle: "#ff0000" });
       expect(ethon.render_manager.onDrawContext).toHaveBeenCalled();
@@ -140,7 +140,7 @@ describe("RenderManager", function() {
   });
 
   describe("drawBox", function() {
-    it("should call onDrawContext with correct arguments", function() {
+    it("should call onDrawContext", function() {
       spyOn(ethon.render_manager, 'onDrawContext');
       ethon.render_manager.drawBox(100, 100, 200, 200, { fillStyle: "#ff0000" });
       expect(ethon.render_manager.onDrawContext).toHaveBeenCalled();
@@ -155,7 +155,7 @@ describe("RenderManager", function() {
   });
 
   describe("drawCircle", function() {
-    it("should call onDrawContext with correct arguments", function() {
+    it("should call onDrawContext", function() {
       spyOn(ethon.render_manager, 'onDrawContext');
       ethon.render_manager.drawCircle(100, 100, 5, { strokeStyle: "#ff0000" }); 
       expect(ethon.render_manager.onDrawContext).toHaveBeenCalled();
@@ -177,6 +177,30 @@ describe("RenderManager", function() {
       spyOn(ctx, 'stroke');
       ethon.render_manager.drawCircle(100, 100, 5);
       expect(ctx.stroke).toHaveBeenCalled();
+    });
+  });
+
+  describe("drawImage", function() {
+    beforeEach(function() {
+      image = new Image();
+    });
+    
+    it("should receive an Image element", function() {
+      expect(function() {
+        ethon.render_manager.drawImage("wrong", 100, 100);
+      }).toThrow(new TypeError("drawImage must receive an Image"));
+    });
+
+    it("should call onDrawContext", function() {
+      spyOn(ethon.render_manager, 'onDrawContext');
+      ethon.render_manager.drawImage(image, 100, 100, {});
+      expect(ethon.render_manager.onDrawContext).toHaveBeenCalled();
+    });
+
+    it("should call canvas context drawImage with correct arguments", function() {
+      spyOn(ctx, 'drawImage');
+      ethon.render_manager.drawImage(image, 100, 100, {});
+      expect(ctx.drawImage).toHaveBeenCalledWith(image, 0, 0);
     });
   });
 });

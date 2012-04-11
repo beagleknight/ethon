@@ -6,8 +6,8 @@
     <script type="text/javascript" src="../src/render_manager.js"></script>
     <script type="text/javascript">
       $(function() {
-        var canvas = document.getElementById('game');
-        ethon.render_manager.init(canvas);
+        var canvas_1 = document.getElementById('test_1');
+        ethon.render_manager.init(canvas_1);
         ethon.render_manager.setDefaultStyle({
           fillStyle: "#ff0000",
           strokeStyle: "#0000ff"
@@ -40,25 +40,65 @@
           strokeStyle: "#0000ff"
         });
 
-        var img = canvas.toDataURL("image/png");
-        $('#game').after('<a style="display: block" href="'+img+'">Download image</a>');
-        $('#game').bind('mousemove', function(event) {
-          $('#debug').html('');
-          $('#debug').append('X: ' + event.offsetX);
-          $('#debug').append('Y: ' + event.offsetY);
+        var img = canvas_1.toDataURL("image/png");
+        $('#test_1').after('<a style="display: block" href="'+img+'">Download image</a>');
+        $('#test_1').bind('mousemove', function(event) {
+          $('#debug_1').html('');
+          $('#debug_1').append('X: ' + event.offsetX);
+          $('#debug_1').append('Y: ' + event.offsetY);
         });
+
+        var canvas_2 = document.getElementById('test_2');
+        ethon.render_manager.init(canvas_2);
+        // Draw some images
+        var image = new Image();
+        image.src = "test.jpg";
+        image.onload = function() {
+          ethon.render_manager.drawImage(image, 0, 0);
+          ethon.render_manager.drawImage(image, 300, 300);
+          ethon.render_manager.drawImage(image, 150, 150, {
+            rotate: 90
+          });
+          ethon.render_manager.drawImage(image, 300, 150, {
+            rotate: 45 
+          });
+
+          //var img = canvas_2.toDataURL("image/png");
+          //$('#test_2').after('<a style="display: block" href="'+img+'">Download image</a>');
+          //$('#test_2').bind('mousemove', function(event) {
+          //  $('#debug_2').html('');
+          //  $('#debug_2').append('X: ' + event.offsetX);
+          //  $('#debug_2').append('Y: ' + event.offsetY);
+          //});
+        };
       });
     </script>
   </head>
   <body>
     <div style="float: left; width: 600px; display: inline">
-      <h2>Test</h2>
-      <canvas id="game" style="border: 1px solid #000"></canvas>
+      <h2>Test 1</h2>
+      <canvas id="test_1" style="border: 1px solid #000"></canvas>
     </div>
     <div style="float: left; width: 600px; display: inline">
       <h2>Should be</h2>
-      <img src="render_manager_test.png" style="border: 1px solid #000000" />
+      <img src="render_manager_test_1.png" style="border: 1px solid #000000" />
     </div>
-    <div id="debug" />
+    <div style="float: left; width: 200px; display: inline">
+      <h2>Debug</h2>
+      <div id="debug_1"></div>
+    </div>
+    <div style="clear: both;"></div>
+    <div style="float: left; width: 600px; display: inline">
+      <h2>Test 2</h2>
+      <canvas id="test_2" style="border: 1px solid #000"></canvas>
+    </div>
+    <!--<div style="float: left; width: 600px; display: inline">
+      <h2>Should be</h2>
+      <img src="render_manager_test_2.png" style="border: 1px solid #000000" />
+    </div>-->
+    <div style="float: left; width: 200px; display: inline">
+      <h2>Debug</h2>
+      <div id="debug_2"></div>
+    </div>
   </body>
 </html>
