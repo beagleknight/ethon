@@ -50,6 +50,10 @@ ethon.render_manager = (function() {
       ctx.translate(-options.width / 2, -options.height / 2);
     }
 
+    if(options.scale != undefined) {
+      ctx.scale(options.scale[0], options.scale[1]);
+    }
+
     if(options.fillStyle != undefined)    
       ctx.fillStyle = options.fillStyle;
     else
@@ -98,9 +102,10 @@ ethon.render_manager = (function() {
     options.width = width;
     options.height = height;
 
+    var that = this;
     this.onDrawContext(options, function() {
       ctx.fillRect(0, 0, width, height);  
-      if(debugMode) drawAxis.call(this, width, height);
+      if(debugMode) drawAxis.call(that, width, height);
     });
   }
 
@@ -109,11 +114,12 @@ ethon.render_manager = (function() {
     options.x = x;
     options.y = y;
 
+    var that = this;
     this.onDrawContext(options, function() {
       ctx.beginPath();
       ctx.arc(0, 0, radius, 0, 2 * Math.PI, true);
       ctx.stroke();
-      if(debugMode) drawAxis.call(this, radius * 2, radius * 2);
+      if(debugMode) drawAxis.call(that, radius * 2, radius * 2);
     });
   }
 
@@ -133,9 +139,10 @@ ethon.render_manager = (function() {
       throw new TypeError("drawImage must receive an Image");
     }
 
+    var that = this;
     this.onDrawContext(options, function() {
       ctx.drawImage(image, 0, 0);
-      if(debugMode) drawAxis.call(this, image.width, image.height);
+      if(debugMode) drawAxis.call(that, image.width, image.height);
     });
   };
 

@@ -62,17 +62,24 @@
           ethon.render_manager.drawImage(image, 300, 150, {
             rotate: 45 
           });
+          ethon.render_manager.drawImage(image, 100, 300, {
+            scale: [0.5, 0.5]
+          });
+          ethon.render_manager.drawImage(image, 150, 300, {
+            rotate: 180,
+            scale: [0.5, 0.5]
+          });
 
-          //var img = canvas_2.toDataURL("image/png");
-          //$('#test_2').after('<a style="display: block" href="'+img+'">Download image</a>');
-          //$('#test_2').bind('mousemove', function(event) {
-          //  $('#debug_2').html('');
-          //  $('#debug_2').append('X: ' + event.offsetX);
-          //  $('#debug_2').append('Y: ' + event.offsetY);
-          //});
+          var img = canvas_2.toDataURL("image/png");
+          $('#test_2').after('<a style="display: block" href="'+img+'">Download image</a>');
+          $('#test_2').bind('mousemove', function(event) {
+            $('#debug_2').html('');
+            $('#debug_2').append('X: ' + event.offsetX);
+            $('#debug_2').append('Y: ' + event.offsetY);
+          });
         };
       });
-    </script>
+</script>
   </head>
   <body>
     <div style="float: left; width: 600px; display: inline">
@@ -92,10 +99,10 @@
       <h2>Test 2</h2>
       <canvas id="test_2" style="border: 1px solid #000"></canvas>
     </div>
-    <!--<div style="float: left; width: 600px; display: inline">
+    <div style="float: left; width: 600px; display: inline">
       <h2>Should be</h2>
       <img src="render_manager_test_2.png" style="border: 1px solid #000000" />
-    </div>-->
+    </div>
     <div style="float: left; width: 200px; display: inline">
       <h2>Debug</h2>
       <div id="debug_2"></div>

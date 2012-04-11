@@ -78,6 +78,19 @@ describe("RenderManager", function() {
         expect(ctx.rotate).toHaveBeenCalledWith(Math.PI / 2);
       });
     });
+
+    describe("with scale argument given", function() {
+      it("should call context scale with given arguments", function() {
+        spyOn(ctx, 'scale');
+        ethon.render_manager.init(canvas);
+        ethon.render_manager.beginDrawContext({
+          x: 25,
+          y: 25,
+          scale: [0.75, 0.75] 
+        });
+        expect(ctx.scale).toHaveBeenCalledWith(0.75, 0.75);
+      });
+    });
   });
 
   describe("endDrawContext", function() {
