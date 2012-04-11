@@ -40,9 +40,9 @@ ethon.render_manager = (function() {
     };
   }
 
-  function beginDrawContext(x, y, options) {
+  function beginDrawContext(options) {
     ctx.save();
-    ctx.translate(x, y);
+    ctx.translate(options.x, options.y);
 
     if(options.rotate != undefined && options.rotate != 0) {
       ctx.translate(options.width / 2, options.height / 2);
@@ -70,38 +70,48 @@ ethon.render_manager = (function() {
     ctx.restore();
   }
 
+  function onDrawContext(options, callback) {
+    this.beginDrawContext(options);
+    callback();
+    this.endDrawContext();
+  }
+
   function drawLine(x1, y1, x2, y2, options) {
     if(options == undefined) options = {};
+    options.x = x1;
+    options.y = y1;
     options.width = Math.abs(x2 - x1);
     options.height = Math.abs(y2 - y1);
-
-    this.beginDrawContext(x1, y1, options);
-    ctx.beginPath();
-    ctx.moveTo(0, 0);  
-    ctx.lineTo(x2 - x1, y2 - y1);  
-    ctx.stroke();
-    this.endDrawContext();
+    this.onDrawContext(options, function() {
+      ctx.beginPath();
+      ctx.moveTo(0, 0);  
+      ctx.lineTo(x2 - x1, y2 - y1);  
+      ctx.stroke();
+    });
   }
 
   function drawBox(x, y, width, height, options) {
     if(options == undefined) options = {};
+    options.x = x;
+    options.y = y;
     options.width = width;
     options.height = height;
-
-    this.beginDrawContext(x, y, options);
-    ctx.fillRect(0, 0, width, height);  
-    if(debugMode) drawAxis.call(this, width, height);
-    this.endDrawContext();
+    this.onDrawContext(options, function() {
+      ctx.fillRect(0, 0, width, height);  
+      if(debugMode) drawAxis.call(this, width, height);
+    });
   }
 
   function drawCircle(x, y, radius, options) {
     if(options == undefined) options = {};
-    this.beginDrawContext(x, y, options);
-    ctx.beginPath();
-    ctx.arc(0, 0, radius, 0, 2 * Math.PI, true);
-    ctx.stroke();
-    if(debugMode) drawAxis.call(this, radius * 2, radius * 2);
-    this.endDrawContext();
+    options.x = x;
+    options.y = y;
+    this.onDrawContext(options, function() {
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, 2 * Math.PI, true);
+      ctx.stroke();
+      if(debugMode) drawAxis.call(this, radius * 2, radius * 2);
+    });
   }
 
   function drawAxis(width, height) {
@@ -116,6 +126,7 @@ ethon.render_manager = (function() {
     getDefaultStyle: getDefaultStyle,
     beginDrawContext: beginDrawContext,
     endDrawContext: endDrawContext,
+    onDrawContext: onDrawContext,
     drawLine: drawLine,
     drawBox: drawBox,
     drawCircle: drawCircle 
