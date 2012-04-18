@@ -1,4 +1,4 @@
-describe("RenderManager", function() {
+describe("render_manager", function() {
   var canvas, ctx;
 
   beforeEach(function() {
