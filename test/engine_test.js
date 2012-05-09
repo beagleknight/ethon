@@ -36,16 +36,43 @@ describe("Engine", function() {
       engine.init(canvas);
 
       expect(function() {
-        engine.addScene(bad_scene_1);
+        engine.addScene("bad1", bad_scene_1);
       }).toThrow(new TypeError("scene given doesn't have render and update functions"));
 
       expect(function() {
-        engine.addScene(bad_scene_1);
+        engine.addScene("bad2", bad_scene_2);
       }).toThrow(new TypeError("scene given doesn't have render and update functions"));
 
       expect(function() {
-        engine.addScene(good_scene);
+        engine.addScene("good", good_scene);
       }).not.toThrow(new TypeError("scene given doesn't have render and update functions"));
+    });
+
+    it("should add scene to engine scenes object", function() {
+      var scene = {
+        render: function(rm) {},
+        update: function(dt) {}
+      };
+
+      engine.init(canvas);
+
+      engine.addScene("main", scene);
+      expect(scene).toBe(engine.scenes["main"])
+    });
+  });
+
+  describe("setActiveScene", function() {
+    it("should assign scene to active scene", function() {
+      var scene = {
+        render: function(rm) {},
+        update: function(dt) {}
+      };
+
+      engine.init(canvas);
+      engine.addScene("main", scene);
+      engine.setActiveScene("main");
+
+      expect(engine.getActiveScene()).toBe(engine.scenes["main"])
     });
   });
 });
