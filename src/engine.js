@@ -32,13 +32,14 @@ ethon.engine = (function() {
   }
 
   function start() {
-    setInterval(loop, 1000 / 30); 
+    requestAnimationFrame(loop);
     running = true;
   }
 
   function loop() {
     render();
     update();
+    requestAnimationFrame(loop);
   }
 
   function render() {
