@@ -11,7 +11,14 @@ ethon.engine = (function() {
     input_manager.init(canvas);
   }
 
+  function addScene(scene) {
+    if(typeof scene.render != "function" || typeof scene.update != "function") {
+      throw TypeError("scene given doesn't have render and update functions");
+    }
+  }
+
   return {
-    init: init
+    init: init,
+    addScene: addScene
   };
 })();

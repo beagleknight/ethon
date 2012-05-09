@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="../src/ethon.js"></script>
+    <script type="text/javascript" src="../src/engine.js"></script>
+    <script type="text/javascript" src="../src/render_manager.js"></script>
+    <script type="text/javascript" src="../src/input_manager.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        var canvas_1 = document.getElementById('test_1');
+        var engine = ethon.engine;
+        engine.init(canvas_1);
+      });
+    </script>
+  </head>
+  <body>
+    <div style="float: left; width: 600px; display: inline">
+      <h2>Test 1</h2>
+      <canvas id="test_1" style="border: 1px solid #000"></canvas>
+    </div>
+  </body>
+</html>
