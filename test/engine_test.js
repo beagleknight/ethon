@@ -75,4 +75,12 @@ describe("Engine", function() {
       expect(engine.getActiveScene()).toBe(engine.scenes["main"])
     });
   });
+
+  describe("start", function() {
+    it("should start the engine loop", function() {
+      engine.init(canvas);
+      engine.start();
+      expect(engine.isRunning()).toBeTruthy();
+    });
+  });
 });

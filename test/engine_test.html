@@ -8,8 +8,22 @@
     <script type="text/javascript">
       $(function() {
         var canvas_1 = document.getElementById('test_1');
+        var scene = {
+          x: 0,
+          y: 0,
+          render: function(rm) {
+            rm.drawBox(100 + this.x, 100 + this.y, 50, 50);
+          },
+          update: function(dt) {
+            this.x += 10 * dt;
+            this.y += 10 * dt;
+          }
+        };
         var engine = ethon.engine;
         engine.init(canvas_1);
+        engine.addScene("main", scene);
+        engine.setActiveScene("main");
+        engine.start();
       });
     </script>
   </head>

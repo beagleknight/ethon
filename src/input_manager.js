@@ -34,7 +34,6 @@ ethon.input_manager = (function() {
 
   function mousedown(event) {
     //TODO
-    console.log(event);
   }
 
   return {

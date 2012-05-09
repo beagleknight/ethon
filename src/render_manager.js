@@ -15,7 +15,7 @@ ethon.render_manager = (function() {
     canvas.height= 500;
     ctx = canvas.getContext("2d");
 
-    fillStyle = "#ffffff";
+    fillStyle = "#000000";
     strokeStyle = "#000000";
     lineWidth = 1;
   }

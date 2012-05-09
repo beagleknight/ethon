@@ -3,6 +3,8 @@ ethon.engine = (function() {
   var input_manager = {};
   var scenes = {};
   var active_scene = null;
+  var elapsed_time = new Date();
+  var running = false;
 
   function init(canvas) {
     // Set and initialize render manager
@@ -28,11 +30,39 @@ ethon.engine = (function() {
     return active_scene;
   }
 
+  function start() {
+    setInterval(loop, 1000 / 30); 
+    running = true;
+  }
+
+  function loop() {
+    render();
+    update();
+  }
+
+  function render() {
+    render_manager.clear();
+    active_scene.render(render_manager);
+  }
+
+  function update() {
+    var now = new Date();
+    var dt = new Date(now.getTime() - elapsed_time.getTime()).getMilliseconds() / 1000;
+    active_scene.update(dt);
+    elapsed_time = now;
+  }
+
+  function isRunning() {
+    return running;
+  }
+
   return {
     init: init,
     scenes: scenes,
     addScene: addScene,
     setActiveScene: setActiveScene,
-    getActiveScene: getActiveScene
+    getActiveScene: getActiveScene,
+    start: start,
+    isRunning: isRunning
   };
 })();
