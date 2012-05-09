@@ -1,26 +1,17 @@
 ethon.engine = (function() {
-  function init(renderCallback, updateCallback) {
-    this.renderCallback = renderCallback;
-    this.updateCallback = updateCallback;
-  }
+  var render_manager = {};
+  var input_manager = {};
 
-  function start() {
-    this.running = true; 
-  }
-
-  function render() {
-    this.renderCallback();
-  }
-
-  function update() {
-    this.updateCallback();
+  function init(canvas) {
+    // Set and initialize render manager
+    render_manager = ethon.render_manager;
+    render_manager.init(canvas);
+    // Set and initialize input manager
+    input_manager = ethon.input_manager;
+    input_manager.init(canvas);
   }
 
   return {
-    init: init,
-    start: start,
-    render: render,
-    update: update,
-    running: false
+    init: init
   };
 })();

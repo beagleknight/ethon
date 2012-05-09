@@ -2,32 +2,21 @@ describe("Engine", function() {
   var engine, renderCallback, updateCallback;
 
   beforeEach(function() {
-    renderCallback = function() {};
-    updateCallback = function() {};
     engine = ethon.engine;
-    engine.init(renderCallback, updateCallback);
+    canvas = document.createElement('canvas');
   });
 
-  describe("start", function() {
-    it("should start the engine", function() {
-      engine.start();
-      expect(engine.running).toBeTruthy();
+  describe("init", function() {
+    it("should initialize render_manager with given canvas", function() {
+      spyOn(ethon.render_manager, 'init');
+      engine.init(canvas);
+      expect(ethon.render_manager.init).toHaveBeenCalledWith(canvas);
     });
-  });
 
-  describe("render", function() {
-    it("should call renderCallback method", function() {
-      spyOn(engine, 'renderCallback');
-      engine.render();
-      expect(engine.renderCallback).toHaveBeenCalled();
-    });
-  });
-
-  describe("update", function() {
-    it("should call updateCallback method", function() {
-      spyOn(engine, 'updateCallback');
-      engine.update();
-      expect(engine.updateCallback).toHaveBeenCalled();
+    it("should initialize input_manager with given canvas", function() {
+      spyOn(ethon.input_manager, 'init');
+      engine.init(canvas);
+      expect(ethon.input_manager.init).toHaveBeenCalledWith(canvas);
     });
   });
 });
