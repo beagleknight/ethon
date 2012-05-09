@@ -19,6 +19,7 @@ ethon.engine = (function() {
     if(typeof scene.render != "function" || typeof scene.update != "function") {
       throw TypeError("scene given doesn't have render and update functions");
     }
+    scene.input_manager = input_manager;
     scenes[id] = scene;
   }
 

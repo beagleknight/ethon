@@ -20,15 +20,15 @@ ethon.input_manager = (function() {
     keys[event.keyCode] = 1;
   }
 
-  function iskeydown(key) {
-    return keys[key] == 1;
-  }
-
   function keyup(event) {
     keys[event.keyCode] = 0;
   }
 
-  function iskeyup(key) {
+  function isKeyDown(key) {
+    return keys[key] == 1;
+  }
+
+  function isKeyUp(key) {
     return keys[key] == 0;
   }
 
@@ -38,9 +38,11 @@ ethon.input_manager = (function() {
 
   return {
     init: init,
-    iskeydown: iskeydown,
-    iskeyup: iskeyup,
+    isKeyDown: isKeyDown,
+    isKeyUp: isKeyUp,
     KEY_A: 65,
-    KEY_B: 66
+    KEY_B: 66,
+    KEY_LEFT_ARROW: 37,
+    KEY_RIGHT_ARROW: 39
   };
 })();
