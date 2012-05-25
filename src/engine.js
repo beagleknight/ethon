@@ -6,18 +6,20 @@ ethon.engine = (function() {
   var elapsed_time = new Date();
   var running = false;
 
-  function init(canvas) {
+  function init(canvas, width, height) {
     // Set and initialize render manager
     render_manager = ethon.render_manager;
-    render_manager.init(canvas);
+    render_manager.init(canvas, width, height);
     // Set and initialize input manager
     input_manager = ethon.input_manager;
     input_manager.init(canvas);
   }
 
   function addScene(id, scene) {
-    if(typeof scene.render != "function" || typeof scene.update != "function") {
-      throw TypeError("scene given doesn't have render and update functions");
+    if(typeof scene.init  !== "function" || 
+      typeof scene.render !== "function" || 
+      typeof scene.update !== "function") {
+      throw TypeError("scene given doesn't have init, render and update functions");
     }
     scene.input_manager = input_manager;
     scenes[id] = scene;

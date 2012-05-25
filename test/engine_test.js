@@ -7,10 +7,10 @@ describe("Engine", function() {
   });
 
   describe("init", function() {
-    it("should initialize render_manager with given canvas", function() {
+    it("should initialize render_manager with given canvas, width and height", function() {
       spyOn(ethon.render_manager, 'init');
-      engine.init(canvas);
-      expect(ethon.render_manager.init).toHaveBeenCalledWith(canvas);
+      engine.init(canvas, 640, 480);
+      expect(ethon.render_manager.init).toHaveBeenCalledWith(canvas, 640, 480);
     });
 
     it("should initialize input_manager with given canvas", function() {
@@ -21,37 +21,46 @@ describe("Engine", function() {
   });
 
   describe("addScene", function() {
-    it("should receive an object with render and update functions", function() {
+    it("should receive an object with init, render and update functions", function() {
       var bad_scene_1 = {
         render: function(rm) {}
       };
       var bad_scene_2 = {
         update: function(dt) {}
       };
+      var bad_scene_3 = {
+        init: function() {}
+      };
       var good_scene = {
-        render: function(rm) {},
-        update: function(dt) {}
+        init:   function()    {},
+        render: function(rm)  {},
+        update: function(dt)  {}
       };
 
       engine.init(canvas);
 
       expect(function() {
         engine.addScene("bad1", bad_scene_1);
-      }).toThrow(new TypeError("scene given doesn't have render and update functions"));
+      }).toThrow(new TypeError("scene given doesn't have init, render and update functions"));
 
       expect(function() {
         engine.addScene("bad2", bad_scene_2);
-      }).toThrow(new TypeError("scene given doesn't have render and update functions"));
+      }).toThrow(new TypeError("scene given doesn't have init, render and update functions"));
+
+      expect(function() {
+        engine.addScene("bad2", bad_scene_3);
+      }).toThrow(new TypeError("scene given doesn't have init, render and update functions"));
 
       expect(function() {
         engine.addScene("good", good_scene);
-      }).not.toThrow(new TypeError("scene given doesn't have render and update functions"));
+      }).not.toThrow(new TypeError("scene given doesn't have init, render and update functions"));
     });
 
     it("should add scene to engine scenes object", function() {
       var scene = {
-        render: function(rm) {},
-        update: function(dt) {}
+        init:   function()    {},
+        render: function(rm)  {},
+        update: function(dt)  {}
       };
 
       engine.init(canvas);
@@ -64,8 +73,9 @@ describe("Engine", function() {
   describe("setActiveScene", function() {
     it("should assign scene to active scene", function() {
       var scene = {
-        render: function(rm) {},
-        update: function(dt) {}
+        init:   function()    {},
+        render: function(rm)  {},
+        update: function(dt)  {}
       };
 
       engine.init(canvas);

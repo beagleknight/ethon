@@ -3,16 +3,16 @@ ethon.render_manager = (function() {
   var fillStyle, strokeStyle, lineWidth;
   var debugMode;
 
-  function init(canvas) {
-    if(!(canvas instanceof HTMLCanvasElement)) {
+  function init(_canvas, width, height) {
+    if(!(_canvas instanceof HTMLCanvasElement)) {
       throw new TypeError("init must receive a HTMLCanvasElement");
     }
 
     debugMode = false;
 
-    canvas = canvas;
-    canvas.width = 500;
-    canvas.height= 500;
+    canvas = _canvas;
+    canvas.width = width;
+    canvas.height= height;
     ctx = canvas.getContext("2d");
 
     fillStyle = "#000000";

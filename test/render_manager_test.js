@@ -13,6 +13,12 @@ describe("render_manager", function() {
         ethon.render_manager.init("wrong");
       }).toThrow(new TypeError("init must receive a HTMLCanvasElement"));
     });
+
+    it("should set canvas width and height", function() {
+      ethon.render_manager.init(canvas, 800, 600);
+      expect(canvas.width).toBe(800);
+      expect(canvas.height).toBe(600);
+    });
   });
 
   describe("setDefaultStyle", function() {
