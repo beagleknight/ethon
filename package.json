@@ -1,0 +1,10 @@
+{
+  "name": "ethon",
+  "version": "0.0.1",
+  "description": "HTML5 game engine",
+  "author": "David Morcillo <david@imesmes.com>",
+  "dependencies": {
+    "node-minify": "~0.3.0"
+  },
+  "engine": "node 0.6.18"
+}
