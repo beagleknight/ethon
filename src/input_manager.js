@@ -43,6 +43,7 @@ ethon.input_manager = (function() {
     KEY_A: 65,
     KEY_B: 66,
     KEY_LEFT_ARROW: 37,
-    KEY_RIGHT_ARROW: 39
+    KEY_RIGHT_ARROW: 39,
+    KEY_UP_ARROW: 38
   };
 })();
