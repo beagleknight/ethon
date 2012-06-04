@@ -23,6 +23,7 @@ ethon.engine = (function() {
     }
     scene.input_manager = input_manager;
     scenes[id] = scene;
+    scene.init();
   }
 
   function setActiveScene(id) {

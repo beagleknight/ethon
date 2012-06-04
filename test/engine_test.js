@@ -64,9 +64,20 @@ describe("Engine", function() {
       };
 
       engine.init(canvas);
-
       engine.addScene("main", scene);
       expect(scene).toBe(engine.scenes["main"])
+    });
+
+    it("should call scene init when adding scene", function() {
+      var scene = {
+        init:   function()    {},
+        render: function(rm)  {},
+        update: function(dt)  {}
+      };
+      spyOn(scene, "init");
+      engine.init(canvas);
+      engine.addScene("main", scene);
+      expect(scene.init).toHaveBeenCalled();
     });
   });
 

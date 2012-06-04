@@ -21,14 +21,14 @@ ethon.render_manager = (function() {
   }
 
   function clear() {
-    ctx.clearRect(0, 0, 500, 500);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
   function setDefaultStyle(options)
   {
-    if(options.fillStyle != undefined)    fillStyle   = options.fillStyle;
-    if(options.strokeStyle != undefined)  strokeStyle = options.strokeStyle;
-    if(options.lineWidth != undefined)    lineWidth   = options.lineWidth;
+    if(options.fillStyle    !== undefined)  fillStyle   = options.fillStyle;
+    if(options.strokeStyle  !== undefined)  strokeStyle = options.strokeStyle;
+    if(options.lineWidth    !== undefined)  lineWidth   = options.lineWidth;
   }
 
   function getDefaultStyle()
