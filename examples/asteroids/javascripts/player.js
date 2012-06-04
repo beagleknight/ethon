@@ -1,22 +1,65 @@
 var player = (function() {
-  var position = { x: 0, y: 0 }, velocity;
-  var rotation, rotationSpeed = 100;
+  var position, velocity;
+  var rotation, rotationSpeed = 200;
   var speed, maxSpeed = 200;
+  var bullets;
+  var timer, cadence = 0.15; 
   var image;
 
   function init() {
-    image = new Image();
-    image.src = "images/ship.png";
     position = { x: 320, y: 250 };
     velocity = { x: 0, y: 0 };
     speed = rotation = 0;
+    bullets = [];
+    image = new Image();
+    image.src = "images/ship.png";
+    timer = 0;
   }
 
   function render(rm) {
+    // Render bullets
+    var i, l;
+    for(i = 0, l = bullets.length; i < l; i++) {
+      bullets[i].render(rm);
+    }
+
     rm.drawImage(image, position.x, position.y, { rotate: rotation });
   }
 
   function update(dt) {
+    // Update fire timer
+    timer += dt;
+
+    // Update bullets
+    var i, l;
+    var removeIndexes = [];
+    for(i = 0, l = bullets.length; i < l; i++) {
+      bullets[i].update(dt);
+      if(!bullets[i].isAlive()) {
+        removeIndexes.push(i);
+      }
+    }
+
+    //TODO: this can be problematic
+    for(i = 0, l = removeIndexes.length; i < l; i++) {
+      bullets.splice(removeIndexes[i], 1);
+    }
+
+    if(this.im.isKeyDown(ethon.input_manager.KEY_SPACEBAR) && timer > cadence) { 
+      var bulletDirection = { 
+        x: -Math.cos(rotation * (Math.PI / 180)),
+        y: Math.sin(rotation * (Math.PI / 180)),
+      };
+      var bulletPosition = { 
+        x: position.x + image.width / 2,
+        y: position.y + image.height / 2 
+      };
+      var b = bullet(bulletPosition, bulletDirection)
+      b.init();
+      bullets.push(b); 
+      timer = 0;
+    }
+
     if(this.im.isKeyDown(ethon.input_manager.KEY_LEFT_ARROW)) { 
       rotation -= rotationSpeed * dt; 
     }
@@ -28,7 +71,7 @@ var player = (function() {
       speed = maxSpeed;
     }
     else if(speed > 0) {
-      speed -= 50 * dt;
+      speed -= 150 * dt;
     }
 
     velocity.y = -Math.cos(rotation * (Math.PI / 180)) * speed;
