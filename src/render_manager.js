@@ -27,7 +27,7 @@ ethon.render_manager = (function() {
   function setDefaultStyle(options)
   {
     if(options.fillStyle    !== undefined)  fillStyle   = options.fillStyle;
-    if(options.strokeStyle  !== undefined)  strokeStyle = options.strokeStyle;
+    if(options.strokeStyle  !== undefined)  trokeStyle  = options.strokeStyle;
     if(options.lineWidth    !== undefined)  lineWidth   = options.lineWidth;
   }
 
