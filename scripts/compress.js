@@ -11,7 +11,7 @@ var source_files = [
 ];
 
 var dest_dir = 'release';
-var dest_file = dest_dir + '/ethon-' + version + '-min.js';
+var dest_file = dest_dir + '/ethon-' + version + '.min.js';
 
 var files = [];
 var i, l;
