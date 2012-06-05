@@ -71,12 +71,22 @@ var Player = (function() {
     return rotation;
   }
 
+  function getRect() {
+    return {
+      x: position.x,
+      y: position.y,
+      w: image.width,
+      h: image.height
+    }
+  }
+
   return {
     init: init,
     render: render,
     update: update,
     getCenter: getCenter,
     getCadence: getCadence,
-    getRotation: getRotation
+    getRotation: getRotation,
+    getRect: getRect
   };
 });

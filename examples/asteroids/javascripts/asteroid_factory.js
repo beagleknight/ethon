@@ -3,7 +3,11 @@ var AsteroidFactory = (function() {
     var asteroid;
 
     if(position === undefined) {
-      asteroid = new Asteroid(size, { x: 640 * Math.random(), y: 480 * Math.random() }, 
+      var asteroidPosition = {
+        x: -200,
+        y: 0
+      };
+      asteroid = new Asteroid(size, { x: asteroidPosition.x, y: asteroidPosition.y }, 
           { x: 2 * Math.random() - 1, y: 2 * Math.random() - 1 });
     }
     else {

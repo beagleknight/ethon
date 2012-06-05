@@ -8,6 +8,7 @@ var Scene = (function() {
   var fireTimer;
   var spawnTimer, spawnTime = 1;
   var i, l, j, ll;
+  var restartGame;
 
   function init() {
     background = new Image();
@@ -27,6 +28,8 @@ var Scene = (function() {
     bullets = [];
     fireTimer = 0;
     spawnTimer = 0;
+
+    restartGame = false;
   }
 
   function render(rm) {
@@ -57,8 +60,12 @@ var Scene = (function() {
       }
     }
 
-    for(i = 0, l = bullets.length; i < l; i++) {
-      for(j = 0, ll = asteroids.length; j < ll; j++) {
+    for(j = 0, ll = asteroids.length; j < ll; j++) {
+      if(collision(player.getRect(), asteroids[j].getRect())) {
+        restartGame = true;
+      }
+
+      for(i = 0, l = bullets.length; i < l; i++) {
         if((bullets[i] !== undefined) && (asteroids[j] !== undefined) && collision(bullets[i].getRect(), asteroids[j].getRect())) {
           delete bullets[i];
 
@@ -88,6 +95,10 @@ var Scene = (function() {
     if(spawnTimer > spawnTime && asteroids.length < maxAsteroids) {
       asteroids.push(asteroidFactory.buildAsteroid(1));
       spawnTimer = 0;
+    }
+
+    if(restartGame) {
+      this.init();
     }
   }
 
