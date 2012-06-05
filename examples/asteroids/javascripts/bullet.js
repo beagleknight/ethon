@@ -1,10 +1,12 @@
-var bullet = (function(_position, _direction) {
+var Bullet = (function(_position, _direction) {
   var position, velocity;
   var speed, maxSpeed = 500;
+  var radius;
   var alive;
 
   function init() {
     alive = true;
+    radius = 2;
 
     position = { x: _position.x, y: _position.y };
     velocity = { x: 0, y: 0 };
@@ -15,7 +17,10 @@ var bullet = (function(_position, _direction) {
   }
 
   function render(rm) {
-    rm.drawCircle(position.x, position.y, 2);
+    //rm.drawBox(getRect().x, getRect().y, getRect().w, getRect().h, {
+    //  fillStyle: "#00ff00"
+    //});
+    rm.drawCircle(position.x, position.y, radius, { fillStyle: "#ffff00" });
   }
 
   function update(dt) {
@@ -31,10 +36,20 @@ var bullet = (function(_position, _direction) {
     return alive;
   }
 
+  function getRect() {
+    return {
+      x: position.x - radius,
+      y: position.y - radius,
+      w: radius * 2,
+      h: radius * 2
+    }
+  }
+
   return {
     init: init,
     render: render,
     update: update,
-    isAlive: isAlive
+    isAlive: isAlive,
+    getRect: getRect
   };
 });

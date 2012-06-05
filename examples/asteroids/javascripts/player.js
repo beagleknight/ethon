@@ -1,4 +1,4 @@
-var player = (function() {
+var Player = (function() {
   var position, velocity;
   var rotation, rotationSpeed = 200;
   var speed, maxSpeed = 200;
@@ -17,49 +17,10 @@ var player = (function() {
   }
 
   function render(rm) {
-    // Render bullets
-    var i, l;
-    for(i = 0, l = bullets.length; i < l; i++) {
-      bullets[i].render(rm);
-    }
-
     rm.drawImage(image, position.x, position.y, { rotate: rotation });
   }
 
   function update(dt) {
-    // Update fire timer
-    timer += dt;
-
-    // Update bullets
-    var i, l;
-    var removeIndexes = [];
-    for(i = 0, l = bullets.length; i < l; i++) {
-      bullets[i].update(dt);
-      if(!bullets[i].isAlive()) {
-        removeIndexes.push(i);
-      }
-    }
-
-    //TODO: this can be problematic
-    for(i = 0, l = removeIndexes.length; i < l; i++) {
-      bullets.splice(removeIndexes[i], 1);
-    }
-
-    if(this.im.isKeyDown(ethon.input_manager.KEY_SPACEBAR) && timer > cadence) { 
-      var bulletDirection = { 
-        x: -Math.cos(rotation * (Math.PI / 180)),
-        y: Math.sin(rotation * (Math.PI / 180)),
-      };
-      var bulletPosition = { 
-        x: position.x + image.width / 2,
-        y: position.y + image.height / 2 
-      };
-      var b = bullet(bulletPosition, bulletDirection)
-      b.init();
-      bullets.push(b); 
-      timer = 0;
-    }
-
     if(this.im.isKeyDown(ethon.input_manager.KEY_LEFT_ARROW)) { 
       rotation -= rotationSpeed * dt; 
     }
@@ -95,10 +56,27 @@ var player = (function() {
     }
   }
 
+  function getCenter() {
+    return {
+      x: position.x + image.width / 2,
+      y: position.y + image.height / 2
+    };
+  }
+
+  function getCadence() {
+    return cadence;
+  }
+
+  function getRotation() {
+    return rotation;
+  }
+
   return {
     init: init,
     render: render,
     update: update,
-    position: position
+    getCenter: getCenter,
+    getCadence: getCadence,
+    getRotation: getRotation
   };
-})();
+});

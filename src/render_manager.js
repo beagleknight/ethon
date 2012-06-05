@@ -119,6 +119,7 @@ ethon.render_manager = (function() {
       ctx.beginPath();
       ctx.arc(0, 0, radius, 0, 2 * Math.PI, true);
       ctx.stroke();
+      ctx.fill();
       if(debugMode) drawAxis.call(that, radius * 2, radius * 2);
     });
   }

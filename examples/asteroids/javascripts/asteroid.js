@@ -1,4 +1,4 @@
-var asteroid = (function(_scale, _position, _direction) {
+var Asteroid = (function(_scale, _position, _direction) {
   var position, velocity;
   var speed, maxSpeed = 100;
   var image;
@@ -20,6 +20,9 @@ var asteroid = (function(_scale, _position, _direction) {
   }
 
   function render(rm) {
+    //rm.drawBox(getRect().x, getRect().y, getRect().w, getRect().h, {
+    //  fillStyle: "#ff0000"
+    //});
     rm.drawImage(image, position.x, position.y, { scale: [scale, scale] });
   }
 
@@ -42,9 +45,35 @@ var asteroid = (function(_scale, _position, _direction) {
     }
   }
 
+  function hit() {
+    alive = false;
+    return scale / 2;
+  }
+
+  function isAlive() {
+    return alive;
+  }
+
+  function getPosition() {
+    return position;
+  }
+
+  function getRect() {
+    return {
+      x: position.x,
+      y: position.y,
+      w: image.width * scale,
+      h: image.height * scale
+    }
+  }
+
   return {
     init: init,
     render: render,
-    update: update
+    update: update,
+    hit: hit,
+    isAlive: isAlive,
+    getPosition: getPosition,
+    getRect: getRect
   };
 });
