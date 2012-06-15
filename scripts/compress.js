@@ -1,7 +1,7 @@
 var compressor = require('node-minify');
 var version = "0.0.1";
 
-var source_dir = 'src';
+var source_dir = 'lib';
 var source_files = [
   'request_animation_frame.js',
   'ethon.js',

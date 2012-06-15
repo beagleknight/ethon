@@ -33,6 +33,22 @@ describe("render_manager", function() {
     });
   });
 
+  describe("getCanvasWidth", function() {
+    it("should return canvas width", function() {
+      ethon.render_manager.init(canvas, 800, 600);
+      canvas.width = 1000;
+      expect(ethon.render_manager.getCanvasWidth()).toBe(1000);
+    });
+  });
+
+  describe("getCanvasWidth", function() {
+    it("should return canvas width", function() {
+      ethon.render_manager.init(canvas, 800, 600);
+      canvas.height = 900;
+      expect(ethon.render_manager.getCanvasHeight()).toBe(900);
+    });
+  });
+
   describe("beginDrawContext", function() {
     it("should call canvas translate method with given x and y", function() {
       spyOn(ctx, 'translate');

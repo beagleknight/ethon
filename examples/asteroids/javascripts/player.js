@@ -17,6 +17,9 @@ var Player = (function() {
   }
 
   function render(rm) {
+    rm.drawBox(position.x, position.y, image.width, image.height, {
+      fillStyle: "#00ff00"
+    });
     rm.drawImage(image, position.x, position.y, { rotate: rotation });
   }
 
@@ -41,18 +44,18 @@ var Player = (function() {
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
 
-    if(position.x > 640 + image.width) {
+    if(position.x > ethon.render_manager.getCanvasWidth() + image.width) {
       position.x = -image.width;
     }
     else if(position.x < -image.width) {
-      position.x = 640;
+      position.x = ethon.render_manager.getCanvasWidth();
     }
     
-    if(position.y > 480 + image.height) {
+    if(position.y > ethon.render_manager.getCanvasHeight() + image.height) {
       position.y = 0;
     }
     else if(position.y < -image.height) {
-      position.y = 480;
+      position.y = ethon.render_manager.getCanvasHeight();
     }
   }
 

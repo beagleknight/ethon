@@ -27,7 +27,8 @@ var Bullet = (function(_position, _direction) {
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
 
-    if(position.x > 640 || position.x < 0 || position.y > 480 || position.y < 0) {
+    if(position.x > ethon.render_manager.getCanvasWidth() || position.x < 0 
+        || position.y > ethon.render_manager.getCanvasHeight() || position.y < 0) {
       alive = false;
     }
   }

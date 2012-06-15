@@ -20,9 +20,9 @@ var Asteroid = (function(_scale, _position, _direction) {
   }
 
   function render(rm) {
-    //rm.drawBox(getRect().x, getRect().y, getRect().w, getRect().h, {
-    //  fillStyle: "#ff0000"
-    //});
+    rm.drawBox(getRect().x, getRect().y, getRect().w, getRect().h, {
+      fillStyle: "#ff0000"
+    });
     rm.drawImage(image, position.x, position.y, { scale: [scale, scale] });
   }
 
@@ -30,18 +30,18 @@ var Asteroid = (function(_scale, _position, _direction) {
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
 
-    if(position.x > 640 + image.width) {
+    if(position.x > ethon.render_manager.getCanvasWidth() + image.width) {
       position.x = -image.width;
     }
     else if(position.x < -image.width) {
-      position.x = 640 + image.width;
+      position.x = ethon.render_manager.getCanvasWidth() + image.width;
     }
     
-    if(position.y > 480 + image.height) {
+    if(position.y > ethon.render_manager.getCanvasHeight() + image.height) {
       position.y = - image.height;
     }
     else if(position.y < -image.height) {
-      position.y = 480 + image.height;
+      position.y = ethon.render_manager.getCanvasHeight() + image.height;
     }
   }
 
