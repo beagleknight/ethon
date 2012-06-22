@@ -1,3 +1,5 @@
+buster.spec.expose();
+
 describe("render_manager", function() {
   var canvas, ctx;
 
@@ -11,7 +13,7 @@ describe("render_manager", function() {
     it("should receive a HTMLCanvasElement", function() {
       expect(function() {
         ethon.render_manager.init("wrong");
-      }).toThrow(new TypeError("init must receive a HTMLCanvasElement"));
+      }).toThrow("TypeError");
     });
 
     it("should set canvas width and height", function() {
@@ -51,20 +53,20 @@ describe("render_manager", function() {
 
   describe("beginDrawContext", function() {
     it("should call canvas translate method with given x and y", function() {
-      spyOn(ctx, 'translate');
+      this.stub(ctx, 'translate');
       ethon.render_manager.beginDrawContext({x: 25, y: 25});
       expect(ctx.translate).toHaveBeenCalledWith(25, 25);
     });
 
     it("should save and restore current transformation matrix", function() {
-      spyOn(ctx, 'save');
+      this.stub(ctx, 'save');
       ethon.render_manager.beginDrawContext({x: 25, y: 25});
       expect(ctx.save).toHaveBeenCalled();
     });
 
     describe("with default style arguments", function() {
       it("should take manager default fillStyle value", function() {
-        spyOn(ctx, 'fillStyle');
+        this.stub(ctx, 'fillStyle');
         ethon.render_manager.setDefaultStyle({
           fillStyle: "#ff0000"
         });
@@ -75,7 +77,7 @@ describe("render_manager", function() {
 
     describe("with explicit fillStyle argument", function() {
       it("should use fillStyle argument value", function() {
-        spyOn(ctx, 'fillStyle');
+        this.stub(ctx, 'fillStyle');
         ethon.render_manager.setDefaultStyle({
           fillStyle: "#ff0000"
         });
@@ -90,7 +92,7 @@ describe("render_manager", function() {
 
     describe("with rotate argument given", function() {
       it("should call context rotate with given argument transformed to radians", function() {
-        spyOn(ctx, 'rotate');
+        this.stub(ctx, 'rotate');
         ethon.render_manager.init(canvas);
         ethon.render_manager.beginDrawContext({
           x: 25,
@@ -103,7 +105,7 @@ describe("render_manager", function() {
 
     describe("with scale argument given", function() {
       it("should call context scale with given arguments", function() {
-        spyOn(ctx, 'scale');
+        this.stub(ctx, 'scale');
         ethon.render_manager.init(canvas);
         ethon.render_manager.beginDrawContext({
           x: 25,
@@ -117,7 +119,7 @@ describe("render_manager", function() {
 
   describe("endDrawContext", function() {
     it("should save and restore current transformation matrix", function() {
-      spyOn(ctx, 'restore');
+      this.stub(ctx, 'restore');
       ethon.render_manager.endDrawContext(25, 25);
       expect(ctx.restore).toHaveBeenCalled();
     });
@@ -130,13 +132,13 @@ describe("render_manager", function() {
         y: 100,
         strokeStyle: "#ff0000"
       };
-      spyOn(ethon.render_manager, 'beginDrawContext');
+      this.stub(ethon.render_manager, 'beginDrawContext');
       ethon.render_manager.onDrawContext(options, function() {});
       expect(ethon.render_manager.beginDrawContext).toHaveBeenCalledWith(options);
     });
 
     it("should call endDrawContext", function() {
-      spyOn(ethon.render_manager, 'endDrawContext');
+      this.stub(ethon.render_manager, 'endDrawContext');
       ethon.render_manager.onDrawContext({}, function() {});
       expect(ethon.render_manager.endDrawContext).toHaveBeenCalled();
     });
@@ -144,31 +146,31 @@ describe("render_manager", function() {
 
   describe("drawLine", function() {
     it("should call onDrawContext", function() {
-      spyOn(ethon.render_manager, 'onDrawContext');
+      this.stub(ethon.render_manager, 'onDrawContext');
       ethon.render_manager.drawLine(100, 100, 200, 200, { strokeStyle: "#ff0000" });
       expect(ethon.render_manager.onDrawContext).toHaveBeenCalled();
     });
 
     it("should begin a new path for canvas context", function() {
-      spyOn(ctx, 'beginPath');
+      this.stub(ctx, 'beginPath');
       ethon.render_manager.drawLine(100, 100, 200, 200);
       expect(ctx.beginPath).toHaveBeenCalled();
     });
 
     it("should call canvas moveTo with current matrix origin", function() {
-      spyOn(ctx, 'moveTo');
+      this.stub(ctx, 'moveTo');
       ethon.render_manager.drawLine(100, 100, 200, 200);
       expect(ctx.moveTo).toHaveBeenCalledWith(0, 0);
     });
 
     it("should call canvas lineTo with correct arguments", function() {
-      spyOn(ctx, 'lineTo');
+      this.stub(ctx, 'lineTo');
       ethon.render_manager.drawLine(100, 100, 200, 200);
       expect(ctx.lineTo).toHaveBeenCalledWith(100, 100);
     });
 
     it("should call canvas context stroke", function() {
-      spyOn(ctx, 'stroke');
+      this.stub(ctx, 'stroke');
       ethon.render_manager.drawLine(100, 100, 200, 200);
       expect(ctx.stroke).toHaveBeenCalled();
     });
@@ -176,13 +178,13 @@ describe("render_manager", function() {
 
   describe("drawBox", function() {
     it("should call onDrawContext", function() {
-      spyOn(ethon.render_manager, 'onDrawContext');
+      this.stub(ethon.render_manager, 'onDrawContext');
       ethon.render_manager.drawBox(100, 100, 200, 200, { fillStyle: "#ff0000" });
       expect(ethon.render_manager.onDrawContext).toHaveBeenCalled();
     });
 
     it("should call canvas context fillRect with correct arguments", function() {
-      spyOn(ctx, 'fillRect');
+      this.stub(ctx, 'fillRect');
       ethon.render_manager.init(canvas);
       ethon.render_manager.drawBox(25, 25, 100, 100);
       expect(ctx.fillRect).toHaveBeenCalledWith(0, 0, 100, 100);
@@ -191,25 +193,25 @@ describe("render_manager", function() {
 
   describe("drawCircle", function() {
     it("should call onDrawContext", function() {
-      spyOn(ethon.render_manager, 'onDrawContext');
+      this.stub(ethon.render_manager, 'onDrawContext');
       ethon.render_manager.drawCircle(100, 100, 5, { strokeStyle: "#ff0000" }); 
       expect(ethon.render_manager.onDrawContext).toHaveBeenCalled();
     });
 
     it("should begin a new path for canvas context", function() {
-      spyOn(ctx, 'beginPath');
+      this.stub(ctx, 'beginPath');
       ethon.render_manager.drawCircle(100, 100, 5);
       expect(ctx.beginPath).toHaveBeenCalled();
     });
 
     it("should call canvas context arc with correct arguments", function() {
-      spyOn(ctx, 'arc');
+      this.stub(ctx, 'arc');
       ethon.render_manager.drawCircle(100, 100, 5);
       expect(ctx.arc).toHaveBeenCalledWith(0, 0, 5, 0, 2 * Math.PI, true);
     });
 
     it("should call canvas context stroke", function() {
-      spyOn(ctx, 'stroke');
+      this.stub(ctx, 'stroke');
       ethon.render_manager.drawCircle(100, 100, 5);
       expect(ctx.stroke).toHaveBeenCalled();
     });
@@ -223,17 +225,17 @@ describe("render_manager", function() {
     it("should receive an Image element", function() {
       expect(function() {
         ethon.render_manager.drawImage("wrong", 100, 100);
-      }).toThrow(new TypeError("drawImage must receive an Image"));
+      }).toThrow("TypeError");
     });
 
     it("should call onDrawContext", function() {
-      spyOn(ethon.render_manager, 'onDrawContext');
+      this.stub(ethon.render_manager, 'onDrawContext');
       ethon.render_manager.drawImage(image, 100, 100, {});
       expect(ethon.render_manager.onDrawContext).toHaveBeenCalled();
     });
 
     it("should call canvas context drawImage with correct arguments", function() {
-      spyOn(ctx, 'drawImage');
+      this.stub(ctx, 'drawImage');
       ethon.render_manager.drawImage(image, 100, 100, {});
       expect(ctx.drawImage).toHaveBeenCalledWith(image, 0, 0);
     });

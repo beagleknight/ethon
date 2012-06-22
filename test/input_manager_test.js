@@ -1,3 +1,5 @@
+buster.spec.expose();
+
 describe("input_manager", function() {
   var canvas, ctx;
 
@@ -9,25 +11,25 @@ describe("input_manager", function() {
     it("should receive a HTMLCanvasElement", function() {
       expect(function() {
         ethon.input_manager.init("wrong");
-      }).toThrow(new TypeError("init must receive a HTMLCanvasElement"));
+      }).toThrow("TypeError");
     });
 
     it("should attach a key down event listener to body", function() {
-      spyOn(document.body, 'addEventListener');
+      this.stub(document.body, 'addEventListener');
       ethon.input_manager.init(canvas);
-      expect(document.body.addEventListener.argsForCall[0][0]).toEqual('keydown');
+      expect(document.body.addEventListener.args[0][0]).toEqual('keydown');
     });
 
     it("should attach a key up event listener to body", function() {
-      spyOn(document.body, 'addEventListener');
+      this.stub(document.body, 'addEventListener');
       ethon.input_manager.init(canvas);
-      expect(document.body.addEventListener.argsForCall[1][0]).toEqual('keyup');
+      expect(document.body.addEventListener.args[1][0]).toEqual('keyup');
     });
 
     it("should attach a mouse down event listener to canvas", function() {
-      spyOn(canvas, 'addEventListener');
+      this.stub(canvas, 'addEventListener');
       ethon.input_manager.init(canvas);
-      expect(canvas.addEventListener.argsForCall[0][0]).toEqual('mousedown');
+      expect(canvas.addEventListener.args[0][0]).toEqual('mousedown');
     });
   });
   
