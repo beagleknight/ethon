@@ -1,3 +1,5 @@
+buster.spec.expose();
+
 describe("ethon", function() {
   describe("engine", function() {
     it("should be defined", function() {

@@ -10,7 +10,7 @@ var source_files = [
   'input_manager.js'
 ];
 
-var dest_dir = 'release';
+var dest_dir = 'releases';
 var dest_file = dest_dir + '/ethon-' + version + '.min.js';
 
 var files = [];
