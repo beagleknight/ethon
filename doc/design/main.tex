@@ -52,26 +52,15 @@ Acabamos de definir la \textbf{condición de victoria} del juego y a su vez tamb
 
 Nuestro motor debe permitir definir estos \textbf{estados de juego} así como las \textbf{transiciones} entre ellos. Una vez hemos visto que necesitamos crear hasta 3 estados de nuestro juego, empezaremos a trabajar en cada uno de ellos y analizaremos lo que el motor debe proporcionarnos para poder implementarlos.
 
-\subsubsection{Analisis}
 
 Podemos ver el estado principal del pong en la figura \ref{pong}. En la imagen podemos apreciar los siguientes elementos:
-\begin{itemize}
-  \item Fondo negro
-  \item Puntuación del jugador
-  \item Puntuación del rival
-  \item Pala del jugador
-  \item Pala del rival
-  \item Pelota
-  \item Red
-\end{itemize}
 
-Podemos clasificar estos elementos en dos grupos bien diferenciados:
 \begin{itemize}
   \item \textbf{Elementos estáticos:} El fondo, la red y las puntuaciones.
   \item \textbf{Elementos dinámicos:} Las palas y la pelota.
 \end{itemize}
 
-\underline{Elementos estáticos} \\
+\subsubsection{Elementos estáticos}
 
 Empezaremos por el grupo de \textbf{elementos estáticos}. Si los analizamos uno por uno, podemos ver como el fondo es un elemento que se debe dibujar antes que los demás, ocupará toda la pantalla y no requiere de ninguna actualización. Acabamos de introducir las palabras claves de \textbf{dibujar} y \textbf{actualizar} que corresponden al ciclo básico del motor de videojuegos.
 El fondo del juego será un \textbf{rectangulo de color negro} que ocupará toda la pantalla. 
@@ -82,7 +71,7 @@ Tenemos dos \textbf{souls} más en nuestros elementos estáticos: la red y las p
 
 Para acabar con la lista de elementos estáticos, tenemos las puntuaciones. En este caso cada puntuación se representa con un número que indica la puntuación del jugador correspondiente. Nuestro \textbf{render assistant} deberá ser capaz de \textbf{dibujar texto de diferente tamaño y color}. Al contrario de los elementos estáticos anteriores, éste deberá ser actualizado acorde a la puntuación de cada jugador. No será responsabilidad de la puntuación comprobar si el jugador ha puntuado o no sinó que \textbf{estará a la espera de recibir órdenes}. Con esta última frase acabamos de introducir otro elemento clave del motor y es el \textbf{sistema de publicación y subscripción de eventos}. Introduciremos de nuevo este concepto cuando hablemos de los elementos dinámicos.
 
-\underline{Elementos dinámicos} \\
+\subsubsection{Elementos dinámicos}
 
 Los elementos dinámicos son aquellos que no se mantienen en una posición fija y que se mueven durante el transcurso del juego. A efectos del motor, serán \textbf{souls} que tendrán \textbf{velocidad} en momentos determinados.
 
@@ -103,30 +92,90 @@ Hemos analizado el estado principal del juego del pong y hemos definido práctic
 
 \subsection{Pac-man}
 
+Tras analizar el juego del pong y ver los requisitos que necesitamos para el motor pasamos a analizar un juego completamente diferente, el \textbf{pac-man}.
+
+El \textbf{pac-man} es un videojuego arcade creado por el diseñador de videojuegos Toru Iwatani de la empresa Namco. El juego fué lanzado el 21 de mayo de 1980 y fue un gran éxito.  He escogido este juego como el segundo ejemplo para desarrollar el motor ya que requiere algunas características no mencionadas por ahora.
+
+A diferencia del \textbf{pong} éste juego se divide en varias fases donde el objetivo del jugador es \textbf{comer todos los ``cocos'' de la pantalla sin ser comido por los fantasmas}. En cada fase la dificultad puede aumentar de diferentes formas y nuevamente vamos a hacer alguna variación del juego original. Intentaremos crear hasta tres frases con un escenario y ``cocos'' distintos en cada una de ellas.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=250px]{images/pacman.png}
+    \caption{Captura de pantalla del videojuego Pacman}
+    \label{pacman}
+  \end{center}
+\end{figure}
+
+Analizaremos directamente el estado principal del juego ya que los demás estados son muy parecidos al pong y ya hemos hablado anteriormente de los \textbf{estados de juego}. En la figura \ref{pacman} podemos ver una captura de pantalla del juego. Empezaremos el análisis de la misma forma, haciendo un listado de los elementos que podemos ver en pantalla y clasificandolos en estáticos y dinámicos de nuevo:
+
+\begin{itemize}
+  \item \textbf{Elementos estáticos:} Fondo, Paredes, Cocos, Cocos especiales, Puntuación actual, Máxima puntuación, Vidas.
+  \item \textbf{Elementos dinámicos:} Pacman y los fantasmas.
+\end{itemize}
+
+A continuación analizaremos cada uno de los elementos para ir descubriendo nuevas funcionalidades del motor.
+
+\subsubsection{Elementos estáticos}
+
+El fondo del juego vuelve a ser un rectangulo de color negro, nada nuevo por aquí. A continuación nos fijamos en las paredes: elementos estáticos que impiden el paso del jugador y de los enemigos. Hay dos tipos de paredes: las paredes internas de la fase y las paredes externas. La unica variación entre ellas es la \textbf{imagen} que las representa. Podremos usar nuestras \textbf{souls} definidas anteriormente pero ésta vez deberemos ser capaces de \textbf{dibujar una imagen} en lugar de una primitiva básica. Además estás paredes deberan disponer de un \textbf{cuerpo} para poder colisionar con el personaje y los enemigos.
+
+Hagamos un paréntesis y analizemos la imagen del juego (ver figura \ref{pacman}). Podemos imaginar una cuadrícula en la fase que divide cada una de sus partes en \textbf{tiles}, donde cada tile puede ser una pared o vacío. Para simplificarlo, podríamos pensar en unos y ceros. En nuestro caso, un uno puede significar una pared que el jugador no podrá atravesar y un cero puede reprsentar un espacio vacío que el jugador podrá atravesar. \\
+Esta división es común en muchos videojuegos en 2D y los motores que se basan en esta tecnología se les llama \textbf{Tile-based engines}. Nuestro motor necesitará implementar algun sistema de \textbf{tiles} para poder representar este escenario. Para ello dispondremos de un módulo llamado \textbf{tile map} que nos permitirá representar este tipo de videojuegos. En nuestro caso tendremos valores superiores a 1 para las paredes y 0 representará un espacio vacío.
+
+Dibujaremos el mapa antes que nuestras \textbf{souls}, ¿pero podríamos considerar el mapa como un \textbf{soul} más?. Yo pienso que no, que se deben considerar entidades separadas. También hemos analizado algunos elementos como las puntuaciones que tampoco son exactamente \textbf{souls}. Nuestro motor dibujará el juego en tres partes: \textbf{el mapa}, \textbf{las souls} y \textbf{la GUI}. Éste último agrupará aquellos elementos que quedarán por encima de los demás. Hemos comentado muy brevemente \textbf{la GUI} cuando hemos hablado de dibujar el texto de las puntuaciones en el juego del pong. La GUI suele estar formado por muchos otros elementos tales como botones, ventanas, etc. Queremos mantener el motor en el mínimo de funcionalides posibles priorizando por ahora solo las \textbf{etiquetas}. Llamaremos \textbf{etiqueta} a cualquier elemento de texto que pertenezca a la interfaz de usuario.
+
+Cerremos el paréntesis y continuemos con el análisis, siendo el turno de los ``cocos''. Estas \textbf{almas} se dibujaran mediante un círculo y estarán repartidas en las casillas vacías del escenario. Cuando el jugador entre en contacto con ellos desapareceran y cuando hayan desaparecido todos el jugador pasará a la siguiente fase. Los ``cocos'' especiales, tal y como indica el nombre, serán clave en el juego. A parte de tener un tamaño mayor al habitual, durante unos segundos proporcionarán al jugador inmunidad a los enemigos y además éstos serán vulnerables al jugador. Si el jugador entra en contacto con un enemigo durante éste estado, el enemigo volverá a su posición inicial. Volveremos a hablar de éste tema en la sección de elementos dinámicos. Nada nuevo para el motor, lógica del juego por ahora.
+
+Para acabar con los elementos estáticos, tan solo nos faltarán las puntuaciones que como ya hemos dicho serán \textbf{etiquetas} de la GUI y el indicador de vidas. En el juego original éste indicador se representaba mediante imágenes de pacman pero como queremos simplificar la interfaz del usuario lo dejaremos como una \textbf{etiqueta} adicional.
+
+\subsubsection{Elementos dinámicos}
+
 \section{MVP - \textit{Minimum Viable Product}}
 
 En esta sección recogeremos todas las funcionalidades necesarias para poder empezar a usar el motor para nuestros juegos. 
 
-* Game states
-* Render assistant
-  * Dibujar rectangulos: tamaño y color variados
-  * Dibujar texto: tamaño y color variados
-* Input assistant
-  * Read keyboard status
-  * Read mouse status
-* Action dispatcher
-* Events
-  * Event moderator
-  * Event emitter
-* Soul
-  * Position
-  * Velocity
-  * Render
-  * Update
-* Body
-  * Dimensions
-  * Shape
-* Physics assistant
+\begin{itemize}
+  \item Game states
+  \item Render assistant
+  \begin{itemize}
+    \item Draw quads
+    \item Draw circles
+    \item Draw text
+    \item Draw images
+  \end{itemize}
+  \item Input assistant
+  \begin{itemize}
+    \item Read keyboard status
+    \item Read mouse status
+  \end{itemize}
+  \item Action dispatcher
+  \item Events
+  \begin{itemize}
+    \item Event moderator
+    \item Event emitter
+  \end{itemize}
+  \item Soul
+  \begin{itemize}
+    \item Position
+    \item Velocity
+    \item Render
+    \item Update
+    \item Body
+    \begin{itemize}
+      \item Dimensions
+      \item Shape
+    \end{itemize}
+  \end{itemize}
+  \item Map
+  \begin{itemize}
+    \item Tile map
+  \end{itemize}
+  \item GUI
+  \begin{itemize}
+    \item Labels
+  \end{itemize}
+  \item Physics assistant
+\end{itemize}
 
 \section{Arquitectura}
 
