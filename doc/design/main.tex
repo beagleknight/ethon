@@ -130,12 +130,47 @@ Para acabar con los elementos estáticos, tan solo nos faltarán las puntuacione
 
 \subsubsection{Elementos dinámicos}
 
+Recordemos que los elementos dinámicos del juego eran el propio jugador, \textbf{pac-man} y los enemigos \textbf{los fantasmas}. Para el jugador, sabemos que será representado como un \textbf{alma} que será dibujado con la \textbf{imágen} de pac-man y éste será controlado mediante el teclado. Usaremos nuestro \textbf{action dispatcher} para saber en que momento nuestro jugador decide cambiar de dirección. No obstante, ver a pac-man de un lado a otro sin abrir y cerrar la boca puede resultar extraño y poco atractivo para el juego. Llega el momento de introducir el concepto de \textbf{animación} mediante \textbf{sprites}.
+
+En nuestro motor deberemos implementar el soporte de \textbf{sprites} y a su vez \textbf{animación de sprites}. Deberemos añadir un módulo adicional para poder usar en nuestras \textbf{almas}. Este nuevo componente nos dará la posibilidad de \textbf{dibujar sprites} y animarlos según convenga. De momento no daremos soporte para la carga de \textbf{sprite sets} como el de la figura \ref{pacman_spriteset}. Por ahora nos centraremos en cargar sprites individuales para cada alma, aunque cada alma podrá tener más de un sprite.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[width=250px]{images/pacman_spriteset.png}
+    \caption{\textit{Spriteset} de pac-man}
+    \label{pacman_spriteset}
+  \end{center}
+\end{figure}
+
+Ya que hablamos de la \textbf{carga de imágenes}, vemos la necesidad de añadir un \textbf{resource assistant} a nuestro motor. Este componente se encargará de cargar los recursos necesarios para el juego, como pueden ser imágenes, sonidos o fuentes de texto. Por ahora daremos solo soporte para imágenes y nuestro \textbf{resource assistant} nos proporcionará las imágenes según convenga.
+
+Pasemos ahora a la última pieza de nuestro juego pac-man, \textbf{los fantasmas}. Los enemigos del juego, aquellos que tendremos que evitar a toda costa, serán muy parecidos al jugador a ojos de nuestro motor, \textbf{almas} que usan \textbf{sprites} para ser dibujadas por el mapa. A diferencia del jugador, los fantasmas tendrán su propio comportamiento y a diferencia de nuestra pala rival del juego pong, será algo más complejo. Aunque no vamos a diseñar un comportamiento demasiado inteligente, introducimos un nuevo componente al motor llamado \textbf{cerebro}. Las almas que tengan un \textbf{cerebro} asociado serán capaces de actuar por si solas y no recibirán instrucciones del jugador. Estos \textbf{cerebros} serán manipulados por \textbf{máquinas de estado sencillas} y de momento no usaremos ningún algoritmo complejo de inteligencia artificial.
+
+\subsection{Conclusiones}
+
+En las secciones anteriores hemos analizado dos juegos muy diferentes desde el punto de vista de un motor de videojuegos. En cada uno de ellos hemos visto los requisitos que nuestro motor debe aportar al programador para centrarse en la lógica de juego y no reinventar la rueda.
+
+En algunos puntos nos hemos querido centrar en los requisitos mínimos y aunque el motor diseñado no permita la programación completa de un videojuego, nos permitirá empezar por una base e ir creciendo según convenga.
+
 \section{MVP - \textit{Minimum Viable Product}}
 
-En esta sección recogeremos todas las funcionalidades necesarias para poder empezar a usar el motor para nuestros juegos. 
+El MVP o \textit{minimum viable product} recoge un conjunto de funcionalidades necesarias para que el producto puede ser vendido o en nuestro caso utilizado para programar videojuegos. Veremos un listado de funcionalidades y conceptos fruto del análisis de los dos juegos anteriores. Cabe destacar que en algunos casos no se corresponde a su implentación final, dándose la posibilidad de convertir un concepto en varios módulos o componentes del motor según convenga a nivel de programación.
 
 \begin{itemize}
   \item Game states
+  \begin{itemize}
+    \item Setup and teardown
+    \item Transitions
+  \end{itemize}
+  \item Resource assistant
+  \begin{itemize}
+    \item Load images
+  \end{itemize}
+  \item Event system
+  \begin{itemize}
+    \item Event moderator
+    \item Event emitter
+  \end{itemize}
   \item Render assistant
   \begin{itemize}
     \item Draw quads
@@ -148,24 +183,31 @@ En esta sección recogeremos todas las funcionalidades necesarias para poder emp
     \item Read keyboard status
     \item Read mouse status
   \end{itemize}
-  \item Action dispatcher
-  \item Events
+  \item Souls
   \begin{itemize}
-    \item Event moderator
-    \item Event emitter
-  \end{itemize}
-  \item Soul
-  \begin{itemize}
+    \item Render cycle
+    \item Update cycle
     \item Position
     \item Velocity
-    \item Render
-    \item Update
     \item Body
     \begin{itemize}
       \item Dimensions
       \item Shape
     \end{itemize}
+    \item Sprite
+    \begin{itemize}
+      \item Animation
+    \end{itemize}
+    \item Brain
   \end{itemize}
+  \item Physics assistant
+  \begin{itemize}
+    \item Collision between souls
+    \item Collision between quad vs quad
+    \item Collision between circle vs circle
+    \item Collision between quad vs circle
+  \end{itemize}
+  \item Action dispatcher
   \item Map
   \begin{itemize}
     \item Tile map
@@ -174,7 +216,6 @@ En esta sección recogeremos todas las funcionalidades necesarias para poder emp
   \begin{itemize}
     \item Labels
   \end{itemize}
-  \item Physics assistant
 \end{itemize}
 
 \section{Arquitectura}
