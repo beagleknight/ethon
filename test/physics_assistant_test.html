@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <title>Physics Assistant Test</title>
+    </head>
+    <body>
+        <h1>Physics Assistant Test</h1>
+        <canvas id="result" style="border: 1px solid #000;"></canvas>
+        <script type="text/javascript" src="../lib/render_assistant.js"></script>
+        <script type="text/javascript" src="../lib/physics_assistant.js"></script>
+        <script type="text/javascript">
+            var ethon = ethon,
+                physicsAssistant = ethon.physicsAssistant,
+                renderAssistant = ethon.renderAssistant,
+                result = document.getElementById("result"),
+                quad_1_1 = { x: 10, y: 10, w: 100, h: 100 },
+                quad_1_2 = { x: 50, y: 50, w: 100, h: 100 },
+                quad_2_1 = { x: 400, y: 10, w: 100, h: 100 },
+                quad_2_2 = { x: 550, y: 50, w: 100, h: 100 },
+                circle_1_1 = { x: 100, y: 300, r: 20 },
+                circle_1_2 = { x: 110, y: 300, r: 20 },
+                circle_2_1 = { x: 500, y: 300, r: 20 },
+                circle_2_2 = { x: 560, y: 300, r: 20 },
+                circle_test_1, circle_test_2, quads_test_1, quads_test_2;
+
+                quads_test_1 = physicsAssistant.quadsCollision(quad_1_1, quad_1_2);
+                quads_test_2 = physicsAssistant.quadsCollision(quad_2_1, quad_2_2);
+                circle_test_1 = physicsAssistant.circlesCollision(circle_1_1, circle_1_2);
+                circle_test_2 = physicsAssistant.circlesCollision(circle_2_1, circle_2_2);
+
+                renderAssistant.setCanvas(result, 800, 600);
+
+                // Collision
+                renderAssistant.drawQuad(quad_1_1.x, quad_1_1.y, quad_1_1.w, quad_1_1.h);
+                renderAssistant.drawQuad(quad_1_2.x, quad_1_2.y, quad_1_2.w, quad_1_2.h);
+                if(quads_test_1) {
+                    renderAssistant.drawText(200, 50, "Collision!");
+                }
+                else {
+                    renderAssistant.drawText(200, 50, "No Collision!");
+                }
+                // No collision
+                renderAssistant.drawQuad(quad_2_1.x, quad_2_1.y, quad_2_1.w, quad_2_1.h);
+                renderAssistant.drawQuad(quad_2_2.x, quad_2_2.y, quad_2_2.w, quad_2_2.h);
+                if(quads_test_2) {
+                    renderAssistant.drawText(700, 50, "Collision!");
+                }
+                else {
+                    renderAssistant.drawText(700, 50, "No Collision!");
+                }
+
+                // Collision
+                renderAssistant.drawCircle(circle_1_1.x, circle_1_1.y, circle_1_1.r);
+                renderAssistant.drawCircle(circle_1_2.x, circle_1_2.y, circle_1_2.r);
+                if(circle_test_1) {
+                    renderAssistant.drawText(200, 300, "Collision!");
+                }
+                else {
+                    renderAssistant.drawText(200, 300, "No Collision!");
+                }
+                // Collision
+                renderAssistant.drawCircle(circle_2_1.x, circle_2_1.y, circle_2_1.r);
+                renderAssistant.drawCircle(circle_2_2.x, circle_2_2.y, circle_2_2.r);
+                if(circle_test_2) {
+                    renderAssistant.drawText(700, 300, "Collision!");
+                }
+                else {
+                    renderAssistant.drawText(700, 300, "No Collision!");
+                }
+        </script>
+    </body>
+</html>
