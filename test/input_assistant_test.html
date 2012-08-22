@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>Input Assistant Test</title>
+    </head>
+    <body>
+        <h1>Input Assistant Test</h1>
+        <div id="result"></div>
+        <script type="text/javascript" src="../lib/input_assistant.js"></script>
+        <script type="text/javascript">
+            var ethon = ethon,
+                inputAssistant = ethon.inputAssistant,
+                result = document.getElementById("result"),
+                key_a_test, key_b_test, left_arrow_test, right_arrow_test;
+
+            setInterval(function() {
+                key_a_test = inputAssistant.isKeyPressed("KEY_A") ? "YES" : "NO";
+                key_b_test = inputAssistant.isKeyPressed("KEY_B") ? "YES" : "NO";
+                key_left_arrow_test = inputAssistant.isKeyPressed("KEY_LEFT_ARROW") ? "YES" : "NO";
+                key_right_arrow_test = inputAssistant.isKeyPressed("KEY_RIGHT_ARROW") ? "YES" : "NO";
+
+                result.innerHTML = "Key a pressed..." + key_a_test + "<br />" 
+                result.innerHTML += "Key b pressed..." + key_b_test + "<br />";
+                result.innerHTML += "Key left arrow pressed..." + key_left_arrow_test + "<br />";
+                result.innerHTML += "Key right arrow pressed..." + key_right_arrow_test;
+            }, 100);
+        </script>
+    </body>
+</html>
