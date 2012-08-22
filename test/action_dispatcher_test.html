@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>Action Dispatcher Test</title>
+    </head>
+    <body>
+        <h1>Action Dispatcher Test</h1>
+        <p>Press B to bark!</p>
+        <p>Press M to meow!</p>
+        <canvas id="result" style="border: 1px solid #000"></canvas>
+        <script type="text/javascript" src="../lib/event_moderator.js"></script>
+        <script type="text/javascript" src="../lib/event_emitter.js"></script>
+        <script type="text/javascript" src="../lib/input_assistant.js"></script>
+        <script type="text/javascript" src="../lib/action_dispatcher.js"></script>
+        <script type="text/javascript" src="../lib/render_assistant.js"></script>
+        <script type="text/javascript">
+            var ethon = ethon,
+                actionDispatcher = ethon.actionDispatcher,
+                renderAssistant = ethon.renderAssistant,
+                result = document.getElementById("result");
+
+                renderAssistant.setCanvas(result, 800, 600);
+
+                actionDispatcher.registerKeyboardAction("KEY_B", function() {
+                    var x = Math.random() * 800,
+                        y = Math.random() * 600;
+
+                    renderAssistant.drawText(x, y, "Bark!");
+                });
+
+                actionDispatcher.registerKeyboardAction("KEY_M", function() {
+                    var x = Math.random() * 800,
+                        y = Math.random() * 600;
+
+                    renderAssistant.drawText(x, y, "Meow!");
+                });
+        </script>
+    </body>
+</html>
