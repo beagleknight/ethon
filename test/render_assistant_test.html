@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <title>Render Assistant Test</title>
+    </head>
+    <body>
+        <h1>Render Assistant Test</h1>
+        <canvas id="result" style="border: 1px solid #000"></canvas>
+        <script type="text/javascript" src="../lib/render_assistant.js"></script>
+        <script type="text/javascript">
+            var ethon = ethon,
+                renderAssistant = ethon.renderAssistant,
+                result = document.getElementById("result"),
+                image = new Image();
+
+                image.src = "images/mario.png";
+
+                image.addEventListener("load", function() {
+                    renderAssistant.setCanvas(result, 800, 600);
+                    renderAssistant.clear();
+                    renderAssistant.drawQuad(10, 10, 100, 100);
+                    renderAssistant.drawCircle(200, 200, 50);
+                    renderAssistant.drawText(10, 400, "Hello World!");
+                    renderAssistant.drawImage(400, 400, image);
+                });
+        </script>
+    </body>
+</html>
