@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>Event Moderator Test</title>
+    </head>
+    <body>
+        <h1>Event Moderator Test</h1>
+        <div id="result"></div>
+        <button id="hello">Notify hello event!</button>
+        <button id="world">Notify world event!</button>
+        <script type="text/javascript" src="../lib/event_moderator.js"></script>
+        <script type="text/javascript">
+            var ethon = ethon,
+                eventModerator = ethon.eventModerator,
+                result = document.getElementById("result"),
+                hello = document.getElementById("hello"),
+                world = document.getElementById("world");
+
+                function hello_test(timestamp) {
+                    result.innerHTML += "Hello on " + timestamp + "<br />";
+                }
+
+                function world_test_1(timestamp) {
+                    result.innerHTML += "Hello World on " + timestamp + "<br />";
+                }
+
+                function world_test_2(timestamp) {
+                    result.innerHTML += "Bye World on " + timestamp + "<br />";
+                }
+
+                eventModerator.observe("hello", hello_test);
+                eventModerator.observe("world", world_test_1);
+                eventModerator.observe("world", world_test_2);
+
+                hello.addEventListener("click", function() {
+                    result.innerHTML = "";
+                    eventModerator.notify("hello", new Date());
+                });
+
+                world.addEventListener("click", function() {
+                    result.innerHTML = "";
+                    eventModerator.notify("world", new Date());
+                });
+        </script>
+    </body>
+</html>
