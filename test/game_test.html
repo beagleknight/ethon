@@ -9,6 +9,7 @@
         <script type="text/javascript" src="../lib/proxy.js"></script>
         <script type="text/javascript" src="../lib/inherit.js"></script>
         <script type="text/javascript" src="../lib/extend.js"></script>
+        <script type="text/javascript" src="../lib/request_animation_frame.js"></script>
         <script type="text/javascript" src="../lib/event_moderator.js"></script>
         <script type="text/javascript" src="../lib/event_emitter.js"></script>
         <script type="text/javascript" src="../lib/render_assistant.js"></script>
@@ -20,6 +21,7 @@
         <script type="text/javascript" src="../lib/soul.js"></script>
         <script type="text/javascript" src="../lib/gui.js"></script>
         <script type="text/javascript" src="../lib/game.js"></script>
+        <script type="text/javascript" src="support/dog.js"></script>
         <script type="text/javascript">
             var ethon = ethon,
                 GUI = ethon.GUI,
@@ -27,7 +29,21 @@
                 renderAssistant = ethon.renderAssistant,
                 eventEmitter = ethon.eventEmitter,
                 actionDispatcher = ethon.actionDispatcher,
-                result = document.getElementById("result");
+                Game = ethon.Game,
+                result = document.getElementById("result"),
+                dog_1 = new Dog(100, 100),
+                dog_2 = new Dog(300, 300);
+
+                actionDispatcher.registerKeyboardAction("KEY_LEFT_ARROW", proxy(dog_1, dog_1.move_left)); 
+                actionDispatcher.registerKeyboardAction("KEY_RIGHT_ARROW", proxy(dog_1, dog_1.move_right));
+                actionDispatcher.registerKeyboardAction("KEY_UP_ARROW", proxy(dog_1, dog_1.move_up));
+                actionDispatcher.registerKeyboardAction("KEY_DOWN_ARROW", proxy(dog_1, dog_1.move_down));
+                actionDispatcher.registerKeyboardAction("KEY_S", proxy(dog_1, dog_1.stop));
+
+                game = new Game(result, 800, 600);
+                game.addSoul(dog_1);
+                game.addSoul(dog_2);
+                game.start();
         </script>
     </body>
 </html>

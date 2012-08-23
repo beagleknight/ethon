@@ -27,19 +27,19 @@ var window = window || {};
     };
 
     Dog.prototype.move_right = function () {
-        this.setVelocity(10, 0);
+        this.setVelocity(50, 0);
     };
 
     Dog.prototype.move_left = function () {
-        this.setVelocity(-10, 0);
+        this.setVelocity(-50, 0);
     };
 
     Dog.prototype.move_up = function () {
-        this.setVelocity(0, -10);
+        this.setVelocity(0, -50);
     };
 
     Dog.prototype.move_down = function () {
-        this.setVelocity(0, 10);
+        this.setVelocity(0, 50);
     };
 
     Dog.prototype.stop = function () {
