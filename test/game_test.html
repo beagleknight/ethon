@@ -40,7 +40,7 @@
                 actionDispatcher.registerKeyboardAction("KEY_DOWN_ARROW", proxy(dog_1, dog_1.move_down));
                 actionDispatcher.registerKeyboardAction("KEY_S", proxy(dog_1, dog_1.stop));
 
-                game = new Game(result, 800, 600);
+                game = new Game(result, 800, 600, { showFPS: true });
                 game.addSoul(dog_1);
                 game.addSoul(dog_2);
                 game.start();
