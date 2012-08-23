@@ -6,19 +6,24 @@
         <h1>Action Dispatcher Test</h1>
         <p>Press B to bark!</p>
         <p>Press M to meow!</p>
+        <p>Mouse over the canvas to draw quads!</p>
+        <p>Click on the canvas to draw circles!</p>
         <canvas id="result" style="border: 1px solid #000"></canvas>
         <script type="text/javascript" src="../lib/event_moderator.js"></script>
         <script type="text/javascript" src="../lib/event_emitter.js"></script>
         <script type="text/javascript" src="../lib/input_assistant.js"></script>
-        <script type="text/javascript" src="../lib/action_dispatcher.js"></script>
         <script type="text/javascript" src="../lib/render_assistant.js"></script>
+        <script type="text/javascript" src="../lib/physics_assistant.js"></script>
+        <script type="text/javascript" src="../lib/action_dispatcher.js"></script>
         <script type="text/javascript">
             var ethon = ethon,
                 actionDispatcher = ethon.actionDispatcher,
                 renderAssistant = ethon.renderAssistant,
-                result = document.getElementById("result");
+                result = document.getElementById("result"),
+                canvasQuad;
 
                 renderAssistant.setCanvas(result, 800, 600);
+                canvasQuad = { x: 0, y: 0, w: result.width, h: result.height };
 
                 actionDispatcher.registerKeyboardAction("KEY_B", function() {
                     var x = Math.random() * 800,
@@ -32,6 +37,21 @@
                         y = Math.random() * 600;
 
                     renderAssistant.drawText(x, y, "Meow!");
+                });
+
+            
+                actionDispatcher.registerMouseMotionAction(canvasQuad, function(mouse) {
+                    var x = mouse.x,
+                        y = mouse.y;
+                    
+                    renderAssistant.drawQuad(x, y, 10, 10);
+                });
+
+                actionDispatcher.registerMouseClickAction("MOUSE_LEFT", canvasQuad, function(mouse) {
+                    var x = mouse.x,
+                        y = mouse.y;
+                    
+                    renderAssistant.drawCircle(x, y, 20);
                 });
         </script>
     </body>
