@@ -5,12 +5,21 @@ var window = window || {};
     "use strict";
 
     var Soul = ethon.Soul,
+        inherit = ethon.inherit,
         renderAssistant = ethon.renderAssistant,
-        Dog = function (x, y) {
-            Soul.call(this, "dog", x, y);
-        };
+        Dog;
 
-    Dog.prototype = Soul.prototype;
+    /**
+     * constructor
+     *
+     * Use Soul constructor to initialize name and
+     * position
+     */
+    Dog = function (x, y) {
+        Soul.call(this, "dog", x, y);
+    };
+
+    inherit(Dog, Soul);
 
     Dog.prototype.render = function () {
         var position = this.getPosition();
@@ -34,7 +43,7 @@ var window = window || {};
     };
 
     Dog.prototype.stop = function () {
-        this.setVelocity(0, 10);
+        this.setVelocity(0, 0);
     };
 
     exports.Dog = Dog;

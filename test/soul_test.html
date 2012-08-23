@@ -8,6 +8,7 @@
         <p>Move the dog using arrow keys!</p>
         <p>Press S to stop!</p>
         <canvas id="result" style="border: 1px solid #000;"></canvas>
+        <script type="text/javascript" src="../lib/inherit.js"></script>
         <script type="text/javascript" src="../lib/extend.js"></script>
         <script type="text/javascript" src="../lib/proxy.js"></script>
         <script type="text/javascript" src="../lib/event_moderator.js"></script>
@@ -23,7 +24,6 @@
                 renderAssistant = ethon.renderAssistant,
                 actionDispatcher = ethon.actionDispatcher,
                 result = document.getElementById("result"),
-                Soul = ethon.Soul,
                 dog;
 
             renderAssistant.setCanvas(result, 800, 600);
