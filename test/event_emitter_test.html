@@ -3,6 +3,8 @@
         <title>Event Emitter Test</title>
     </head>
     <body>
+        <a href="event_moderator_test.html">Previous test: Event Moderator</a>
+        <a href="physics_assistant_test.html">Next test: Physics Assistant</a>
         <h1>Event Emitter Test</h1>
         <div id="result"></div>
         <script type="text/javascript" src="../lib/event_moderator.js"></script>
@@ -19,7 +21,7 @@
             extend(eventEmitter, Dog.prototype);
 
             Dog.prototype.bark = function() {
-                result.innerHTML += "Dog is barking!<br />"
+                result.innerHTML += "Dog is barking! on " + new Date() + "<br />"
                 this.trigger("bark", new Date());
             };
 
@@ -28,7 +30,7 @@
             extend(eventEmitter, Cat.prototype);
 
             Cat.prototype.on("bark", function(timestamp) {
-                result.innerHTML += "Cat is running away on " + timestamp + "<br />"
+                result.innerHTML += "Cat is running away on " + timestamp + "<br /><br />"
             });
 
             var dog = new Dog(),

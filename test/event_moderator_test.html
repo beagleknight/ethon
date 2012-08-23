@@ -3,6 +3,8 @@
         <title>Event Moderator Test</title>
     </head>
     <body>
+        <a href="resource_assistant_test.html">Previous test: Resource Assistant</a>
+        <a href="event_emitter_test.html">Next test: Event Emitter</a>
         <h1>Event Moderator Test</h1>
         <div id="result"></div>
         <button id="hello">Notify hello event!</button>
@@ -32,13 +34,13 @@
                 eventModerator.observe("world", world_test_2);
 
                 hello.addEventListener("click", function() {
-                    result.innerHTML = "";
                     eventModerator.notify("hello", new Date());
+                    result.innerHTML += "<br />";
                 });
 
                 world.addEventListener("click", function() {
-                    result.innerHTML = "";
                     eventModerator.notify("world", new Date());
+                    result.innerHTML += "<br />";
                 });
         </script>
     </body>
