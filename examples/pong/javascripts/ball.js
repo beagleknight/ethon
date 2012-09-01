@@ -1,15 +1,13 @@
-var ethon = ethon || {},
-    pong = pong || {},
-    window = window || {};
+var define = define || undefined;
 
-(function (ethon, exports) {
+define(function (require) {
     "use strict";
 
-    var Soul = ethon.Soul,
-        QuadBody = ethon.QuadBody,
-        inherit = ethon.inherit,
-        proxy = ethon.proxy,
-        renderAssistant = ethon.renderAssistant,
+    var Soul            = require("soul"),
+        QuadBody        = require("quad_body"),
+        inherit         = require("inherit"),
+        proxy           = require("proxy"),
+        renderAssistant = require("render_assistant"),
         speed = 200,
         radius = 50,
         lastCollision = new Date(),
@@ -35,7 +33,6 @@ var ethon = ethon || {},
 
     Ball.prototype.render = function () {
         var position = this.getPosition();
-        //renderAssistant.drawCircle(position.x, position.y, radius, "#ffffff");
         renderAssistant.drawQuad(position.x, position.y, 10, 10, "#ffffff");
     };
 
@@ -77,9 +74,9 @@ var ethon = ethon || {},
         // Move 25% faster every collision
         if (dt > 0.25) {
             lastCollision = now;
-            this.setVelocity(-velocity.x, -velocity.y + -paddleVelocity.y * 0.5);
+            this.setVelocity(-velocity.x * 1.25, -velocity.y + -paddleVelocity.y * 0.5);
         }
     };
 
-    exports.Ball = Ball;
-}(ethon, pong));
+    return Ball;
+});

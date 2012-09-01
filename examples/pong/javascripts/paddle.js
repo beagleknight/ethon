@@ -1,15 +1,13 @@
-var ethon = ethon || {},
-    pong = pong || {},
-    window = window || {};
+var define = define || undefined;
 
-(function (ethon, exports) {
+define(function (require) {
     "use strict";
 
-    var Soul = ethon.Soul,
-        proxy = ethon.proxy,
-        QuadBody = ethon.QuadBody,
-        inherit = ethon.inherit,
-        renderAssistant = ethon.renderAssistant,
+    var Soul            = require("soul"),
+        proxy           = require("proxy"),
+        QuadBody        = require("quad_body"),
+        inherit         = require("inherit"),
+        renderAssistant = require("render_assistant"),
         speed = 100,
         Paddle;
 
@@ -66,5 +64,5 @@ var ethon = ethon || {},
         this.stop();
     };
 
-    exports.Paddle = Paddle;
-}(ethon, pong));
+    return Paddle;
+});
