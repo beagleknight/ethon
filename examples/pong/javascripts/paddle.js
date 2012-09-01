@@ -6,6 +6,7 @@ var ethon = ethon || {},
     "use strict";
 
     var Soul = ethon.Soul,
+        proxy = ethon.proxy,
         QuadBody = ethon.QuadBody,
         inherit = ethon.inherit,
         renderAssistant = ethon.renderAssistant,
@@ -20,7 +21,11 @@ var ethon = ethon || {},
      */
     Paddle = function (name, x, y) {
         Soul.call(this, name, x, y);
+        this.startPosition = { x: x, y: y };
         this.setBody(new QuadBody(x, y, 10, 100));
+
+        this.on("player_scored", proxy(this, this.respawn));
+        this.on("ia_scored", proxy(this, this.respawn));
     };
 
     inherit(Paddle, Soul);
@@ -30,24 +35,35 @@ var ethon = ethon || {},
         renderAssistant.drawQuad(position.x, position.y, 10, 100, "#ffffff");
     };
 
-    Paddle.prototype.move_up = function () {
+    Paddle.prototype.update = function (dt) {
+        var canvasRect = renderAssistant.getCanvasRect(),
+            position = this.getPosition();
+
+        // Call the soul update
+        Soul.prototype.update.call(this, dt);
+
+        if (position.y < 0) {
+            this.setPosition(position.x, 0);
+        } else if (position.y + 100 > canvasRect.height) {
+            this.setPosition(position.x, canvasRect.height - 100);
+        }
+    };
+
+    Paddle.prototype.moveUp = function () {
         this.setVelocity(0, -speed);
     };
 
-    Paddle.prototype.move_down = function () {
+    Paddle.prototype.moveDown = function () {
         this.setVelocity(0, speed);
-    };
-
-    Paddle.prototype.move_right = function () {
-        this.setVelocity(speed, 0);
-    };
-
-    Paddle.prototype.move_left = function () {
-        this.setVelocity(-speed, 0);
     };
 
     Paddle.prototype.stop = function () {
         this.setVelocity(0, 0);
+    };
+
+    Paddle.prototype.respawn = function () {
+        this.setPosition(this.startPosition.x, this.startPosition.y);
+        this.stop();
     };
 
     exports.Paddle = Paddle;

@@ -8,6 +8,7 @@ var ethon = ethon || {},
     var Game = ethon.Game,
         Map = ethon.Map,
         GUI = ethon.GUI,
+        Soul = ethon.Soul,
         Paddle = pong.Paddle,
         Ball = pong.Ball,
         proxy = ethon.proxy,
@@ -15,8 +16,10 @@ var ethon = ethon || {},
         result = exports.document.getElementById("game"),
         map,
         gui,
-        playerScore,
-        iaScore,
+        playerScoreLabel,
+        iaScoreLabel,
+        playerScore = 0,
+        iaScore = 0,
         playerPaddle,
         iaPaddle,
         ball,
@@ -38,28 +41,50 @@ var ethon = ethon || {},
     // Pong gui: two labels with player's score
     gui = new GUI();
 
-    playerScore = new GUI.Label("player_score", 170, 100, "0", { fillStyle: "#ffffff", font: "100px Courier New" });
-    playerScore.on("player_scored", proxy(playerScore, function (score) {
-        this.message = this.message.replace(/(\d*)$/, score);
+    playerScoreLabel = new GUI.Label("player_score", 170, 100, "0",
+            { fillStyle: "#ffffff", font: "100px Courier New" });
+    playerScoreLabel.on("player_scored", proxy(playerScoreLabel, function () {
+        playerScore += 1;
+        this.message = this.message.replace(/(\d*)$/, playerScore);
     }));
-    iaScore = new GUI.Label("ia_score", 570, 100, "0", { fillStyle: "#ffffff", font: "100px Courier New" });
-    iaScore.on("ia_scored", proxy(iaScore, function (score) {
-        this.message = this.message.replace(/(\d*)$/, score);
+    iaScoreLabel = new GUI.Label("ia_score", 570, 100, "0",
+            { fillStyle: "#ffffff", font: "100px Courier New" });
+    iaScoreLabel.on("ia_scored", proxy(iaScoreLabel, function () {
+        iaScore += 1;
+        this.message = this.message.replace(/(\d*)$/, iaScore);
     }));
 
-    gui.addElement(playerScore);
-    gui.addElement(iaScore);
+    gui.addElement(playerScoreLabel);
+    gui.addElement(iaScoreLabel);
 
     // Pong paddles: two quads on each field side
     // The left quad is the player and the right quad is the ia
     playerPaddle = new Paddle("player_paddle", 20, 225);
     iaPaddle = new Paddle("ia_paddle", 780, 225);
 
+    // TODO: simple brain or leave this
+    iaPaddle.update = function (dt) {
+        var ballPosition = ball.getPosition(),
+            position = this.getPosition();
+
+        Soul.prototype.update.call(this, dt);
+
+        if (ballPosition.y - position.y < 45) {
+            this.moveUp();
+        } else if (ballPosition.y - position.y > 50) {
+            this.moveDown();
+        } else {
+            this.stop();
+        }
+    };
+
     // Pong actions: use actionDispatcher to handle them
     actionDispatcher.registerKeyboardAction("KEY_UP_ARROW",
-            proxy(playerPaddle, playerPaddle.move_up), proxy(playerPaddle, playerPaddle.stop));
+            proxy(playerPaddle, playerPaddle.moveUp),
+            proxy(playerPaddle, playerPaddle.stop));
     actionDispatcher.registerKeyboardAction("KEY_DOWN_ARROW",
-            proxy(playerPaddle, playerPaddle.move_down), proxy(playerPaddle, playerPaddle.stop));
+            proxy(playerPaddle, playerPaddle.moveDown),
+            proxy(playerPaddle, playerPaddle.stop));
 
     // Pong ball
     ball = new Ball(400, 300);
