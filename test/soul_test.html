@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Soul Test</title>
+        <script data-main="javascripts/soul_test" src="../lib/require.js"></script>
     </head>
     <body>
         <a href="action_dispatcher_test.html">Previous test: Action Dispatcher</a>
@@ -9,39 +10,5 @@
         <p>Move the dog using arrow keys!</p>
         <p>Press S to stop!</p>
         <canvas id="result" style="border: 1px solid #000;"></canvas>
-        <script type="text/javascript" src="../lib/inherit.js"></script>
-        <script type="text/javascript" src="../lib/extend.js"></script>
-        <script type="text/javascript" src="../lib/proxy.js"></script>
-        <script type="text/javascript" src="../lib/event_moderator.js"></script>
-        <script type="text/javascript" src="../lib/event_emitter.js"></script>
-        <script type="text/javascript" src="../lib/input_assistant.js"></script>
-        <script type="text/javascript" src="../lib/render_assistant.js"></script>
-        <script type="text/javascript" src="../lib/action_dispatcher.js"></script>
-        <script type="text/javascript" src="../lib/soul.js"></script>
-        <script type="text/javascript" src="support/dog.js"></script>
-        <script type="text/javascript">
-            var ethon = ethon,
-                proxy = ethon.proxy,
-                renderAssistant = ethon.renderAssistant,
-                actionDispatcher = ethon.actionDispatcher,
-                result = document.getElementById("result"),
-                dog;
-
-            renderAssistant.setCanvas(result, 800, 600);
-            dog = new Dog(100, 100);
-
-            actionDispatcher.registerKeyboardAction("KEY_LEFT_ARROW", proxy(dog, dog.move_left)); 
-            actionDispatcher.registerKeyboardAction("KEY_RIGHT_ARROW", proxy(dog, dog.move_right));
-            actionDispatcher.registerKeyboardAction("KEY_UP_ARROW", proxy(dog, dog.move_up));
-            actionDispatcher.registerKeyboardAction("KEY_DOWN_ARROW", proxy(dog, dog.move_down));
-            actionDispatcher.registerKeyboardAction("KEY_S", proxy(dog, dog.stop));
-
-            setInterval(function() {
-                dog.update(1);
-
-                renderAssistant.clear();
-                dog.render();
-            }, 100);
-        </script>
     </body>
 </html>

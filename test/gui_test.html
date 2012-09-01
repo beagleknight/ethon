@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>GUI Test</title>
+        <script data-main="javascripts/gui_test" src="../lib/require.js"></script>
     </head>
     <body>
         <a href="map_test.html">Previous test: Map</a>
@@ -8,60 +9,5 @@
         <h1>GUI Test</h1>
         <p>Press A or B to score for each player</p>
         <canvas id="result" style="border: 1px solid #000;"></canvas>
-        <script type="text/javascript" src="../lib/proxy.js"></script>
-        <script type="text/javascript" src="../lib/inherit.js"></script>
-        <script type="text/javascript" src="../lib/extend.js"></script>
-        <script type="text/javascript" src="../lib/soul.js"></script>
-        <script type="text/javascript" src="../lib/event_moderator.js"></script>
-        <script type="text/javascript" src="../lib/event_emitter.js"></script>
-        <script type="text/javascript" src="../lib/render_assistant.js"></script>
-        <script type="text/javascript" src="../lib/input_assistant.js"></script>
-        <script type="text/javascript" src="../lib/physics_assistant.js"></script>
-        <script type="text/javascript" src="../lib/action_dispatcher.js"></script>
-        <script type="text/javascript" src="../lib/gui.js"></script>
-        <script type="text/javascript">
-            var ethon = ethon,
-                GUI = ethon.GUI,
-                proxy = ethon.proxy,
-                renderAssistant = ethon.renderAssistant,
-                eventEmitter = ethon.eventEmitter,
-                actionDispatcher = ethon.actionDispatcher,
-                result = document.getElementById("result"),
-                gui,
-                score_a = 0, score_b = 0,
-                label_score_a, label_score_b;
-
-            renderAssistant.setCanvas(result, 800, 600);
-
-            gui = new GUI();
-
-            label_score_a = new GUI.Label("score_a", 100, 100, "Score A: 0");
-            label_score_a.on("score_a_changed", proxy(label_score_a, function(score) {
-                this.message = this.message.replace(/(\d*)$/, score)
-            }));
-
-            label_score_b = new GUI.Label("score_b", 600, 100, "Score B: 0");
-            label_score_b.on("score_b_changed", proxy(label_score_b, function(score) {
-                this.message = this.message.replace(/(\d*)$/, score)
-            }));
-
-            gui.addElement(label_score_a);
-            gui.addElement(label_score_b);
-
-            actionDispatcher.registerKeyboardAction("KEY_A", function() {
-                score_a += 1;
-                eventEmitter.trigger("score_a_changed", score_a);
-            });
-
-            actionDispatcher.registerKeyboardAction("KEY_B", function() {
-                score_b += 1;
-                eventEmitter.trigger("score_b_changed", score_b);
-            });
-
-            setInterval(function() {
-                renderAssistant.clear();
-                gui.render();
-            }, 100);
-        </script>
     </body>
 </html>

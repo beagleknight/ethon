@@ -1,41 +1,12 @@
 <html>
     <head>
         <title>Map Test</title>
+        <script data-main="javascripts/map_test" src="../lib/require.js"></script>
     </head>
     <body>
         <a href="soul_test.html">Previous test: Soul</a>
         <a href="gui_test.html">Next test: GUI</a>
         <h1>Map Test</h1>
         <canvas id="result" style="border: 1px solid #000;"></canvas>
-        <script type="text/javascript" src="../lib/extend.js"></script>
-        <script type="text/javascript" src="../lib/event_moderator.js"></script>
-        <script type="text/javascript" src="../lib/event_emitter.js"></script>
-        <script type="text/javascript" src="../lib/render_assistant.js"></script>
-        <script type="text/javascript" src="../lib/map.js"></script>
-        <script type="text/javascript">
-            var ethon = ethon,
-                Map = ethon.Map,
-                renderAssistant = ethon.renderAssistant,
-                result = document.getElementById("result"),
-                image = new Image(),
-                map;
-
-            renderAssistant.setCanvas(result, 800, 600);
-
-            image.src = "images/mario.png";
-            image.addEventListener("load", function() {
-                map = new Map();
-
-                map.addLayer(function(renderAssistant) {
-                    renderAssistant.drawQuad(0, 0, 800, 600);
-                });
-
-                map.addLayer(function(renderAssistant) {
-                    renderAssistant.drawImage(100, 100, image);
-                });
-
-                map.render();
-            });
-        </script>
     </body>
 </html>

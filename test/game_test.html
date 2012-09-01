@@ -1,60 +1,11 @@
 <html>
     <head>
         <title>Game Test</title>
+        <script data-main="javascripts/game_test" src="../lib/require.js"></script>
     </head>
     <body>
         <a href="gui_test.html">Previous test: GUI</a>
         <h1>Game Test</h1>
         <canvas id="result" style="border: 1px solid #000;"></canvas>
-        <script type="text/javascript" src="../lib/proxy.js"></script>
-        <script type="text/javascript" src="../lib/inherit.js"></script>
-        <script type="text/javascript" src="../lib/extend.js"></script>
-        <script type="text/javascript" src="../lib/request_animation_frame.js"></script>
-        <script type="text/javascript" src="../lib/event_moderator.js"></script>
-        <script type="text/javascript" src="../lib/event_emitter.js"></script>
-        <script type="text/javascript" src="../lib/render_assistant.js"></script>
-        <script type="text/javascript" src="../lib/input_assistant.js"></script>
-        <script type="text/javascript" src="../lib/physics_assistant.js"></script>
-        <script type="text/javascript" src="../lib/resource_assistant.js"></script>
-        <script type="text/javascript" src="../lib/action_dispatcher.js"></script>
-        <script type="text/javascript" src="../lib/map.js"></script>
-        <script type="text/javascript" src="../lib/soul.js"></script>
-        <script type="text/javascript" src="../lib/gui.js"></script>
-        <script type="text/javascript" src="../lib/game.js"></script>
-        <script type="text/javascript" src="support/dog.js"></script>
-        <script type="text/javascript">
-            var ethon = ethon,
-                Map = ethon.Map,
-                GUI = ethon.GUI,
-                proxy = ethon.proxy,
-                renderAssistant = ethon.renderAssistant,
-                eventEmitter = ethon.eventEmitter,
-                actionDispatcher = ethon.actionDispatcher,
-                Game = ethon.Game,
-                result = document.getElementById("result"),
-                dog_1 = new Dog(100, 100),
-                dog_2 = new Dog(300, 300),
-                map = new Map();
-                gui = new GUI();
-
-                gui.addElement(new GUI.Label("test_label", 500, 500, "Test Label", "#ffffff"));
-
-                map.addLayer(function(renderAssistant) {
-                  renderAssistant.drawQuad(0, 0, 800, 600, "#aaaaaa");
-                });
-
-                actionDispatcher.registerKeyboardAction("KEY_LEFT_ARROW", proxy(dog_1, dog_1.move_left)); 
-                actionDispatcher.registerKeyboardAction("KEY_RIGHT_ARROW", proxy(dog_1, dog_1.move_right));
-                actionDispatcher.registerKeyboardAction("KEY_UP_ARROW", proxy(dog_1, dog_1.move_up));
-                actionDispatcher.registerKeyboardAction("KEY_DOWN_ARROW", proxy(dog_1, dog_1.move_down));
-                actionDispatcher.registerKeyboardAction("KEY_S", proxy(dog_1, dog_1.stop));
-
-                game = new Game(result, 800, 600, { showFPS: true });
-                game.setMap(map);
-                game.addSoul(dog_1);
-                game.addSoul(dog_2);
-                game.setGUI(gui);
-                game.start();
-        </script>
     </body>
 </html>

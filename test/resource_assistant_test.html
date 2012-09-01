@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Resource Assistant Test</title>
+        <script data-main="javascripts/resource_assistant_test" src="../lib/require.js"></script>
     </head>
     <body>
         <a href="render_assistant_test.html">Previous test: Render Assistant</a>
@@ -8,18 +9,5 @@
         <h1>Resource Assistant Test</h1>
         <img id="result_1"></img>
         <img id="result_2"></img>
-        <script type="text/javascript" src="../lib/resource_assistant.js"></script>
-        <script type="text/javascript">
-            var ethon = ethon,
-                resourceAssistant = ethon.resourceAssistant,
-                result_1 = document.getElementById("result_1"),
-                result_2 = document.getElementById("result_2");
-
-                resourceAssistant.loadImage("mario", "images/mario.png", function(image) {
-                    result_1.src = image.src;
-                    // For testing purposes
-                    result_2.src = resourceAssistant.getImage("mario").src;
-                }); 
-        </script>
     </body>
 </html>

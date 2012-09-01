@@ -71,10 +71,9 @@ define(function (require) {
             paddleVelocity = paddle.getVelocity();
 
         // Check for new collisions every 0.25s
-        // Move 25% faster every collision
         if (dt > 0.25) {
             lastCollision = now;
-            this.setVelocity(-velocity.x * 1.25, -velocity.y + -paddleVelocity.y * 0.5);
+            this.setVelocity(-velocity.x, -velocity.y + -paddleVelocity.y * 0.5);
         }
     };
 

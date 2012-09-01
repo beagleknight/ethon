@@ -1,39 +1,11 @@
 <html>
     <head>
         <title>Input Assistant Test</title>
+        <script data-main="javascripts/input_assistant_test" src="../lib/require.js"></script>
     </head>
     <body>
         <a href="render_assistant_test.html">Next test: Render Assistant</a>
         <h1>Input Assistant Test</h1>
         <div id="result"></div>
-        <script type="text/javascript" src="../lib/event_moderator.js"></script>
-        <script type="text/javascript" src="../lib/event_emitter.js"></script>
-        <script type="text/javascript" src="../lib/input_assistant.js"></script>
-        <script type="text/javascript">
-            var ethon = ethon,
-                inputAssistant = ethon.inputAssistant,
-                result = document.getElementById("result"),
-                key_a_test, key_b_test, left_arrow_test, right_arrow_test,
-                mouse_position, mouse_left_button_test, mouse_right_button_test;
-
-            setInterval(function() {
-                key_a_test = inputAssistant.isKeyPressed("KEY_A") ? "YES" : "NO";
-                key_b_test = inputAssistant.isKeyPressed("KEY_B") ? "YES" : "NO";
-                key_left_arrow_test = inputAssistant.isKeyPressed("KEY_LEFT_ARROW") ? "YES" : "NO";
-                key_right_arrow_test = inputAssistant.isKeyPressed("KEY_RIGHT_ARROW") ? "YES" : "NO";
-                mouse_position = inputAssistant.getMousePosition();
-                mouse_left_button_test = inputAssistant.isMouseButtonPressed("MOUSE_LEFT") ? "YES" : "NO";
-                mouse_right_button_test = inputAssistant.isMouseButtonPressed("MOUSE_RIGHT") ? "YES" : "NO";
-
-                result.innerHTML = "Key a pressed..." + key_a_test + "<br />" 
-                result.innerHTML += "Key b pressed..." + key_b_test + "<br />";
-                result.innerHTML += "Key left arrow pressed..." + key_left_arrow_test + "<br />";
-                result.innerHTML += "Key right arrow pressed..." + key_right_arrow_test + "<br />";
-                result.innerHTML += "<br />";
-                result.innerHTML += "Mouse position (" + mouse_position.x + "," + mouse_position.y + ") <br />";
-                result.innerHTML += "Mouse left button pressed.." + mouse_left_button_test + "<br />";
-                result.innerHTML += "Mouse right button pressed.." + mouse_right_button_test + "<br />";
-            }, 100);
-        </script>
     </body>
 </html>

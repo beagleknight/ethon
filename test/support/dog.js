@@ -1,12 +1,11 @@
-var ethon = ethon || {};
-var window = window || {};
+var define = define || undefined;
 
-(function (ethon, exports) {
+define(function (require) {
     "use strict";
 
-    var Soul = ethon.Soul,
-        inherit = ethon.inherit,
-        renderAssistant = ethon.renderAssistant,
+    var Soul            = require("soul"),
+        inherit         = require("inherit"),
+        renderAssistant = require("render_assistant"),
         Dog;
 
     /**
@@ -46,5 +45,5 @@ var window = window || {};
         this.setVelocity(0, 0);
     };
 
-    exports.Dog = Dog;
-}(ethon, window));
+    return Dog;
+});
