@@ -38,6 +38,14 @@ var ethon = ethon || {},
         this.setVelocity(0, speed);
     };
 
+    Paddle.prototype.move_right = function () {
+        this.setVelocity(speed, 0);
+    };
+
+    Paddle.prototype.move_left = function () {
+        this.setVelocity(-speed, 0);
+    };
+
     Paddle.prototype.stop = function () {
         this.setVelocity(0, 0);
     };
