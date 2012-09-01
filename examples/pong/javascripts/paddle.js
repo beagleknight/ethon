@@ -6,6 +6,7 @@ var ethon = ethon || {},
     "use strict";
 
     var Soul = ethon.Soul,
+        QuadBody = ethon.QuadBody,
         inherit = ethon.inherit,
         renderAssistant = ethon.renderAssistant,
         speed = 100,
@@ -19,6 +20,7 @@ var ethon = ethon || {},
      */
     Paddle = function (name, x, y) {
         Soul.call(this, name, x, y);
+        this.setBody(new QuadBody(x, y, 10, 100));
     };
 
     inherit(Paddle, Soul);

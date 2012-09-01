@@ -9,6 +9,7 @@ var ethon = ethon || {},
         Map = ethon.Map,
         GUI = ethon.GUI,
         Paddle = pong.Paddle,
+        Ball = pong.Ball,
         proxy = ethon.proxy,
         actionDispatcher = ethon.actionDispatcher,
         result = exports.document.getElementById("game"),
@@ -18,6 +19,7 @@ var ethon = ethon || {},
         iaScore,
         playerPaddle,
         iaPaddle,
+        ball,
         game;
 
     // Pong map: black quad with a grey net
@@ -59,10 +61,15 @@ var ethon = ethon || {},
     actionDispatcher.registerKeyboardAction("KEY_DOWN_ARROW",
             proxy(playerPaddle, playerPaddle.move_down), proxy(playerPaddle, playerPaddle.stop));
 
+    // Pong ball
+    ball = new Ball(400, 300);
+
+    // Init Game and start 
     game = new Game(result, 800, 600);
     game.setMap(map);
     game.setGUI(gui);
     game.addSoul(playerPaddle);
     game.addSoul(iaPaddle);
+    game.addSoul(ball);
     game.start();
 }(window));
