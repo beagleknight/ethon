@@ -23,7 +23,7 @@ var window = window || {};
 
     Dog.prototype.render = function () {
         var position = this.getPosition();
-        renderAssistant.drawQuad(position.x, position.y, 10, 10);
+        renderAssistant.drawQuad(position.x, position.y, 10, 10, "#ffffff");
     };
 
     Dog.prototype.move_right = function () {

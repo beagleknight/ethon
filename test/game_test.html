@@ -24,6 +24,7 @@
         <script type="text/javascript" src="support/dog.js"></script>
         <script type="text/javascript">
             var ethon = ethon,
+                Map = ethon.Map,
                 GUI = ethon.GUI,
                 proxy = ethon.proxy,
                 renderAssistant = ethon.renderAssistant,
@@ -32,7 +33,15 @@
                 Game = ethon.Game,
                 result = document.getElementById("result"),
                 dog_1 = new Dog(100, 100),
-                dog_2 = new Dog(300, 300);
+                dog_2 = new Dog(300, 300),
+                map = new Map();
+                gui = new GUI();
+
+                gui.addElement(new GUI.Label("test_label", 500, 500, "Test Label", "#ffffff"));
+
+                map.addLayer(function(renderAssistant) {
+                  renderAssistant.drawQuad(0, 0, 800, 600, "#aaaaaa");
+                });
 
                 actionDispatcher.registerKeyboardAction("KEY_LEFT_ARROW", proxy(dog_1, dog_1.move_left)); 
                 actionDispatcher.registerKeyboardAction("KEY_RIGHT_ARROW", proxy(dog_1, dog_1.move_right));
@@ -41,8 +50,10 @@
                 actionDispatcher.registerKeyboardAction("KEY_S", proxy(dog_1, dog_1.stop));
 
                 game = new Game(result, 800, 600, { showFPS: true });
+                game.setMap(map);
                 game.addSoul(dog_1);
                 game.addSoul(dog_2);
+                game.setGUI(gui);
                 game.start();
         </script>
     </body>
