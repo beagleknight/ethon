@@ -9,8 +9,8 @@ requirejs.config({
 define(function (require) {
     "use strict";
 
-    var Map             = require("map"),
-        renderAssistant = require("render_assistant"),
+    var Map             = require("ethon/map"),
+        renderAssistant = require("ethon/render_assistant"),
         result = window.document.getElementById("result"),
         image = new window.Image(),
         map;

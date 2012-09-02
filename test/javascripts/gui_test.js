@@ -9,11 +9,11 @@ requirejs.config({
 define(function (require) {
     "use strict";
 
-    var GUI              = require("gui"),
-        proxy            = require("proxy"),
-        renderAssistant  = require("render_assistant"),
-        eventEmitter     = require("event_emitter"),
-        actionDispatcher = require("action_dispatcher"),
+    var GUI              = require("ethon/gui"),
+        proxy            = require("ethon/proxy"),
+        renderAssistant  = require("ethon/render_assistant"),
+        eventEmitter     = require("ethon/event_emitter"),
+        actionDispatcher = require("ethon/action_dispatcher"),
         result = window.document.getElementById("result"),
         gui,
         score_a = 0,

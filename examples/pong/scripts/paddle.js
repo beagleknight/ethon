@@ -3,7 +3,7 @@ var requirejs = requirejs || undefined,
 
 requirejs.config({
     paths: {
-        ethon: "../../../lib"
+        ethon: "../../../lib/ethon"
     }
 });
 

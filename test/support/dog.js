@@ -3,9 +3,9 @@ var define = define || undefined;
 define(function (require) {
     "use strict";
 
-    var Soul            = require("soul"),
-        inherit         = require("inherit"),
-        renderAssistant = require("render_assistant"),
+    var Soul            = require("ethon/soul"),
+        inherit         = require("ethon/inherit"),
+        renderAssistant = require("ethon/render_assistant"),
         Dog;
 
     /**

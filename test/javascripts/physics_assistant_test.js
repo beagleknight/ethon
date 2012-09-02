@@ -9,8 +9,8 @@ requirejs.config({
 define(function (require) {
     "use strict";
 
-    var physicsAssistant = require("physics_assistant"),
-        renderAssistant  = require("render_assistant"),
+    var physicsAssistant = require("ethon/physics_assistant"),
+        renderAssistant  = require("ethon/render_assistant"),
         result = window.document.getElementById("result"),
         quad_1_1 = { x: 10, y: 10, w: 100, h: 100 },
         quad_1_2 = { x: 50, y: 50, w: 100, h: 100 },

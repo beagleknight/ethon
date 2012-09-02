@@ -9,7 +9,7 @@ requirejs.config({
 define(function (require) {
     "use strict";
 
-    var eventModerator = require("event_moderator"),
+    var eventModerator = require("ethon/event_moderator"),
         result = window.document.getElementById("result"),
         hello = window.document.getElementById("hello"),
         world = window.document.getElementById("world");

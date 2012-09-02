@@ -9,7 +9,7 @@ requirejs.config({
 define(function (require) {
     "use strict";
 
-    var inputAssistant = require("input_assistant"),
+    var inputAssistant = require("ethon/input_assistant"),
         result = window.document.getElementById("result"),
         key_a_test,
         key_b_test,

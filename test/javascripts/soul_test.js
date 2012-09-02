@@ -12,9 +12,9 @@ requirejs.config({
 define(function (require) {
     "use strict";
 
-    var proxy            = require("proxy"),
-        renderAssistant  = require("render_assistant"),
-        actionDispatcher = require("action_dispatcher"),
+    var proxy            = require("ethon/proxy"),
+        renderAssistant  = require("ethon/render_assistant"),
+        actionDispatcher = require("ethon/action_dispatcher"),
         Dog              = require("support/dog"),
         result = window.document.getElementById("result"),
         dog;

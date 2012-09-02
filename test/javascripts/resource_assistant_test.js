@@ -9,7 +9,7 @@ requirejs.config({
 define(function (require) {
     "use strict";
 
-    var resourceAssistant = require("resource_assistant"),
+    var resourceAssistant = require("ethon/resource_assistant"),
         result_1 = window.document.getElementById("result_1"),
         result_2 = window.document.getElementById("result_2");
 

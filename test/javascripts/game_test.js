@@ -12,11 +12,11 @@ requirejs.config({
 define(function (require) {
     "use strict";
 
-    var Game             = require("game"),
-        Map              = require("map"),
-        GUI              = require("gui"),
-        proxy            = require("proxy"),
-        actionDispatcher = require("action_dispatcher"),
+    var Game             = require("ethon/game"),
+        Map              = require("ethon/map"),
+        GUI              = require("ethon/gui"),
+        proxy            = require("ethon/proxy"),
+        actionDispatcher = require("ethon/action_dispatcher"),
         Dog              = require("support/dog"),
         result = window.document.getElementById("result"),
         dog_1 = new Dog(100, 100),

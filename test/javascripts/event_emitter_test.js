@@ -9,8 +9,8 @@ requirejs.config({
 define(function (require) {
     "use strict";
 
-    var eventEmitter = require("event_emitter"),
-        extend       = require("extend"),
+    var eventEmitter = require("ethon/event_emitter"),
+        extend       = require("ethon/extend"),
         result = window.document.getElementById("result"),
         Dog = function () {
         },

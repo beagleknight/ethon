@@ -4,7 +4,7 @@ var document = document || undefined,
 
 requirejs.config({
     paths: {
-        ethon: "../../../lib"
+        ethon: "../../../lib/ethon/"
     }
 });
 

@@ -9,7 +9,7 @@ requirejs.config({
 define(function (require) {
     "use strict";
 
-    var renderAssistant = require("render_assistant"),
+    var renderAssistant = require("ethon/render_assistant"),
         result = window.document.getElementById("result"),
         image = new window.Image();
 

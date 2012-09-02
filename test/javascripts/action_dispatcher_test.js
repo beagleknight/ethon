@@ -9,8 +9,8 @@ requirejs.config({
 define(function (require) {
     "use strict";
 
-    var actionDispatcher = require("action_dispatcher"),
-        renderAssistant  = require("render_assistant"),
+    var actionDispatcher = require("ethon/action_dispatcher"),
+        renderAssistant  = require("ethon/render_assistant"),
         result = window.document.getElementById("result"),
         canvasQuad;
 
