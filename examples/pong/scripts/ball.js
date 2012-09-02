@@ -1,13 +1,20 @@
-var define = define || undefined;
+var requirejs = requirejs || undefined,
+    define = define || undefined;
+
+requirejs.config({
+    paths: {
+        ethon: "../../../lib"
+    }
+});
 
 define(function (require) {
     "use strict";
 
-    var Soul            = require("soul"),
-        QuadBody        = require("quad_body"),
-        inherit         = require("inherit"),
-        proxy           = require("proxy"),
-        renderAssistant = require("render_assistant"),
+    var Soul            = require("ethon/soul"),
+        QuadBody        = require("ethon/quad_body"),
+        inherit         = require("ethon/inherit"),
+        proxy           = require("ethon/proxy"),
+        renderAssistant = require("ethon/render_assistant"),
         speed = 200,
         radius = 50,
         lastCollision = new Date(),

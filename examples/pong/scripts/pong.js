@@ -3,23 +3,22 @@ var document = document || undefined,
     define = define || undefined;
 
 requirejs.config({
-    baseUrl: "../../../lib",
     paths: {
-        pong: "../examples/pong/javascripts"
+        ethon: "../../../lib"
     }
 });
 
 define(function (require) {
     "use strict";
 
-    var Game             = require("game"),
-        Map              = require("map"),
-        GUI              = require("gui"),
-        Soul             = require("soul"),
-        proxy            = require("proxy"),
-        actionDispatcher = require("action_dispatcher"),
-        Paddle           = require("pong/paddle"),
-        Ball             = require("pong/ball"),
+    var Game             = require("ethon/game"),
+        Map              = require("ethon/map"),
+        GUI              = require("ethon/gui"),
+        Soul             = require("ethon/soul"),
+        proxy            = require("ethon/proxy"),
+        actionDispatcher = require("ethon/action_dispatcher"),
+        Paddle           = require("paddle"),
+        Ball             = require("ball"),
         result = document.getElementById("game"),
         map,
         gui,
