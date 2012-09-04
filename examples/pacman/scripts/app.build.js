@@ -1,19 +1,19 @@
 ({
     appDir: "../",
     baseUrl: "scripts",
-    dir: "../../pong-build",
+    dir: "../../pacman-build",
     paths: {
-        ethon: "../../../lib"
+        ethon: "../../../lib/ethon"
     },
     modules: [
         {
-            name: "pong"
+            name: "pacman_game"
         },
         {
-            name: "paddle"
+            name: "pacman"
         },
         {
-            name: "ball"
+            name: "coconut"
         }
     ]
 })

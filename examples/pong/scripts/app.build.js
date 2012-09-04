@@ -3,7 +3,7 @@
     baseUrl: "scripts",
     dir: "../../pong-build",
     paths: {
-        ethon: "../../../lib"
+        ethon: "../../../lib/ethon"
     },
     modules: [
         {
