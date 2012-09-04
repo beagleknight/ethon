@@ -1,3 +1,0 @@
-[submodule "test/support/jasmine-jstd-adapter"]
-	path = test/support/jasmine-jstd-adapter
-	url = git://github.com/ibolmo/jasmine-jstd-adapter.git
