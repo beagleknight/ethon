@@ -26,7 +26,7 @@ define(function (require) {
     Pacman = function (i, j) {
         Sprite.call(this, "pacman", i * tileSize, j * tileSize,
             tileSize, tileSize, "pacman", "images/pacman_sprite.png");
-        //this.setBody(new QuadBody(x, y, 10, 100));
+        this.setBody(new QuadBody(5, 5, 10, 10));
 
         this.addFrame("idle", 0, 0.5);
         this.addFrame("idle", 1, 0.5);
