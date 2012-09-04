@@ -44,6 +44,10 @@ define(function (require) {
         this.addFrame("move_down", 9, 0.25);
 
         this.setCurrentAnimation("idle");
+
+        this.on("collision_pacman_coconuts", function (pacman, coconut) {
+            coconut.destroy();
+        });
     };
 
     inherit(Pacman, Sprite);
