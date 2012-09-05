@@ -4,7 +4,7 @@ var document = document || undefined,
 
 requirejs.config({
     paths: {
-        ethon: "../../../lib/ethon/"
+        ethon: "../../../lib/ethon"
     }
 });
 
@@ -14,6 +14,7 @@ define(function (require) {
     var Game             = require("ethon/game"),
         Map              = require("ethon/map"),
         TileMap          = require("ethon/tile_map"),
+        CollisionTileMap = require("ethon/collision_tile_map"),
         GUI              = require("ethon/gui"),
         Soul             = require("ethon/soul"),
         proxy            = require("ethon/proxy"),
@@ -22,8 +23,9 @@ define(function (require) {
         Coconut          = require("coconut"),
         result = document.getElementById("game"),
         map,
+        amap,
         tileMap,
-        tmap,
+        collisionTileMap,
         gui,
         pacman,
         coconuts = [],
@@ -35,8 +37,7 @@ define(function (require) {
 
     // Pacman map: black quad with the laberinth
     
-    tileMap = new TileMap(0, 0, 20, 20, "tile_map", "images/tile_map.png");
-    tmap = [
+    amap = [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1],
@@ -44,8 +45,8 @@ define(function (require) {
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1],
         [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
         [1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
-        [1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
         [1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
         [1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
         [1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
@@ -68,7 +69,12 @@ define(function (require) {
         [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ];
-    tileMap.setMap(tmap);
+
+    tileMap = new TileMap(0, 0, 20, 20, "tile_map", "images/tile_map.png");
+    tileMap.setMap(amap);
+
+    collisionTileMap = new CollisionTileMap(amap, 20);
+
     map = new Map();
     map.addLayer(function (renderAssistant) {
         tileMap.render();
@@ -79,12 +85,12 @@ define(function (require) {
 
     // Pacman player: well..is pacman!
     pacman = new Pacman(9, 8);
-    pacman.setCollisionMap(tileMap.getMap());
+    pacman.setCollisionMap(collisionTileMap);
 
     // Place coconuts over the map
-    for (i = 0, l = tmap.length; i < l; i += 1) {
-        for (j = 0, ll = tmap[i].length; j < ll; j += 1) {
-            if (tmap[i][j] === 0) {
+    for (i = 0, l = amap.length; i < l; i += 1) {
+        for (j = 0, ll = amap[i].length; j < ll; j += 1) {
+            if (amap[i][j] === 0) {
                 coconuts.push(new Coconut(j, i));
             }
         }
