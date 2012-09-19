@@ -27,7 +27,7 @@ define(function (require) {
     Paddle = function (name, x, y) {
         Soul.call(this, name, x, y);
         this.startPosition = { x: x, y: y };
-        this.setBody(new QuadBody(x, y, 10, 100));
+        this.setBody(new QuadBody(0, 0, 10, 100));
 
         this.on("player_scored", proxy(this, this.respawn));
         this.on("ia_scored", proxy(this, this.respawn));

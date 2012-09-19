@@ -29,7 +29,7 @@ define(function (require) {
     Ball = function (x, y) {
         Soul.call(this, "ball", x, y);
         this.startPosition = { x: x, y: y };
-        this.setBody(new QuadBody(x, y, 10, 10));
+        this.setBody(new QuadBody(0, 0, 10, 10));
         this.respawn();
 
         this.on("collision_ball_player_paddle", proxy(this, this.changeDirection));
