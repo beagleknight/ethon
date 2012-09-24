@@ -1,0 +1,9 @@
+{
+    "name": "Ethon",
+    "description": "Ethon: HTML5 game engine",
+    "version": "0.1",
+    "url": "http://github.com/imesmes/ethon",
+    "options": {
+        "outdir": "doc"
+    }
+}
