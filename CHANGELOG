@@ -1,0 +1,17 @@
+0.6
+===
+
+Game
+----
+
+* Merged render and update loop. Using request animation frame method.
+
+RenderAssistant
+---------------
+
+* Added drawLine method.
+
+InputAssistant
+--------------
+
+* When key is pressed it will fire events since keyup. It fixes a weird bug when keydown event is not fired.
