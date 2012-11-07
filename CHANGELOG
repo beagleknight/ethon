@@ -4,6 +4,7 @@
 Game
 ----
 
+* Added loading step before start game
 * Merged render and update loop. Using request animation frame method.
 * Trigger event for collision group for both bodies. Ex: collision_bullets_asteroids
 * Trigger event for after update function
