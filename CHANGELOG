@@ -14,6 +14,12 @@ RenderAssistant
 
 * Added drawLine method.
 
+Sprite
+------
+
+* Passing texture directly to the constructor function.
+* Fixed a few bugs when sprite didn't have animation.
+
 InputAssistant
 --------------
 
