@@ -19,6 +19,7 @@ Sprite
 
 * Passing texture directly to the constructor function.
 * Fixed a few bugs when sprite didn't have animation.
+* Added rotation parameter for rendering rotated sprites.
 
 InputAssistant
 --------------
