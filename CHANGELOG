@@ -12,6 +12,7 @@ Game
 * Delegate render and update to active scene.
 * Removed assets_loaded event.
 * Initialize scenes after loading assets.
+* Map rendering removed for maintenance.
 
 Scene
 -----
@@ -34,3 +35,8 @@ InputAssistant
 --------------
 
 * When key is pressed it will fire events since keyup. It fixes a weird bug when keydown event is not fired.
+
+GUI
+---
+
+* Button: Using HTML elements instead of canvas polygons.
