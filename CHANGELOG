@@ -13,6 +13,7 @@ Game
 * Removed assets_loaded event.
 * Initialize scenes after loading assets.
 * Map rendering removed for maintenance.
+* Calling enter and exit scenes methods when switching.
 
 Scene
 -----
