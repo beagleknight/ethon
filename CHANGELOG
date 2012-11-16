@@ -41,3 +41,4 @@ GUI
 ---
 
 * Button: Using HTML elements instead of canvas polygons.
+* Label: Using HTML elements instead of canvas draw text.
