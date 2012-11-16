@@ -24,6 +24,7 @@ RenderAssistant
 ---------------
 
 * Added drawLine method.
+* Setting canvas z-index to 1
 
 Sprite
 ------
@@ -42,3 +43,4 @@ GUI
 
 * Button: Using HTML elements instead of canvas polygons.
 * Label: Using HTML elements instead of canvas draw text.
+* Background: Using HTML elements. z-index below canvas
