@@ -1,10 +1,18 @@
-0.6.1
-====
+0.6.2
+=====
 
 GUI
 ---
 
-* Fixed bug when loading gui elements with desc image null
+* Added iFrame element. Loading url from block desc text.
+
+0.6.1
+=====
+
+GUI
+---
+
+* Fixed bug when loading gui elements with desc image null.
 
 
 0.6
