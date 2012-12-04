@@ -1,3 +1,16 @@
+0.6.3
+=====
+
+InputAssistant
+--------------
+
+* Adding setCanvas method for binding mouse events to the canvas
+
+Game
+----
+
+* Set canvas for InputAssistant
+
 0.6.2
 =====
 
