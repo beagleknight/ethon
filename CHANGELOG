@@ -1,5 +1,20 @@
-0.6.3
-=====
+v0.7
+====
+
+Game
+----
+
+* Using a single addGUIElement for all GUI elements
+
+GUI
+---
+
+* Added GUI.Link for handling links for external webs and files.
+* Removed button url open
+* Refactoring elements using a parent class GUI.Element
+
+v0.6.3
+======
 
 InputAssistant
 --------------
@@ -11,16 +26,16 @@ Game
 
 * Set canvas for InputAssistant
 
-0.6.2
-=====
+v0.6.2
+======
 
 GUI
 ---
 
 * Added iFrame element. Loading url from block desc text.
 
-0.6.1
-=====
+v0.6.1
+======
 
 GUI
 ---
@@ -28,8 +43,8 @@ GUI
 * Fixed bug when loading gui elements with desc image null.
 
 
-0.6
-===
+v0.6
+====
 
 Game
 ----
