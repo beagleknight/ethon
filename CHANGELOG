@@ -1,3 +1,38 @@
+v0.8
+====
+
+Game
+----
+
+* Added a built-in scene called "loading" for handling loading phase
+* Showing built-in view "all" when loading phase ends
+
+GUI
+---
+
+* Hiding all views by default
+
+v0.7.2
+======
+
+Game
+----
+
+* Fixed bug with loadingCallback and FF
+
+RenderAssistant
+---------------
+
+* Fixed problems with .style["z-index"] in FF
+
+v0.7.1
+======
+
+GUI
+---
+
+* Fixed problems with .style["z-index"] in FF
+
 v0.7
 ====
 
