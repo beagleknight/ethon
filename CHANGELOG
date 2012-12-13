@@ -1,3 +1,16 @@
+v0.8.1
+======
+
+Game
+----
+
+* Triggering a loading_progress event on assets loading
+
+GUI
+---
+
+* Added progress element for handling progress bars
+
 v0.8
 ====
 
