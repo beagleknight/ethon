@@ -1,3 +1,12 @@
+v0.8.3
+======
+
+Scene
+-----
+
+* Added method for removing souls with concrete collision group
+* Added method for removing souls with concrete name
+
 v0.8.2
 ======
 
