@@ -1,3 +1,11 @@
+v0.8.4
+======
+
+InputAssistant
+--------------
+
+* Dismiss keydown events if their keycode is in lut
+
 v0.8.3
 ======
 
