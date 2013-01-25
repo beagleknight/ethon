@@ -4,7 +4,8 @@ v0.8.4
 InputAssistant
 --------------
 
-* Dismiss keydown events if their keycode is in lut
+* Dismiss keydown events if their keycode is in lut.
+* Removing dismiss event behavior for other events. Fix bugs with iframes and losing focus.
 
 v0.8.3
 ======
