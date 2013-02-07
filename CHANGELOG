@@ -1,3 +1,17 @@
+v0.9
+====
+
+ResourceAssistant
+-----------------
+
+* Using the new settings system for loading gui elements and game data
+* Removing old loadText and loadImage functions
+
+GUI
+---
+
+* Removing name identifier for gui elements
+
 v0.8.4
 ======
 
