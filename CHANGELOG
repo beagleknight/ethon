@@ -1,3 +1,12 @@
+v0.9.1
+======
+
+GUI
+---
+
+* Changing x and y to pos_x and pos_y
+* Transforming style properties to camelcase for gui elements in Explorer browsers
+
 v0.9
 ====
 
@@ -11,6 +20,7 @@ GUI
 ---
 
 * Removing name identifier for gui elements
+* Changing iframe behavior via iframes
 
 v0.8.4
 ======
