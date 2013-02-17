@@ -1,10 +1,31 @@
-v0.9.1
+v0.9.3
+======
+
+GameScene
+---------
+
+* Attaching renderOrder and updateOrder to souls
+
+ActionDispatcher
+----------------
+
+* Added mouseRelease action: useful for dragging operations
+* Quads passed to registered actions can use "position" attribute
+
+v0.9.2
 ======
 
 GUI
 ---
 
 * Changing x and y to pos_x and pos_y
+
+v0.9.1
+======
+
+GUI
+---
+
 * Transforming style properties to camelcase for gui elements in Explorer browsers
 
 v0.9
