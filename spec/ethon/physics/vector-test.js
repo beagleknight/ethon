@@ -46,6 +46,22 @@ describe("Vector", function (run) {
                     expect(newVec.squaredMagnitude()).toBe(25);
                 });
             });
+
+            describe("normalize", function () {
+                it("convert vector to its corresponding unit lenghth vector", function () {
+                    var newVec = new Vector(3, 4);
+                    newVec.normalize();
+                    expect(newVec.x).toBe(0.6);
+                    expect(newVec.y).toBe(0.8);
+                });
+
+                it("doesn't touch a 0 length vector", function () {
+                    var newVec = new Vector();
+                    newVec.normalize();
+                    expect(newVec.x).toBe(0);
+                    expect(newVec.y).toBe(0);
+                });
+            });
         });
     });
 });
