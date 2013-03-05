@@ -19,6 +19,7 @@ describe("Vector", function (run) {
 
                 it("initialize coordinates to given arguments", function () {
                     var newVec = new Vector(3, 4);
+                    
                     expect(newVec.x).toBe(3);
                     expect(newVec.y).toBe(4);
                 });
@@ -60,6 +61,15 @@ describe("Vector", function (run) {
                     newVec.normalize();
                     expect(newVec.x).toBe(0);
                     expect(newVec.y).toBe(0);
+                });
+            });
+
+            describe("multScalar", function () {
+                it("returns a new vector result of multiply vector by the scalar", function () {
+                    var newVec = new Vector(3, 4),
+                        resultVec = newVec.multScalar(2);
+                    expect(resultVec.x).toBe(6);
+                    expect(resultVec.y).toBe(8);
                 });
             });
         });
