@@ -1,3 +1,34 @@
+v0.9.4
+======
+
+General
+-------
+
+* Add makefile for compiling engine
+
+Gui
+---
+
+* addElement function returns element created
+* Add destroy function for GUI element
+* Add hide function for GUI element
+* Add show function for GUI element
+
+EventModerator
+--------------
+
+* Add ignore function, called when an event must be deregistered.
+
+EventEmitter
+------------
+
+* Add off function for deregister an event observed
+
+ActionDispatcher
+---------------
+
+* [EXPERIMENTAL] Add deregisterMouseClick function
+
 v0.9.3
 ======
 
