@@ -6,6 +6,11 @@ General
 
 * Add makefile for compiling engine
 
+InputAssistant
+--------------
+
+* Dismiss mousedown event default behavior
+
 Gui
 ---
 
