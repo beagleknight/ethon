@@ -96,13 +96,33 @@ describe("Vector", function (run) {
             });
 
             describe("addScaledVector", function () {
-                it("perfomrs a double operation scaling given vector and adding it", function () {
+                it("perfoms a double operation scaling given vector and adding it", function () {
                     var vec1 = new Vector(3, 4),
                         vec2 = new Vector(1, 5),
                         resultVec = vec1.addScaledVector(vec2, 2);
                     
                     expect(resultVec.x).toBe(5);
                     expect(resultVec.y).toBe(14);
+                });
+            });
+
+            describe("componentProduct", function () {
+                it("returns a new vector result of the component product", function () {
+                    var vec1 = new Vector(2, 4),
+                        vec2 = new Vector(4, 5),
+                        resultVec = vec1.componentProduct(vec2);
+                    
+                    expect(resultVec.x).toBe(8);
+                    expect(resultVec.y).toBe(20);
+                });
+            });
+
+            describe("scalarProduct", function () {
+                it("returns a scalar value result of component product and sum", function () {
+                    var vec1 = new Vector(2, 4),
+                        vec2 = new Vector(4, 5);
+                    
+                    expect(vec1.scalarProduct(vec2)).toBe(28);
                 });
             });
         });
