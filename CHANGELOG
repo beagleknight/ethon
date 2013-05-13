@@ -1,3 +1,37 @@
+v0.9.5
+======
+
+Game
+----
+
+* Trigger a 'game_loaded' event after loading all assets
+
+Scene
+-----
+
+* Add 'afterRender' callback
+
+RenderAssistant
+---------------
+
+* Fix drawSubImage method in order to accept arbitrary tile sets
+
+ResourceAssistant
+-----------------
+
+* Load sounds and music using HTML5 Audio and 'sound' settings.
+
+Gui
+---
+
+* Render iframes with z-index equal to 1
+
+EventObserver
+-------------
+
+* Don't observe undefined events
+
+
 v0.9.4
 ======
 
