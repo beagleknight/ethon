@@ -1,3 +1,11 @@
+v0.9.6
+======
+
+RenderAssistant
+---------------
+
+* Add width and height to drawImage. Fallback using image dimensions.
+
 v0.9.5
 ======
 
