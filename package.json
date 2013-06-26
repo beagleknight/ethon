@@ -1,0 +1,23 @@
+{
+  "name": "ethon",
+  "version": "0.9.6",
+  "description": "HTML5 Game Engine",
+  "main": "app.build.js",
+  "directories": {
+    "test": "test",
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ultrayoshi/ethon"
+  },
+  "author": "David Morcillo",
+  "license": "BSD",
+  "gitHead": "2da77b7211a8b61b1849acc5ee6a0285d9b95642",
+  "devDependencies": {
+    "grunt": "~0.4.1"
+  }
+}
