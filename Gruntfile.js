@@ -25,13 +25,19 @@ module.exports = function(grunt) {
         boss: true,
         eqnull: true,
         browser: true,
-        globals: {}
+        globals: {
+          'requirejs': true,
+          'define': true,
+          'describe': true,
+          'it': true,
+          'expect': true
+        }
       },
       gruntfile: {
         src: 'Gruntfile.js'
       },
       lib_test: {
-        src: ['lib/**/*.js', 'test/**/*.js']
+        src: ['src/**/*.js', 'test/**/*.js']
       }
     },
     qunit: {
@@ -40,7 +46,7 @@ module.exports = function(grunt) {
     requirejs: {
       compile: {
         options: {
-          baseUrl: "lib/ethon",
+          baseUrl: "src/ethon",
           name: "main",
           paths: {
             ethon: "."
@@ -60,9 +66,9 @@ module.exports = function(grunt) {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
-      lib_test: {
+      jshint: {
         files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test', 'qunit']
+        tasks: ['jshint:lib_test']
       }
     }
   });
