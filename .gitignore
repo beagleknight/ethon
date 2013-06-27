@@ -4,4 +4,4 @@ node_modules
 *.log
 *.pdf
 doc
-release
+dist

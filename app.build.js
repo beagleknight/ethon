@@ -1,23 +1,13 @@
 /*jslint false*/
 ({
 
-	// Define our base URL - all module paths are relative to this
-	// base directory.
-	baseUrl: "lib/ethon",
-
-  paths: {
-    ethon: "."
-  },
-
   //If you only intend to optimize a module (and its dependencies), with
   //a single file as the output, you can specify the module options inline,
   //instead of using the 'modules' section above. 'exclude',
   //'excludeShallow', 'include' and 'insertRequire' are all allowed as siblings
   //to name. The name of the optimized file is specified by 'out'.
-  name: "main",
   include: [],
   excludeShallow: [],
-  out: "release/ethon.js",
 
   //As of RequireJS 2.0.2, the dir above will be deleted before the
   //build starts again. If you have a big build and are not doing
