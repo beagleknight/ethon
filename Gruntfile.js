@@ -26,11 +26,14 @@ module.exports = function(grunt) {
         eqnull: true,
         browser: true,
         globals: {
+          'dump': true,
           'requirejs': true,
+          'beforeEach': true,
           'define': true,
           'describe': true,
           'it': true,
-          'expect': true
+          'expect': true,
+          'jQuery': true
         }
       },
       gruntfile: {
@@ -40,16 +43,14 @@ module.exports = function(grunt) {
         src: ['src/**/*.js', 'test/**/*.js']
       }
     },
-    qunit: {
-      files: ['test/**/*.html']
-    },
     requirejs: {
       compile: {
         options: {
           baseUrl: "src/ethon",
           name: "main",
           paths: {
-            ethon: "."
+            ethon: ".",
+            jquery: "//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min"
           },
           mainConfigFile: "app.build.js",
           out: "dist/ethon.<%= pkg.version %>.js"
@@ -58,7 +59,8 @@ module.exports = function(grunt) {
     },
     karma: {
       unit: {
-        configFile: 'karma.conf.js'
+        configFile: 'karma.conf.js',
+        background: true
       }
     },
     watch: {
@@ -69,18 +71,21 @@ module.exports = function(grunt) {
       jshint: {
         files: '<%= jshint.lib_test.src %>',
         tasks: ['jshint:lib_test']
+      },
+      karma: {
+        files: '<%= jshint.lib_test.src %>',
+        tasks: ['karma:unit:run'] //NOTE the :run flag
       }
     }
   });
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-requirejs');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'qunit', 'requirejs']);
+  grunt.registerTask('default', ['jshint', 'requirejs']);
 
 };

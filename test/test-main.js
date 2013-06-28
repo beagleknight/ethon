@@ -23,7 +23,8 @@ requirejs.config({
     baseUrl: '/base/src',
 
     paths: {
-      ethon: "./ethon"
+      ethon: "./ethon",
+      jquery: "//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min"
     },
 
     shim: {

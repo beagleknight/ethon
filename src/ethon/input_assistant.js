@@ -13,6 +13,7 @@ define(function (require) {
     var EventEmitter = require("ethon/event_emitter"),
         inherit      = require("ethon/inherit"),
         proxy        = require("ethon/proxy"),
+        $            = require("jquery"),
         lut = {
             32: "KEY_SPACEBAR",
             37: "KEY_LEFT_ARROW",
@@ -108,11 +109,11 @@ define(function (require) {
         }));
 
         // Register events callbacks
-        window.document.body.addEventListener("keydown", proxy(this, function (event) {
+        $('body').on("keydown", proxy(this, function (event) {
             onkeydown(this, event);
         }));
 
-        window.document.body.addEventListener("keyup", proxy(this, function (event) {
+        $('body').on("keyup", proxy(this, function (event) {
             onkeyup(this, event);
         }));
 
