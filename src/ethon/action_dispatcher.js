@@ -12,7 +12,6 @@ define(function (require) {
     "use strict";
 
     var physicsAssistant = require("ethon/physics_assistant"),
-        renderAssistant  = require("ethon/render_assistant"),
         proxy            = require("ethon/proxy"),
         ActionDispatcher;
 
@@ -45,29 +44,6 @@ define(function (require) {
         }
     };
 
-    // Helper function for translate mouse coordinates relative to the canvas position.
-    function normalizeMouse(mouse) {
-        var normalizedMouse = { x: -1, y: -1},
-            canvasRect;
-
-        canvasRect = renderAssistant.getCanvasRect();
-        normalizedMouse.x = mouse.x - canvasRect.left;
-        normalizedMouse.y = mouse.y - canvasRect.top;
-        return normalizedMouse;
-    }
-
-     // Helper function for checking mouse position inside a quad.
-    function isMouseInsideQuad(quad, mouse) {
-        var mouseQuad, normalizedMouse = normalizeMouse(mouse);
-
-        if (quad.position) {
-            quad.x = quad.position.x;
-            quad.y = quad.position.y;
-        }
-
-        mouseQuad = { x: normalizedMouse.x, y: normalizedMouse.y, w: 1, h: 1 };
-        return physicsAssistant.quadsCollision(quad, mouseQuad);
-    }
 
     /**
      * Register a callback function to be invoked when mouse
@@ -78,11 +54,11 @@ define(function (require) {
      * @param {Function} callback Function to be invoked when action happens
      */
     ActionDispatcher.prototype.registerMouseMotionAction = function (quad, callback) {
-        this.inputAssistant.on("mousemotion", function (mouse) {
-            if (isMouseInsideQuad(quad, mouse)) {
-                callback(normalizeMouse(mouse));
+        this.inputAssistant.on("mousemotion", proxy(this, function (mouse) {
+            if (this.inputAssistant.isMouseInsideQuad(quad, mouse)) {
+                callback(this.inputAssistant.normalizeMouse(mouse));
             }
-        });
+        }));
     };
 
     /**
@@ -97,7 +73,7 @@ define(function (require) {
     ActionDispatcher.prototype.registerMouseClickAction = function (button, quad, callback) {
         this.inputAssistant.on("mousedown", proxy(this, function (mouse, buttonPressed) {
             if (button === buttonPressed) {
-                if (isMouseInsideQuad(quad, mouse)) {
+                if (this.inputAssistant.isMouseInsideQuad(quad, mouse)) {
                     callback(normalizeMouse(mouse));
                 }
             }
@@ -116,7 +92,7 @@ define(function (require) {
     ActionDispatcher.prototype.registerMouseReleaseAction = function (button, quad, callback) {
         this.inputAssistant.on("mouseup", proxy(this, function (mouse, buttonReleased) {
             if (button === buttonReleased) {
-                if (isMouseInsideQuad(quad, mouse)) {
+                if (this.inputAssistant.isMouseInsideQuad(quad, mouse)) {
                     callback(normalizeMouse(mouse));
                 }
             }

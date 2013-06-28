@@ -10,10 +10,11 @@
 define(function (require) {
     "use strict";
 
-    var EventEmitter = require("ethon/event_emitter"),
-        inherit      = require("ethon/inherit"),
-        proxy        = require("ethon/proxy"),
-        $            = require("jquery"),
+    var EventEmitter     = require("ethon/event_emitter"),
+        physicsAssistant = require("ethon/physics_assistant"),
+        inherit          = require("ethon/inherit"),
+        proxy            = require("ethon/proxy"),
+        $                = require("jquery"),
         lut = {
             32: "KEY_SPACEBAR",
             37: "KEY_LEFT_ARROW",
@@ -92,7 +93,7 @@ define(function (require) {
         EventEmitter.call(this);
         this.canvas = canvas;
 
-        this.canvas.addEventListener("mousemove", proxy(this, function (event) {
+        $(canvas).on("mousemove", proxy(this, function (event) {
             onmousemove(this, event);
         }));
 
@@ -104,7 +105,7 @@ define(function (require) {
             onmouseup(this, event);
         }));
 
-        this.canvas.addEventListener("contextmenu", proxy(this, function (event) {
+        $(canvas).on("contextmenu", proxy(this, function (event) {
             dismissEvent(event);
         }));
 
@@ -157,6 +158,28 @@ define(function (require) {
      */
     InputAssistant.prototype.getMousePosition = function () {
         return this.mouse;
+    };
+
+    // Helper function for translate mouse coordinates relative to the canvas position.
+    InputAssistant.prototype.normalizeMouse = function (mouse) {
+        var normalizedMouse = { x: -1, y: -1},
+            canvasRect = this.canvas.getBoundingClientRect();
+
+        normalizedMouse.x = mouse.x - canvasRect.left;
+        normalizedMouse.y = mouse.y - canvasRect.top;
+        return normalizedMouse;
+    }
+
+    InputAssistant.prototype.isMouseInsideQuad = function (quad, mouse) {
+        var mouseQuad, normalizedMouse = this.normalizeMouse(mouse);
+
+        if (quad.position) {
+            quad.x = quad.position.x;
+            quad.y = quad.position.y;
+        }
+
+        mouseQuad = { x: normalizedMouse.x, y: normalizedMouse.y, w: 1, h: 1 };
+        return physicsAssistant.quadsCollision(quad, mouseQuad);
     };
 
     return InputAssistant;
