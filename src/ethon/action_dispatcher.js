@@ -74,7 +74,7 @@ define(function (require) {
         this.inputAssistant.on("mousedown", proxy(this, function (mouse, buttonPressed) {
             if (button === buttonPressed) {
                 if (this.inputAssistant.isMouseInsideQuad(quad, mouse)) {
-                    callback(normalizeMouse(mouse));
+                    callback(this.inputAssistant.normalizeMouse(mouse));
                 }
             }
         }));

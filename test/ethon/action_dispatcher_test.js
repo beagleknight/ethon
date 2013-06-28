@@ -63,9 +63,29 @@ define(['jquery', 'ethon/input_assistant', 'ethon/action_dispatcher'], function 
         });
 
         describe("#registerMouseClickAction", function () {
+            it("should register a callback method in response to mouse click inside a quad", function () {
+                var testValue = '';
+
+                actionDispatcher.registerMouseClickAction("MOUSE_LEFT", { x: 0, y: 0, w: 400, h: 400 }, function () {
+                    testValue = 'Mouse click inside canvas';
+                });
+
+                var eventData = new jQuery.Event();
+                eventData.clientX = 200 + canvasRect.left;
+                eventData.clientY = 300 + canvasRect.top;
+                eventData.type = "mousedown";
+                eventData.button = 0; // Left button
+                $(canvas).trigger(eventData);
+
+                expect(testValue).toBe('Mouse click inside canvas');
+            });
         });
 
         describe("#registerMouseReleaseAction", function () {
         });
+    });
+
+    afterEach(function () {
+        $(canvas).remove();
     });
 });

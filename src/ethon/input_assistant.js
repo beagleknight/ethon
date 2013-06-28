@@ -50,12 +50,16 @@ define(function (require) {
     }
 
     function onmousedown(inputAssistant, event) {
+        inputAssistant.mouse.x = event.clientX;
+        inputAssistant.mouse.y = event.clientY;
         inputAssistant.mouse.buttons[event.button] = true;
         inputAssistant.emit("mousedown", inputAssistant.mouse, lut[event.button]);
         dismissEvent(event);
     }
 
     function onmouseup(inputAssistant, event) {
+        inputAssistant.mouse.x = event.clientX;
+        inputAssistant.mouse.y = event.clientY;
         inputAssistant.mouse.buttons[event.button] = false;
         inputAssistant.emit("mouseup", inputAssistant.mouse, lut[event.button]);
     }
@@ -97,7 +101,7 @@ define(function (require) {
             onmousemove(this, event);
         }));
 
-        this.canvas.addEventListener("mousedown", proxy(this, function (event) {
+        $(canvas).on("mousedown", proxy(this, function (event) {
             onmousedown(this, event);
         }));
 
@@ -167,6 +171,7 @@ define(function (require) {
 
         normalizedMouse.x = mouse.x - canvasRect.left;
         normalizedMouse.y = mouse.y - canvasRect.top;
+
         return normalizedMouse;
     }
 
