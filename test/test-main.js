@@ -18,6 +18,16 @@ for (i = 0, l = files.length; i < l; i += 1) {
     }
 }
 
+function triggerEvent(element, options, offset) {
+    var eventData = new jQuery.Event();
+    eventData.clientX = options.clientX + offset.left;
+    eventData.clientY = options.clientY + offset.top;
+    eventData.type = options.type;
+    eventData.button = options.button;
+    eventData.keyCode = options.keyCode;
+    $(element).trigger(eventData);
+}
+
 requirejs.config({
     //Karma serves files from '/base'
     baseUrl: '/base/src',

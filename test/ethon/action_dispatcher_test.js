@@ -26,7 +26,7 @@ define(['jquery', 'ethon/input_assistant', 'ethon/action_dispatcher'], function 
                 triggerEvent('body', {
                     keyCode: 65, // A key
                     type: "keydown",
-                });
+                }, canvasRect);
 
                 expect(testValue).toBe('A key pressed');
             });
@@ -39,7 +39,7 @@ define(['jquery', 'ethon/input_assistant', 'ethon/action_dispatcher'], function 
                 triggerEvent('body', {
                     keyCode: 65, // A key
                     type: "keyup",
-                });
+                }, canvasRect);
 
                 expect(testValue).toBe('A key released');
             });
@@ -55,7 +55,7 @@ define(['jquery', 'ethon/input_assistant', 'ethon/action_dispatcher'], function 
                     clientX: 200,
                     clientY: 300,
                     type: "mousemove",
-                });
+                }, canvasRect);
 
                 expect(testValue).toBe('Mouse motion inside canvas');
             });
@@ -72,7 +72,7 @@ define(['jquery', 'ethon/input_assistant', 'ethon/action_dispatcher'], function 
                     clientY: 300,
                     type: "mousedown",
                     button: 0 // Left button
-                });
+                }, canvasRect);
 
                 expect(testValue).toBe('Mouse click inside canvas');
             });
@@ -85,14 +85,4 @@ define(['jquery', 'ethon/input_assistant', 'ethon/action_dispatcher'], function 
     afterEach(function () {
         $(canvas).remove();
     });
-
-    function triggerEvent(element, options) {
-        var eventData = new jQuery.Event();
-        eventData.clientX = options.clientX + canvasRect.left;
-        eventData.clientY = options.clientY + canvasRect.top;
-        eventData.type = options.type;
-        eventData.button = options.button;
-        eventData.keyCode = options.keyCode;
-        $(element).trigger(eventData);
-    }
 });
