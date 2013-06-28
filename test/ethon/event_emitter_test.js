@@ -26,6 +26,18 @@ define(['ethon/event_emitter'], function (EventEmitter) {
                 expect(testValue).toBe('This function has been called');
             });
 
+            it("should pass arbitrary number of parameters to callback function", function () {
+                var testValue = '';
+
+                eventEmitter.on("an event", function (a, b) {
+                    testValue = 'This function has been called with ' + a + " and " + b;
+                });
+
+                eventEmitter.emit("an event", "david", "manfred");
+
+                expect(testValue).toBe('This function has been called with david and manfred');
+            });
+
             it("should not call other objects listeners", function () {
                 var testValue = '',
                     otherEventEmitter = new EventEmitter();
@@ -56,6 +68,22 @@ define(['ethon/event_emitter'], function (EventEmitter) {
 
                 eventEmitter.broadcast("an event");
                 expect(testValue).toBe(2);
+            });
+
+            it("should pass arbitrary number of parameters to callback function", function () {
+                var testValue = 0,
+                    otherEventEmitter = new EventEmitter();
+
+                otherEventEmitter.on("an event", function (n) {
+                    testValue += n;
+                });
+
+                eventEmitter.on("an event", function (n) {
+                    testValue += n;
+                });
+
+                eventEmitter.broadcast("an event", 4);
+                expect(testValue).toBe(8);
             });
         });
     });
