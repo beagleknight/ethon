@@ -173,7 +173,7 @@ define(function (require) {
         normalizedMouse.y = mouse.y - canvasRect.top;
 
         return normalizedMouse;
-    }
+    };
 
     InputAssistant.prototype.isMouseInsideQuad = function (quad, mouse) {
         var mouseQuad, normalizedMouse = this.normalizeMouse(mouse);

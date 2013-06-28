@@ -29,11 +29,14 @@ module.exports = function(grunt) {
           'dump': true,
           'requirejs': true,
           'beforeEach': true,
+          'afterEach': true,
           'define': true,
           'describe': true,
           'it': true,
           'expect': true,
-          'jQuery': true
+          'jQuery': true,
+          '$': true,
+          'triggerEvent': true
         }
       },
       gruntfile: {

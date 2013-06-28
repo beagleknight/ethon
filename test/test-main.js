@@ -1,3 +1,5 @@
+/*jshint unused:false*/
+
 Object.keys = Object.keys || function (o) {  
     var result = [];  
     for(var name in o) {  

@@ -11,8 +11,7 @@
 define(function (require) {
     "use strict";
 
-    var physicsAssistant = require("ethon/physics_assistant"),
-        proxy            = require("ethon/proxy"),
+    var proxy            = require("ethon/proxy"),
         ActionDispatcher;
 
     ActionDispatcher = function (inputAssistant) {
