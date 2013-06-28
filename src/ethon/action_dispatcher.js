@@ -93,7 +93,7 @@ define(function (require) {
         this.inputAssistant.on("mouseup", proxy(this, function (mouse, buttonReleased) {
             if (button === buttonReleased) {
                 if (this.inputAssistant.isMouseInsideQuad(quad, mouse)) {
-                    callback(normalizeMouse(mouse));
+                    callback(this.inputAssistant.normalizeMouse(mouse));
                 }
             }
         }));

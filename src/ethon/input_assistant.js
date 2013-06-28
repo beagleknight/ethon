@@ -105,7 +105,7 @@ define(function (require) {
             onmousedown(this, event);
         }));
 
-        this.canvas.addEventListener("mouseup", proxy(this, function (event) {
+        $(canvas).on("mouseup", proxy(this, function (event) {
             onmouseup(this, event);
         }));
 

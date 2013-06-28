@@ -79,6 +79,20 @@ define(['jquery', 'ethon/input_assistant', 'ethon/action_dispatcher'], function 
         });
 
         describe("#registerMouseReleaseAction", function () {
+            it("should register a callback method in response to mouse release inside a quad", function () {
+                actionDispatcher.registerMouseReleaseAction("MOUSE_LEFT", { x: 0, y: 0, w: 400, h: 400 }, function () {
+                    testValue = 'Mouse release inside canvas';
+                });
+
+                triggerEvent(canvas, {
+                    clientX: 200,
+                    clientY: 300,
+                    type: "mouseup",
+                    button: 0 // Left button
+                }, canvasRect);
+
+                expect(testValue).toBe('Mouse release inside canvas');
+            });
         });
     });
 
