@@ -14,7 +14,7 @@
 define(function () {
     "use strict";
 
-    return function (methods, object) {
+    return function (object, methods) {
         var o = object || {},
             method;
 
