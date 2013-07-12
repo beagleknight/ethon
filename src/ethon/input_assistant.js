@@ -29,6 +29,7 @@ define(function (require) {
             2:  "MOUSE_RIGHT"
         },
         reservedLut = {
+            32: "KEY_SPACEBAR",
             37: "KEY_LEFT_ARROW",
             38: "KEY_UP_ARROW",
             39: "KEY_RIGHT_ARROW",
@@ -67,7 +68,7 @@ define(function (require) {
     function reservedKey(keyCode) {
         var key;
         for (key in reservedLut) {
-            if (reservedLut.hasOwnProperty(key) && reservedLut[key] === keyCode) {
+            if (reservedLut.hasOwnProperty(key) && parseInt(key, 10) === keyCode) {
                 return true;
             }
         }
