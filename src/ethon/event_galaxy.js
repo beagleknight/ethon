@@ -12,7 +12,9 @@ define(function () {
 
     function register(event, eventEmitter) {
         eventEmitters[event] = eventEmitters[event] || [];
-        eventEmitters[event].push(eventEmitter);
+        if (eventEmitters[event].indexOf(eventEmitter) === -1) {
+            eventEmitters[event].push(eventEmitter);
+        }
     }
 
     function emit(event, args) {

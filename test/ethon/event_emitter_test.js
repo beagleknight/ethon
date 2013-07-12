@@ -85,6 +85,21 @@ define(['ethon/event_emitter'], function (EventEmitter) {
                 eventEmitter.broadcast("an event", 4);
                 expect(testValue).toBe(8);
             });
+
+            it("should not call the same object callbacks twice", function () {
+                var testValue = 0;
+
+                eventEmitter.on("an event", function (n) {
+                    testValue += n;
+                });
+
+                eventEmitter.on("an event", function (n) {
+                    testValue += n;
+                });
+
+                eventEmitter.broadcast("an event", 2);
+                expect(testValue).toBe(4);
+            });
         });
     });
 });
