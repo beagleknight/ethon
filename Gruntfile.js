@@ -12,33 +12,7 @@ module.exports = function(grunt) {
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     // Task configuration.
     jshint: {
-      options: {
-        curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        undef: true,
-        unused: true,
-        boss: true,
-        eqnull: true,
-        browser: true,
-        globals: {
-          'dump': true,
-          'requirejs': true,
-          'beforeEach': true,
-          'afterEach': true,
-          'define': true,
-          'describe': true,
-          'it': true,
-          'expect': true,
-          'jQuery': true,
-          '$': true,
-          'triggerEvent': true
-        }
-      },
+      options: grunt.file.readJSON('.jshintrc'),
       gruntfile: {
         src: 'Gruntfile.js'
       },
@@ -79,6 +53,17 @@ module.exports = function(grunt) {
         files: '<%= jshint.lib_test.src %>',
         tasks: ['karma:unit:run'] //NOTE the :run flag
       }
+    },
+    plato: {
+        options: {
+            title: 'Ethon',
+            jshint: grunt.file.readJSON('.jshintrc')
+        },
+        metrics: {
+            files: {
+                'dist/metrics': ['src/**/*.js']
+            }
+        }
     }
   });
 
@@ -87,6 +72,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-plato');
 
   // Default task.
   grunt.registerTask('default', ['jshint', 'requirejs']);

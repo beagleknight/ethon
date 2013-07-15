@@ -1,0 +1,27 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "sub": true,
+  "undef": true,
+  "unused": true,
+  "boss": true,
+  "eqnull": true,
+  "browser": true,
+  "globals": {
+    "dump": true,
+    "requirejs": true,
+    "beforeEach": true,
+    "afterEach": true,
+    "define": true,
+    "describe": true,
+    "it": true,
+    "expect": true,
+    "jQuery": true,
+    "$": true,
+    "triggerEvent": true
+  }
+}
