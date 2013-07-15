@@ -64,7 +64,8 @@ module.exports = function(grunt) {
                 'dist/metrics': ['src/**/*.js']
             }
         }
-    }
+    },
+    clean: ['dist/*.js', 'dist/metrics']
   });
 
   // These plugins provide necessary tasks.
@@ -73,8 +74,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-plato');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'requirejs']);
+  grunt.registerTask('default', ['jshint', 'clean', 'requirejs']);
 
 };
