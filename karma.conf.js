@@ -12,6 +12,7 @@ files = [
   JASMINE_ADAPTER,
   REQUIRE,
   REQUIRE_ADAPTER,
+  {pattern: 'bower_components/**/*.js', included: false},
   {pattern: 'src/**/*.js', included: false},
   {pattern: 'test/**/*_test.js', included: false},
   'test/test-main.js'
