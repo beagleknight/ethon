@@ -37,7 +37,8 @@ module.exports = function(grunt) {
     karma: {
       unit: {
         configFile: 'karma.conf.js',
-        background: true
+        background: false,
+        singleRun: true
       }
     },
     watch: {
@@ -77,6 +78,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'clean', 'requirejs']);
+  grunt.registerTask('default', ['jshint', 'karma', 'clean', 'requirejs']);
 
 };
