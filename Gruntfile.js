@@ -54,18 +54,10 @@ module.exports = function(grunt) {
         }
     },
     watch: {
-        jshint: {
+        all: {
             files: '<%= jshint.ethon.files.src %>',
-            tasks: ['jshint']
-        },
-        requirejs: {
-          files: '<%= jshint.ethon.files.src %>',
-          tasks: ['requirejs:compile']
-        },
-        karma: {
-            files: ['<%= jshint.ethon.files.src %>', 'test/**/*.js'],
-            tasks: ['karma:unit:run']
-        },
+            tasks: ['jshint', 'karma:unit:run', 'requirejs']
+        }
     }
   });
 
