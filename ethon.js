@@ -1810,7 +1810,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
  * @requires map
  * @requires gui
  */
-define('game',['require','ethon/request_animation_frame','ethon/proxy','ethon/inherit','ethon/event_emitter','ethon/render_assistant','ethon/input_assistant','ethon/action_dispatcher','ethon/resource_assistant','ethon/gui','ethon/scene'],function (require) {
+define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','ethon/inherit','ethon/event_emitter','ethon/render_assistant','ethon/input_assistant','ethon/action_dispatcher','ethon/resource_assistant','ethon/gui','ethon/scene'],function (require) {
     
 
     var requestAnimationFrame = require("ethon/request_animation_frame"),
@@ -2078,3 +2078,9 @@ define('game',['require','ethon/request_animation_frame','ethon/proxy','ethon/in
 
     return Game;
 });
+
+require(["ethon/game"], function () {
+    
+});
+
+define("main", function(){});

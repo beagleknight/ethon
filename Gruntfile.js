@@ -43,7 +43,7 @@ module.exports = function(grunt) {
         compile: {
             options: {
                 baseUrl: "src",
-                name: "game",
+                name: "main",
                 paths: {
                     jquery: "empty:",
                     ethon: "."
