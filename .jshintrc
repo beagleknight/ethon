@@ -12,16 +12,18 @@
   "eqnull": true,
   "browser": true,
   "globals": {
-    "dump": true,
-    "requirejs": true,
-    "beforeEach": true,
-    "afterEach": true,
-    "define": true,
-    "describe": true,
-    "it": true,
-    "expect": true,
-    "jQuery": true,
-    "$": true,
-    "triggerEvent": true
+    "dump": false,
+    "require": false,
+    "requirejs": false,
+    "beforeEach": false,
+    "afterEach": false,
+    "define": false,
+    "describe": false,
+    "it": false,
+    "expect": false,
+    "jQuery": false,
+    "$": false,
+    "triggerEvent": false,
+    "console": false
   }
 }

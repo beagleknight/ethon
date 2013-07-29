@@ -15,7 +15,7 @@ var tests = [];
 var i, l;
 
 for (i = 0, l = files.length; i < l; i += 1) {
-    if (/test\.js$/.test(files[i])) {
+    if (/_test\.js$/.test(files[i])) {
         tests.push(files[i]);
     }
 }
@@ -35,7 +35,7 @@ requirejs.config({
     baseUrl: '/base/src',
 
     paths: {
-      ethon: "./ethon",
+      ethon: ".",
       jquery: "../bower_components/jquery/jquery"
     },
 

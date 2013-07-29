@@ -3,8 +3,7 @@
 
 
 // base path, that will be used to resolve files and exclude
-basePath = '';
-
+basePath = '..';
 
 // list of files / patterns to load in the browser
 files = [
@@ -15,13 +14,12 @@ files = [
   {pattern: 'bower_components/**/*.js', included: false},
   {pattern: 'src/**/*.js', included: false},
   {pattern: 'test/**/*_test.js', included: false},
-  'test/test-main.js'
+  'test/init.js'
 ];
 
 
 // list of files to exclude
 exclude = [
-  'src/main.js' 
 ];
 
 

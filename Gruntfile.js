@@ -1,6 +1,5 @@
 /*global module:false*/
 module.exports = function(grunt) {
-
   // Project configuration.
   grunt.initConfig({
     // Metadata.
@@ -12,72 +11,72 @@ module.exports = function(grunt) {
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     // Task configuration.
     jshint: {
-      options: grunt.file.readJSON('.jshintrc'),
-      gruntfile: {
-        src: 'Gruntfile.js'
-      },
-      lib_test: {
-        src: ['src/**/*.js', 'test/**/*.js']
-      }
-    },
-    requirejs: {
-      compile: {
-        options: {
-          baseUrl: "src/ethon",
-          name: "main",
-          paths: {
-            ethon: ".",
-            jquery: "../../bower_components/jquery/jquery"
-          },
-          mainConfigFile: "app.build.js",
-          out: "dist/ethon.<%= pkg.version %>.js"
-        }
-      }
-    },
-    karma: {
-      unit: {
-        configFile: 'karma.conf.js',
-        background: false,
-        singleRun: true
-      }
-    },
-    watch: {
-      gruntfile: {
-        files: '<%= jshint.gruntfile.src %>',
-        tasks: ['jshint:gruntfile']
-      },
-      jshint: {
-        files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test']
-      },
-      karma: {
-        files: '<%= jshint.lib_test.src %>',
-        tasks: ['karma:unit:run'] //NOTE the :run flag
-      }
-    },
-    plato: {
-        options: {
-            title: 'Ethon',
-            jshint: grunt.file.readJSON('.jshintrc')
-        },
-        metrics: {
+        ethon: {
+            options: {
+                jshintrc: '.jshintrc'
+            },
             files: {
-                'dist/metrics': ['src/**/*.js']
+                src: ['src/**/*.js', 'test/**/*.js']
+            }
+        },
+        gruntfile: {
+            options: {
+                jshintrc: '.jshintrc'
+            },
+            files: {
+                src: 'Gruntfile.js'
             }
         }
     },
-    clean: ['dist/*.js', 'dist/metrics']
+    karma: {
+        unit: {
+            configFile: 'config/karma.conf.js',
+            background: true,
+        },
+        build: {
+            configFile: 'config/karma.conf.js',
+            background: false,
+            singleRun: true
+        }
+    },
+    requirejs: {
+        compile: {
+            options: {
+                baseUrl: "src",
+                name: "game",
+                paths: {
+                    jquery: "empty:",
+                    ethon: "."
+                },
+                out: "ethon.js",
+                optimize: "none"
+            }
+        }
+    },
+    watch: {
+        jshint: {
+            files: '<%= jshint.ethon.files.src %>',
+            tasks: ['jshint']
+        },
+        requirejs: {
+          files: '<%= jshint.ethon.files.src %>',
+          tasks: ['requirejs:compile']
+        },
+        karma: {
+            files: ['<%= jshint.ethon.files.src %>', 'test/**/*.js'],
+            tasks: ['karma:unit:run']
+        },
+    }
   });
 
   // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-plato');
-  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'karma', 'clean', 'requirejs']);
+  grunt.registerTask('dev', ['karma:unit', 'watch']);
+  grunt.registerTask('default', ['jshint', 'karma:build', 'requirejs']);
 
 };
