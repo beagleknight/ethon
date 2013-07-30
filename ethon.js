@@ -701,7 +701,10 @@ define('ethon/input_assistant',['require','ethon/event_emitter','ethon/physics_a
             onmousemove(this, event);
         }));
 
-        $(canvas).on("mousedown", proxy(this, function (event) {
+        $(canvas).on("mousedown touchstart", proxy(this, function (event) {
+            if (event.type === "touchstart") {
+                event = event.originalEvent.touches[0];
+            }
             onmousedown(this, event);
         }));
 
