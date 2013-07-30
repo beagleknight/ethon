@@ -67,12 +67,26 @@ define(['jquery', 'ethon/input_assistant', 'ethon/action_dispatcher'], function 
                     testValue = 'Mouse click inside canvas';
                 });
 
-                triggerEvent(canvas, {
-                    clientX: 200,
-                    clientY: 300,
-                    type: "mousedown",
-                    button: 0 // Left button
-                }, canvasRect);
+                if ('ontouchstart' in document.documentElement) {
+                    triggerEvent(canvas, {
+                        type: "touchstart",
+                        originalEvent: {
+                            touches: [
+                                {
+                                    clientX: 200,
+                                    clientY: 300
+                                }
+                            ]
+                        }
+                    }, canvasRect);
+                } else {
+                    triggerEvent(canvas, {
+                        clientX: 200,
+                        clientY: 300,
+                        type: "mousedown",
+                        button: 0 // Left button
+                    }, canvasRect);
+                }
 
                 expect(testValue).toBe('Mouse click inside canvas');
             });

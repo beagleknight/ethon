@@ -639,8 +639,10 @@ define('ethon/input_assistant',['require','ethon/event_emitter','ethon/physics_a
     // Helper functions for manage events
     // Read document events and prevent default behavior
     function dismissEvent(event) {
-        event.preventDefault();
-        event.stopPropagation();
+        if (event.preventDefault) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
     }
 
     function onmousemove(inputAssistant, event) {
@@ -652,6 +654,9 @@ define('ethon/input_assistant',['require','ethon/event_emitter','ethon/physics_a
     function onmousedown(inputAssistant, event) {
         inputAssistant.mouse.x = event.clientX;
         inputAssistant.mouse.y = event.clientY;
+        if (event.button === undefined) {
+            event.button = 0; // FORCE MOUSE_LEFT if touch event
+        }
         inputAssistant.mouse.buttons[event.button] = true;
         inputAssistant.emit("mousedown", inputAssistant.mouse, lut[event.button]);
         dismissEvent(event);
@@ -701,12 +706,17 @@ define('ethon/input_assistant',['require','ethon/event_emitter','ethon/physics_a
             onmousemove(this, event);
         }));
 
-        $(canvas).on("mousedown touchstart", proxy(this, function (event) {
-            if (event.type === "touchstart") {
+        if ('ontouchstart' in document.documentElement) {
+            $(canvas).on("touchstart", proxy(this, function (event) {
                 event = event.originalEvent.touches[0];
-            }
-            onmousedown(this, event);
-        }));
+                onmousedown(this, event);
+            }));
+
+        } else {
+            $(canvas).on("mousedown", proxy(this, function (event) {
+                onmousedown(this, event);
+            }));
+        }
 
         $(canvas).on("mouseup", proxy(this, function (event) {
             onmouseup(this, event);

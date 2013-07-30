@@ -27,6 +27,7 @@ function triggerEvent(element, options, offset) {
     eventData.type = options.type;
     eventData.button = options.button;
     eventData.keyCode = options.keyCode;
+    eventData.originalEvent = options.originalEvent;
     $(element).trigger(eventData);
 }
 
