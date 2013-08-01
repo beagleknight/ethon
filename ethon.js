@@ -187,7 +187,7 @@ define('ethon/event_emitter',['require','ethon/event_galaxy'],function (require)
 define('ethon/render_assistant',[],function () {
     
 
-    var canvas, ctx;
+    var canvas, ctx, options = {};
 
     /**
      * Given a canvas save for a later usage and
@@ -374,6 +374,14 @@ define('ethon/render_assistant',[],function () {
         ctx.drawImage(image, sx, sy, frameWidth, frameHeight, x, y, frameWidth, frameHeight);
     }
 
+    function setOptions(options) {
+        options = options || { mobile: false };
+    }
+
+    function isMobile() {
+        return options.mobile;
+    }
+
     return {
         setCanvas: setCanvas,
         getContext: getContext,
@@ -384,7 +392,9 @@ define('ethon/render_assistant',[],function () {
         drawText: drawText,
         drawImage: drawImage,
         drawSubImage: drawSubImage,
-        getCanvasRect: getCanvasRect
+        getCanvasRect: getCanvasRect,
+        setOptions: setOptions,
+        isMobile: isMobile
     };
 });
 
@@ -2003,9 +2013,10 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
     //    //this.setActiveScene("loading");
     //    //loadingInterval = setInterval(loadingCallback, 500);
     //};
-    Game.prototype.start = function (settings) {
+    Game.prototype.start = function (settings, options) {
         this.clean();
         this.gameLoaded = false;
+        renderAssistant.setOptions(options);
         resourceAssistant.loadSettings(settings, proxy(this, function () {
             resourceAssistant.loadGUI(this, proxy(this, function () {
                 this.broadcast("game_loaded");

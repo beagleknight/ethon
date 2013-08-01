@@ -8,7 +8,7 @@
 define(function () {
     "use strict";
 
-    var canvas, ctx;
+    var canvas, ctx, options = {};
 
     /**
      * Given a canvas save for a later usage and
@@ -195,6 +195,14 @@ define(function () {
         ctx.drawImage(image, sx, sy, frameWidth, frameHeight, x, y, frameWidth, frameHeight);
     }
 
+    function setOptions(options) {
+        options = options || { mobile: false };
+    }
+
+    function isMobile() {
+        return options.mobile;
+    }
+
     return {
         setCanvas: setCanvas,
         getContext: getContext,
@@ -205,6 +213,8 @@ define(function () {
         drawText: drawText,
         drawImage: drawImage,
         drawSubImage: drawSubImage,
-        getCanvasRect: getCanvasRect
+        getCanvasRect: getCanvasRect,
+        setOptions: setOptions,
+        isMobile: isMobile
     };
 });

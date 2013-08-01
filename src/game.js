@@ -193,9 +193,10 @@ define(function (require) {
     //    //this.setActiveScene("loading");
     //    //loadingInterval = setInterval(loadingCallback, 500);
     //};
-    Game.prototype.start = function (settings) {
+    Game.prototype.start = function (settings, options) {
         this.clean();
         this.gameLoaded = false;
+        renderAssistant.setOptions(options);
         resourceAssistant.loadSettings(settings, proxy(this, function () {
             resourceAssistant.loadGUI(this, proxy(this, function () {
                 this.broadcast("game_loaded");
