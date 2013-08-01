@@ -20,7 +20,7 @@ define(function (require) {
         proxy                 = require("ethon/proxy"),
         inherit               = require("ethon/inherit"),
         EventEmitter          = require("ethon/event_emitter"),
-        renderAssistant       = require("ethon/render_assistant"),
+        RenderAssistant       = require("ethon/render_assistant"),
         InputAssistant        = require("ethon/input_assistant"),
         ActionDispatcher      = require("ethon/action_dispatcher"),
         resourceAssistant     = require("ethon/resource_assistant"),
@@ -51,7 +51,7 @@ define(function (require) {
         EventEmitter.call(this);
         options = options || { showFPS: false };
 
-        renderAssistant.setCanvas(canvas, width, height);
+        this.renderAssistant = new RenderAssistant(canvas, width, height);
         this.inputAssistant = new InputAssistant(canvas);
         this.actionDispatcher = new ActionDispatcher(this.inputAssistant);
         this.guiElement = guiElement;
@@ -64,7 +64,7 @@ define(function (require) {
 
         showFPS = options.showFPS;
 
-        canvasRect = renderAssistant.getCanvasRect();
+        canvasRect = this.renderAssistant.getCanvasRect();
         this.actionDispatcher.registerMouseClickAction("MOUSE_LEFT", {
             x: 0,
             y: 0,
@@ -155,11 +155,11 @@ define(function (require) {
      * @method render
      */
     Game.prototype.render = function () {
-        this.scenes[this.activeScene].render(renderAssistant);
-        this.scenes[this.activeScene].afterRender(renderAssistant);
+        this.scenes[this.activeScene].render(this.renderAssistant);
+        this.scenes[this.activeScene].afterRender(this.renderAssistant);
 
         if (showFPS) {
-            renderAssistant.drawText(10, 10, "FPS: " + fps);
+            this.renderAssistant.drawText(10, 10, "FPS: " + fps);
         }
     };
 
@@ -196,7 +196,7 @@ define(function (require) {
     Game.prototype.start = function (settings, options) {
         this.clean();
         this.gameLoaded = false;
-        renderAssistant.setOptions(options);
+        this.renderAssistant.setOptions(options);
         resourceAssistant.loadSettings(settings, proxy(this, function () {
             resourceAssistant.loadGUI(this, proxy(this, function () {
                 this.broadcast("game_loaded");

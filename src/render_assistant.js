@@ -8,32 +8,23 @@
 define(function () {
     "use strict";
 
-    var canvas, ctx, options = {};
+    var RenderAssistant;
 
-    /**
-     * Given a canvas save for a later usage and
-     * get the context for 2d drawing.
-     *
-     * @method setCanvas
-     * @param {Object} givenCanvas Canvas for working on
-     * @param {Number} w Width of the Canvas
-     * @param {Number} h height of the Canvas
-     */
-    function setCanvas(givenCanvas, w, h) {
-        canvas = givenCanvas;
-        canvas.width = w;
-        canvas.height = h;
-        canvas.style.zIndex = 1;
-        ctx = canvas.getContext("2d");
-    }
+    RenderAssistant = function (canvas, width, height) {
+        this.canvas = canvas;
+        this.canvas.width = width;
+        this.canvas.height = height;
+        this.canvas.style.zIndex = 1;
+        this.ctx = this.canvas.getContext("2d");
+    };
 
     /**
      * Returns the working canvas bounding client rect.
      *
      * @method getCanvasRect
      */
-    function getCanvasRect() {
-        var canvasRect = canvas.getBoundingClientRect(),
+    RenderAssistant.prototype.getCanvasRect = function () {
+        var canvasRect = this.canvas.getBoundingClientRect(),
             rect       = {
                 left   : canvasRect.left,
                 top    : canvasRect.top,
@@ -46,26 +37,26 @@ define(function () {
         rect.top  += rect.height - rect.height;
 
         return rect;
-    }
+    };
 
     /**
      * Returns the working canvas context
      *
      * @method getContext
      */
-    function getContext() {
-        return ctx;
-    }
+    RenderAssistant.prototype.getContext = function () {
+        return this.ctx;
+    };
 
     /**
      * Clear canvas deleting its content.
      *
      * @method clear
      */
-    function clear() {
-        var width = canvas.width;
-        canvas.width = width;
-    }
+    RenderAssistant.prototype.clear = function () {
+        var width = this.canvas.width;
+        this.canvas.width = width;
+    };
 
     /**
      * Draw a line from origin to dest.
@@ -77,17 +68,17 @@ define(function () {
      * @param {Number} dy Destination on the y-axis
      * @param {String} strokeStyle Identifier of the style to stroke polygon
      */
-    function drawLine(ox, oy, dx, dy, strokeStyle) {
-        ctx.save();
+    RenderAssistant.prototype.drawLine = function (ox, oy, dx, dy, strokeStyle) {
+        this.ctx.save();
         if (strokeStyle !== undefined) {
-            ctx.strokeStyle = strokeStyle;
+            this.ctx.strokeStyle = strokeStyle;
         }
-        ctx.beginPath();
-        ctx.moveTo(ox, oy);
-        ctx.lineTo(dx, dy);
-        ctx.stroke();
-        ctx.restore();
-    }
+        this.ctx.beginPath();
+        this.ctx.moveTo(ox, oy);
+        this.ctx.lineTo(dx, dy);
+        this.ctx.stroke();
+        this.ctx.restore();
+    };
 
     /**
      * Draw a quad to the specific position given dimensions.
@@ -99,18 +90,18 @@ define(function () {
      * @param {Number} h Quad's height
      * @param {String} fillStyle Identifier of the style to fill polygon
      */
-    function drawQuad(x, y, w, h, fillStyle, strokeStyle) {
-        ctx.save();
+    RenderAssistant.prototype.drawQuad = function (x, y, w, h, fillStyle, strokeStyle) {
+        this.ctx.save();
         if (fillStyle !== undefined) {
-            ctx.fillStyle = fillStyle;
-            ctx.fillRect(x, y, w, h);
+            this.ctx.fillStyle = fillStyle;
+            this.ctx.fillRect(x, y, w, h);
         }
         if (strokeStyle !== undefined) {
-            ctx.strokeStyle = strokeStyle;
-            ctx.strokeRect(x, y, w, h);
+            this.ctx.strokeStyle = strokeStyle;
+            this.ctx.strokeRect(x, y, w, h);
         }
-        ctx.restore();
-    }
+        this.ctx.restore();
+    };
 
     /**
      * Draw a circle with center at the position and radius given.
@@ -121,17 +112,17 @@ define(function () {
      * @param {Number} r Circle's radius
      * @param {String} fillStyle Identifier of the style to fill polygon
      */
-    function drawCircle(x, y, r, fillStyle) {
-        ctx.save();
+    RenderAssistant.prototype.drawCircle = function (x, y, r, fillStyle) {
+        this.ctx.save();
         if (fillStyle !== undefined) {
-            ctx.fillStyle = fillStyle;
+            this.ctx.fillStyle = fillStyle;
         }
-        ctx.beginPath();
-        ctx.arc(x, y, r, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.fill();
-        ctx.restore();
-    }
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, r, 0, 2 * Math.PI);
+        this.ctx.stroke();
+        this.ctx.fill();
+        this.ctx.restore();
+    };
 
     /**
      * Draw text to the specific position.
@@ -143,17 +134,17 @@ define(function () {
      * @param {Object} options Object representing fill style and
      * font attributes.
      */
-    function drawText(x, y, text, options) {
-        ctx.save();
+    RenderAssistant.prototype.drawText = function (x, y, text, options) {
+        this.ctx.save();
         if (options && options.font !== undefined) {
-            ctx.font = options.font;
+            this.ctx.font = options.font;
         }
         if (options && options.fillStyle !== undefined) {
-            ctx.fillStyle = options.fillStyle;
+            this.ctx.fillStyle = options.fillStyle;
         }
-        ctx.fillText(text, x, y);
-        ctx.restore();
-    }
+        this.ctx.fillText(text, x, y);
+        this.ctx.restore();
+    };
 
     /**
      * Draws image to the specific position.
@@ -163,11 +154,11 @@ define(function () {
      * @param {Number} y Position on the y-axis
      * @param {Object} image Image to be drawing
      */
-    function drawImage(x, y, image, width, height) {
+    RenderAssistant.prototype.drawImage = function (x, y, image, width, height) {
         width = width === undefined ? image.width : width;
         height = height === undefined ? image.height : height;
-        ctx.drawImage(image, x, y, width, height);
-    }
+        this.ctx.drawImage(image, x, y, width, height);
+    };
 
     /**
      * Draws image contained on another image to the specific position.
@@ -180,7 +171,7 @@ define(function () {
      * @param {Number} frameWidth Width of a frame in pixels
      * @param {Number} frameHeight Height of a frame in pixels
      */
-    function drawSubImage(x, y, image, frameId, frameWidth, frameHeight) {
+    RenderAssistant.prototype.drawSubImage = function (x, y, image, frameId, frameWidth, frameHeight) {
         var sx,
             sy,
             rows,
@@ -192,29 +183,13 @@ define(function () {
         sx = (frameId % cols) * frameWidth;
         sy = Math.floor(frameId / cols) * frameHeight;
 
-        ctx.drawImage(image, sx, sy, frameWidth, frameHeight, x, y, frameWidth, frameHeight);
-    }
-
-    function setOptions(options) {
-        options = options || { mobile: false };
-    }
-
-    function isMobile() {
-        return options.mobile;
-    }
-
-    return {
-        setCanvas: setCanvas,
-        getContext: getContext,
-        clear: clear,
-        drawLine: drawLine,
-        drawQuad: drawQuad,
-        drawCircle: drawCircle,
-        drawText: drawText,
-        drawImage: drawImage,
-        drawSubImage: drawSubImage,
-        getCanvasRect: getCanvasRect,
-        setOptions: setOptions,
-        isMobile: isMobile
+        this.ctx.drawImage(image, sx, sy, frameWidth, frameHeight, x, y, frameWidth, frameHeight);
     };
+
+    RenderAssistant.prototype.setOptions = function (options) {
+        options = options || { mobile: false };
+        this.mobile = options.mobile;
+    };
+
+    return RenderAssistant;
 });
