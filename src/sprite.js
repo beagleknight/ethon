@@ -78,6 +78,7 @@ define(function (require) {
 
         ctx.translate(this.width / 2, this.height / 2);
         ctx.rotate(this.rotation * (Math.PI / 180));
+        ctx.scale(this.scale, this.scale);
         ctx.translate(-this.width / 2, -this.height / 2);
 
         if (this.currentAnimation !== null && this.animations[this.currentAnimation].length > 0) {
