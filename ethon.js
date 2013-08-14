@@ -1394,7 +1394,7 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
 
         for (prop in object) {
             if (object.hasOwnProperty(prop)) {
-                if (prop === 'image') {
+                if (prop === 'image' && object[prop] !== "") {
                     imagesToLoad += 1;
                     loadImage(object[prop], imageLoadedCallback(object, prop));
                 } else {
@@ -1436,8 +1436,10 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
      * TODO
      */
     function loadSettings(value, callback) {
+        console.log("Start load settings...");
         var loadingImagesInterval,
             loadingImagesCallback = function () {
+                console.log("Loading assets: " + imagesLoaded + "/" + imagesToLoad + " images and " + soundsLoaded + "/" + soundsToLoad + " sounds...");
                 if (imagesToLoad === imagesLoaded && soundsToLoad === soundsLoaded) {
                     clearInterval(loadingImagesInterval);
                     callback();
@@ -1530,12 +1532,13 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
  * @requires EventEmitter
  * @requires proxy
  */
-define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy'],function (require) {
+define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy','jquery'],function (require) {
     
 
     var inherit           = require("ethon/inherit"),
         EventEmitter      = require("ethon/event_emitter"),
         proxy             = require("ethon/proxy"),
+        $                 = require("jquery"),
         GUI;
 
     String.prototype.camelize = function () {
@@ -1659,12 +1662,23 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         EventEmitter.call(this);
 
         this.name = elementDesc.name;
+        this.$el = $(this.el);
+        this.$el.addClass("component");
         this.el.style.position = "absolute";
         this.el.style.left = elementDesc.pos_x + "px";
         this.el.style.top = elementDesc.pos_y + "px";
         this.el.style.border = "0";
         this.el.style.padding = "0";
         this.el.style.zIndex = 2;
+
+        if (elementDesc.image !== "" && elementDesc.image !== undefined && elementDesc.image !== null) {
+            this.$el.css("background-image", "url(" + image.src + ")");
+            this.el.style.width = image.width + "px";
+            this.el.style.height = image.height + "px";
+        } else {
+            this.el.style.width = elementDesc.width + "px";
+            this.el.style.height = elementDesc.height + "px";
+        }
 
         if (elementDesc.style !== undefined && elementDesc.style !== null) {
             cssRules = elementDesc.style.split(";");
@@ -1674,17 +1688,9 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
 
                 if (prop !== "") {
                     this.el.style[prop] = value;
+                    this.$el.css(prop, value);
                 }
             }
-        }
-
-        if (elementDesc.image !== undefined && elementDesc.image !== null) {
-            this.el.style.background = "url(" + image.src + ") no-repeat";
-            this.el.style.width = image.width + "px";
-            this.el.style.height = image.height + "px";
-        } else {
-            this.el.style.width = elementDesc.width + "px";
-            this.el.style.height = elementDesc.height + "px";
         }
 
         if (elementDesc.text !== undefined && elementDesc.text !== null) {

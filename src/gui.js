@@ -15,6 +15,7 @@ define(function (require) {
     var inherit           = require("ethon/inherit"),
         EventEmitter      = require("ethon/event_emitter"),
         proxy             = require("ethon/proxy"),
+        $                 = require("jquery"),
         GUI;
 
     String.prototype.camelize = function () {
@@ -138,12 +139,23 @@ define(function (require) {
         EventEmitter.call(this);
 
         this.name = elementDesc.name;
+        this.$el = $(this.el);
+        this.$el.addClass("component");
         this.el.style.position = "absolute";
         this.el.style.left = elementDesc.pos_x + "px";
         this.el.style.top = elementDesc.pos_y + "px";
         this.el.style.border = "0";
         this.el.style.padding = "0";
         this.el.style.zIndex = 2;
+
+        if (elementDesc.image !== "" && elementDesc.image !== undefined && elementDesc.image !== null) {
+            this.$el.css("background-image", "url(" + image.src + ")");
+            this.el.style.width = image.width + "px";
+            this.el.style.height = image.height + "px";
+        } else {
+            this.el.style.width = elementDesc.width + "px";
+            this.el.style.height = elementDesc.height + "px";
+        }
 
         if (elementDesc.style !== undefined && elementDesc.style !== null) {
             cssRules = elementDesc.style.split(";");
@@ -153,17 +165,9 @@ define(function (require) {
 
                 if (prop !== "") {
                     this.el.style[prop] = value;
+                    this.$el.css(prop, value);
                 }
             }
-        }
-
-        if (elementDesc.image !== undefined && elementDesc.image !== null) {
-            this.el.style.background = "url(" + image.src + ") no-repeat";
-            this.el.style.width = image.width + "px";
-            this.el.style.height = image.height + "px";
-        } else {
-            this.el.style.width = elementDesc.width + "px";
-            this.el.style.height = elementDesc.height + "px";
         }
 
         if (elementDesc.text !== undefined && elementDesc.text !== null) {

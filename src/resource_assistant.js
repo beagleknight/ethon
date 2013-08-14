@@ -74,7 +74,7 @@ define(function (require) {
 
         for (prop in object) {
             if (object.hasOwnProperty(prop)) {
-                if (prop === 'image') {
+                if (prop === 'image' && object[prop] !== "") {
                     imagesToLoad += 1;
                     loadImage(object[prop], imageLoadedCallback(object, prop));
                 } else {
@@ -116,8 +116,10 @@ define(function (require) {
      * TODO
      */
     function loadSettings(value, callback) {
+        console.log("Start load settings...");
         var loadingImagesInterval,
             loadingImagesCallback = function () {
+                console.log("Loading assets: " + imagesLoaded + "/" + imagesToLoad + " images and " + soundsLoaded + "/" + soundsToLoad + " sounds...");
                 if (imagesToLoad === imagesLoaded && soundsToLoad === soundsLoaded) {
                     clearInterval(loadingImagesInterval);
                     callback();
