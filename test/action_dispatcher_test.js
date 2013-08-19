@@ -51,11 +51,25 @@ define(['jquery', 'ethon/input_assistant', 'ethon/action_dispatcher'], function 
                     testValue = 'Mouse motion inside canvas';
                 });
 
-                triggerEvent(canvas, {
-                    clientX: 200,
-                    clientY: 300,
-                    type: "mousemove",
-                }, canvasRect);
+                if ('ontouchstart' in document.documentElement) {
+                    triggerEvent(canvas, {
+                        type: "touchmove",
+                        originalEvent: {
+                            touches: [
+                                {
+                                    clientX: 200,
+                                    clientY: 300
+                                }
+                            ]
+                        }
+                    }, canvasRect);
+                } else {
+                    triggerEvent(canvas, {
+                        clientX: 200,
+                        clientY: 300,
+                        type: "mousemove",
+                    }, canvasRect);
+                }
 
                 expect(testValue).toBe('Mouse motion inside canvas');
             });
@@ -98,12 +112,29 @@ define(['jquery', 'ethon/input_assistant', 'ethon/action_dispatcher'], function 
                     testValue = 'Mouse release inside canvas';
                 });
 
-                triggerEvent(canvas, {
-                    clientX: 200,
-                    clientY: 300,
-                    type: "mouseup",
-                    button: 0 // Left button
-                }, canvasRect);
+                if ('ontouchstart' in document.documentElement) {
+                    triggerEvent(canvas, {
+                        type: "touchmove",
+                        originalEvent: {
+                            touches: [
+                                {
+                                    clientX: 200,
+                                    clientY: 300
+                                }
+                            ]
+                        }
+                    }, canvasRect);
+                    triggerEvent(canvas, {
+                        type: "touchend"
+                    }, canvasRect);
+                } else {
+                    triggerEvent(canvas, {
+                        clientX: 200,
+                        clientY: 300,
+                        type: "mouseup",
+                        button: 0 // Left button
+                    }, canvasRect);
+                }
 
                 expect(testValue).toBe('Mouse release inside canvas');
             });

@@ -42,7 +42,7 @@ define(function (require) {
     function dismissEvent(event) {
         if (event.preventDefault) {
             event.preventDefault();
-            event.stopPropagation();
+            //event.stopPropagation();
         }
     }
 
@@ -66,6 +66,9 @@ define(function (require) {
     function onmouseup(inputAssistant, event) {
         inputAssistant.mouse.x = event.clientX;
         inputAssistant.mouse.y = event.clientY;
+        if (event.button === undefined) {
+            event.button = 0; // FORCE MOUSE_LEFT if touch event
+        }
         inputAssistant.mouse.buttons[event.button] = false;
         inputAssistant.emit("mouseup", inputAssistant.mouse, lut[event.button]);
     }
@@ -103,25 +106,40 @@ define(function (require) {
         EventEmitter.call(this);
         this.canvas = canvas;
 
-        $(canvas).on("mousemove", proxy(this, function (event) {
-            onmousemove(this, event);
-        }));
-
         if ('ontouchstart' in document.documentElement) {
+            var lastTouch = null;
+
             $(canvas).on("touchstart", proxy(this, function (event) {
-                event = event.originalEvent.touches[0];
-                onmousedown(this, event);
+                onmousedown(this, event.originalEvent.touches[0]);
+                dismissEvent(event);
             }));
 
+            $(canvas).on("touchmove", proxy(this, function (event) {
+                lastTouch = event.originalEvent.touches[0];
+                onmousemove(this, lastTouch);
+                dismissEvent(event);
+            }));
+
+            $(canvas).on("touchend", proxy(this, function (event) {
+                if (lastTouch) {
+                    onmouseup(this, lastTouch);
+                    dismissEvent(event);
+                    lastTouch = null;
+                }
+            }));
         } else {
             $(canvas).on("mousedown", proxy(this, function (event) {
                 onmousedown(this, event);
             }));
-        }
 
-        $(canvas).on("mouseup", proxy(this, function (event) {
-            onmouseup(this, event);
-        }));
+            $(canvas).on("mousemove", proxy(this, function (event) {
+                onmousemove(this, event);
+            }));
+
+            $(canvas).on("mouseup", proxy(this, function (event) {
+                onmouseup(this, event);
+            }));
+        }
 
         $(canvas).on("contextmenu", proxy(this, function (event) {
             dismissEvent(event);
@@ -149,7 +167,7 @@ define(function (require) {
     /**
      * Check if a key is pressed.
      *
-     * @method isKeyPressed
+     * @method isKeyPresseD
      * @param {String} keyCode Identifier of the key. See lut object.
      * @return true when key is pressed. 
      */
