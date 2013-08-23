@@ -164,7 +164,6 @@ define(function (require) {
                 value = cssRules[i].split(":")[1];
 
                 if (prop !== "") {
-                    this.el.style[prop] = value;
                     this.$el.css(prop, value);
                 }
             }
