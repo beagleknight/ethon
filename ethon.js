@@ -1691,6 +1691,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
 
         if (elementDesc.image !== "" && elementDesc.image !== undefined && elementDesc.image !== null) {
             this.$el.css("background-image", "url(" + image.src + ")");
+            this.$el.css("background-color", "transparent");
             this.el.style.width = image.width + "px";
             this.el.style.height = image.height + "px";
         } else {
