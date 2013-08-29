@@ -171,7 +171,19 @@ define(function (require) {
         }
 
         if (elementDesc.text !== undefined && elementDesc.text !== null) {
-            this.el.innerHTML = elementDesc.text;
+
+            var contentEl = document.createElement('div'),
+                $contentEl = $(contentEl);
+
+            $contentEl.addClass("content");
+            $contentEl.css("display", "table-cell");
+            $contentEl.css("text-align", "center");
+            $contentEl.css("vertical-align", "middle");
+            $contentEl.css("width", this.$el.css("width"));
+            $contentEl.css("height", this.$el.css("height"));
+            $contentEl.html(elementDesc.text);
+
+            this.$el.append($contentEl);
         }
     };
 
