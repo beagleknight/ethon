@@ -34,7 +34,17 @@ define(function (require) {
         this.container = container;
         this.views = {};
         this.addView("all");
+        this.addElement("progress", "all", {
+            "name": "loading",
+            "pos_x": "297",
+            "pos_y": "430",
+            "width": "200",
+            "height": "15",
+            "style": "color:#000;background-color:#fff;border:1px solid #000;",
+            "action": "loading_progress"
+        });
         this.activeView = null;
+        this.setActiveView("all");
     };
 
     /**

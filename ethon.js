@@ -1369,7 +1369,9 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
 
         image.src = path;
         image.addEventListener("load", function () {
-            callback(image);
+            setTimeout(function () {
+                callback(image);
+            }, Math.random() * 5000);
         });
     }
 
@@ -1453,11 +1455,12 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
     /**
      * TODO
      */
-    function loadSettings(value, callback) {
+    function loadSettings(game, value, callback) {
         console.log("Start load settings...");
         var loadingImagesInterval,
             loadingImagesCallback = function () {
                 console.log("Loading assets: " + imagesLoaded + "/" + imagesToLoad + " images and " + soundsLoaded + "/" + soundsToLoad + " sounds...");
+                game.broadcast("loading_progress", ((imagesLoaded + soundsLoaded) / (imagesToLoad + soundsToLoad)) * 100);
                 if (imagesToLoad === imagesLoaded && soundsToLoad === soundsLoaded) {
                     clearInterval(loadingImagesInterval);
                     callback();
@@ -1575,7 +1578,17 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         this.container = container;
         this.views = {};
         this.addView("all");
+        this.addElement("progress", "all", {
+            "name": "loading",
+            "pos_x": "297",
+            "pos_y": "430",
+            "width": "200",
+            "height": "15",
+            "style": "color:#000;background-color:#fff;border:1px solid #000;",
+            "action": "loading_progress"
+        });
         this.activeView = null;
+        this.setActiveView("all");
     };
 
     /**
@@ -2028,7 +2041,8 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
         this.clean();
         this.gameLoaded = false;
         this.renderAssistant.setOptions(options);
-        resourceAssistant.loadSettings(settings, proxy(this, function () {
+        resourceAssistant.loadSettings(this, settings, proxy(this, function () {
+            this.gui.getElement("all", "loading").hide();
             resourceAssistant.loadGUI(this, proxy(this, function () {
                 this.broadcast("game_loaded");
                 var sceneId;

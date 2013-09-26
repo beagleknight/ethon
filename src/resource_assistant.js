@@ -31,7 +31,9 @@ define(function (require) {
 
         image.src = path;
         image.addEventListener("load", function () {
-            callback(image);
+            setTimeout(function () {
+                callback(image);
+            }, Math.random() * 5000);
         });
     }
 
@@ -115,11 +117,12 @@ define(function (require) {
     /**
      * TODO
      */
-    function loadSettings(value, callback) {
+    function loadSettings(game, value, callback) {
         console.log("Start load settings...");
         var loadingImagesInterval,
             loadingImagesCallback = function () {
                 console.log("Loading assets: " + imagesLoaded + "/" + imagesToLoad + " images and " + soundsLoaded + "/" + soundsToLoad + " sounds...");
+                game.broadcast("loading_progress", ((imagesLoaded + soundsLoaded) / (imagesToLoad + soundsToLoad)) * 100);
                 if (imagesToLoad === imagesLoaded && soundsToLoad === soundsLoaded) {
                     clearInterval(loadingImagesInterval);
                     callback();

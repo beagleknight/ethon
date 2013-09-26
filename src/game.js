@@ -197,7 +197,8 @@ define(function (require) {
         this.clean();
         this.gameLoaded = false;
         this.renderAssistant.setOptions(options);
-        resourceAssistant.loadSettings(settings, proxy(this, function () {
+        resourceAssistant.loadSettings(this, settings, proxy(this, function () {
+            this.gui.getElement("all", "loading").hide();
             resourceAssistant.loadGUI(this, proxy(this, function () {
                 this.broadcast("game_loaded");
                 var sceneId;
