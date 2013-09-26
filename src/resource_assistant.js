@@ -31,9 +31,7 @@ define(function (require) {
 
         image.src = path;
         image.addEventListener("load", function () {
-            setTimeout(function () {
-                callback(image);
-            }, Math.random() * 5000);
+            callback(image);
         });
     }
 
