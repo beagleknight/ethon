@@ -195,20 +195,20 @@ define(function (require) {
     };
 
 
-    Scene.prototype.checkCollisionSoulMouse = function (mouse, onCollision) {
-        var i, l, mouseSoul, collidingSouls = [];
+    Scene.prototype.checkCollisionSoulMouse = function (mouse, onCollision, onNoCollision) {
+        var i, l, mouseSoul;
 
         mouseSoul = new Soul("mouse", mouse.x, mouse.y);
         mouseSoul.setBody(new QuadBody(0, 0, 1, 1));
 
         for (i = 0, l = this.souls.length; i < l; i += 1) {
             if (physicsAssistant.soulsCollision(mouseSoul, this.souls[i])) {
-                collidingSouls.unshift(this.souls[i]);
+                onCollision(this.souls[i]);
+            } else {
+                if (onNoCollision) {
+                    onNoCollision(this.souls[i]);
+                }
             }
-        }
-
-        for (i = 0, l = collidingSouls.length; i < l; i += 1) {
-            onCollision(collidingSouls[i]);
         }
     };
 
@@ -227,6 +227,15 @@ define(function (require) {
     Scene.prototype.onMouseMove = function (mouse) {
         this.checkCollisionSoulMouse(mouse, function (soul) {
             soul.emit("mousemove", mouse);
+            if (!soul.mousein) {
+                soul.emit("mousein", mouse);
+                soul.mousein = true;
+            }
+        }, function (soul) {
+            if (soul.mousein) {
+                soul.emit("mouseout", mouse);
+                soul.mousein = false;
+            }
         });
         this.emit("mousemove", mouse);
     };
