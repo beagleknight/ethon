@@ -1,6 +1,6 @@
 {
   "name": "ethon",
-  "version": "0.9.15",
+  "version": "0.9.16",
   "description": "HTML5 Game Engine",
   "main": "app.build.js",
   "directories": {

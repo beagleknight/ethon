@@ -1,6 +1,6 @@
 {
   "name": "ethon",
-  "version": "0.9.15",
+  "version": "0.9.16",
   "devDependencies": {
     "jquery": "~2.0.3"
   }

@@ -40,7 +40,7 @@ define(function (require) {
     // Helper functions for manage events
     // Read document events and prevent default behavior
     function dismissEvent(event) {
-        if (event.target.tagName !== "INPUT" && event.preventDefault) {
+        if ((event.target && event.target.tagName !== "INPUT") && event.preventDefault) {
             event.preventDefault();
             //event.stopPropagation();
         }
@@ -60,6 +60,7 @@ define(function (require) {
         }
         inputAssistant.mouse.buttons[event.button] = true;
         inputAssistant.emit("mousedown", inputAssistant.mouse, lut[event.button]);
+        dismissEvent(event);
     }
 
     function onmouseup(inputAssistant, event) {
@@ -110,16 +111,19 @@ define(function (require) {
 
             $(canvas).on("touchstart", proxy(this, function (event) {
                 onmousedown(this, event.originalEvent.touches[0]);
+                dismissEvent(event);
             }));
 
             $(canvas).on("touchmove", proxy(this, function (event) {
                 lastTouch = event.originalEvent.touches[0];
                 onmousemove(this, lastTouch);
+                dismissEvent(event);
             }));
 
-            $(canvas).on("touchend", proxy(this, function () {
-                if (lastTouch) {
+            $(canvas).on("touchend", proxy(this, function (event) {
+                    if (lastTouch) {
                     onmouseup(this, lastTouch);
+                    dismissEvent(event);
                     lastTouch = null;
                 }
             }));
