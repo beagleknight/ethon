@@ -1591,7 +1591,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
             "style": {
                 "color": "#000",
                 "background-color": "#fff",
-                "border": "1px solid #000;"
+                "border": "1px solid #000"
             }
         });
         this.activeView = null;
