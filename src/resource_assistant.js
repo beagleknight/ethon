@@ -15,6 +15,7 @@ define(function (require) {
         imagesLoaded = 0,
         soundsToLoad = 0,
         soundsLoaded = 0,
+        images       = {},
         Scene        = require("ethon/scene");
 
     /**
@@ -44,17 +45,17 @@ define(function (require) {
      * @param {Function} callback Function to be called when the 
      * sound resource is loaded.
      */
-    function loadSound(path, callback) {
-        var sound = new window.Audio();
+    //function loadSound(path, callback) {
+    //    var sound = new window.Audio();
 
-        sound.src = path;
-        sound.type = "audio/mpeg";
-        sound.load();
+    //    sound.src = path;
+    //    sound.type = "audio/mpeg";
+    //    sound.load();
 
-        sound.addEventListener("loadedmetadata", function () {
-            callback(sound);
-        }, true);
-    }
+    //    sound.addEventListener("loadedmetadata", function () {
+    //        callback(sound);
+    //    }, true);
+    //}
 
     /**
      * TODO
@@ -64,22 +65,14 @@ define(function (require) {
             imageLoadedCallback = function (object, prop) {
                 return function (image) {
                     imagesLoaded += 1;
-                    object[prop] = image;
+                    images[prop] = image;
                 };
             };
 
-        if (typeof object !== 'object') {
-            return;
-        }
-
         for (prop in object) {
             if (object.hasOwnProperty(prop)) {
-                if (prop === 'image' && object[prop] !== "") {
-                    imagesToLoad += 1;
-                    loadImage(object[prop], imageLoadedCallback(object, prop));
-                } else {
-                    loadImages(object[prop]);
-                }
+                imagesToLoad += 1;
+                loadImage(object[prop], imageLoadedCallback(object, prop));
             }
         }
     }
@@ -87,30 +80,30 @@ define(function (require) {
     /**
      * TODO
      */
-    function loadSounds(object) {
-        var prop,
-            soundLoadedCallback = function (object, prop) {
-                return function (sound) {
-                    soundsLoaded += 1;
-                    object[prop] = sound;
-                };
-            };
+    //function loadSounds(object) {
+    //    var prop,
+    //        soundLoadedCallback = function (object, prop) {
+    //            return function (sound) {
+    //                soundsLoaded += 1;
+    //                object[prop] = sound;
+    //            };
+    //        };
 
-        if (typeof object !== 'object') {
-            return;
-        }
+    //    if (typeof object !== 'object') {
+    //        return;
+    //    }
 
-        for (prop in object) {
-            if (object.hasOwnProperty(prop)) {
-                if (prop === 'sound') {
-                    soundsToLoad += 1;
-                    loadSound(object[prop], soundLoadedCallback(object, prop));
-                } else {
-                    loadSounds(object[prop]);
-                }
-            }
-        }
-    }
+    //    for (prop in object) {
+    //        if (object.hasOwnProperty(prop)) {
+    //            if (prop === 'sound') {
+    //                soundsToLoad += 1;
+    //                loadSound(object[prop], soundLoadedCallback(object, prop));
+    //            } else {
+    //                loadSounds(object[prop]);
+    //            }
+    //        }
+    //    }
+    //}
 
     /**
      * TODO
@@ -133,20 +126,17 @@ define(function (require) {
             settings = value;
         }
 
-        loadImages(settings);
-        loadSounds(settings);
+        loadImages(settings.assets);
+        //loadSounds(settings);
         loadingImagesInterval = setInterval(loadingImagesCallback, 500);
     }
 
     function loadComponents(game, viewId, components) {
         var component, i, l;
 
-        for (component in components) {
-            if (components.hasOwnProperty(component)) {
-                for (i = 0, l = components[component].length; i < l; i += 1) {
-                    game.gui.addElement(component, viewId, components[component][i]);
-                }
-            }
+        for (i = 0, l = components.length; i < l; i += 1) {
+            component = components[i];
+            game.gui.addElement(component.type, viewId, component);
         }
     }
 
@@ -174,14 +164,14 @@ define(function (require) {
      * TODO
      */
     function loadGUI(game, callback) {
-        var view;
+        var i, l, view;
 
-        for (view in settings.gui) {
-            if (settings.gui.hasOwnProperty(view)) {
-                game.addScene(view, new Scene(game));
-                loadComponents(game, view, settings.gui[view].components);
-                loadTransitions(game, view, settings.gui[view].transitions);
-            }
+        for (i = 0, l = settings.gui.length; i < l; i += 1) {
+            view = settings.gui[i];
+
+            game.addScene(view.name, new Scene(game));
+            loadComponents(game, view.name, view.components);
+            loadTransitions(game, view.name, view.transitions);
         }
 
         callback();
@@ -194,10 +184,15 @@ define(function (require) {
         return settings.data[name];
     }
 
+    function getImage(name) {
+        return images[name];
+    }
+
     return {
         loadSettings: loadSettings,
         loadGUI: loadGUI,
-        getData: getData
+        getData: getData,
+        getImage: getImage
     };
 
 });

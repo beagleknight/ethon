@@ -15,6 +15,7 @@ define(function (require) {
     var inherit           = require("ethon/inherit"),
         EventEmitter      = require("ethon/event_emitter"),
         proxy             = require("ethon/proxy"),
+        resourceAssistant = require("ethon/resource_assistant"),
         $                 = require("jquery"),
         GUI;
 
@@ -40,8 +41,12 @@ define(function (require) {
             "pos_y": "430",
             "width": "200",
             "height": "15",
-            "style": "color:#000;background-color:#fff;border:1px solid #000;",
-            "action": "loading_progress"
+            "action": "loading_progress",
+            "style": {
+                "color": "#000",
+                "background-color": "#fff",
+                "border": "1px solid #000;"
+            }
         });
         this.activeView = null;
         this.setActiveView("all");
@@ -84,19 +89,19 @@ define(function (require) {
         var element;
 
         switch (category) {
-        case "buttons":
+        case "button":
             element = new GUI.Button(elementDesc);
             break;
-        case "labels":
+        case "label":
             element = new GUI.Label(elementDesc);
             break;
-        case "backgrounds":
+        case "background":
             element = new GUI.Background(elementDesc);
             break;
-        case "iframes":
+        case "iframe":
             element = new GUI.iFrame(elementDesc);
             break;
-        case "links":
+        case "link":
             element = new GUI.Link(elementDesc);
             break;
         case "progress":
@@ -139,12 +144,8 @@ define(function (require) {
      * TODO:
      */
     GUI.Element = function (elementDesc) {
-        var image = elementDesc.image,
-            cssRules,
-            i,
-            l,
-            prop,
-            value;
+        var image = resourceAssistant.getImage(elementDesc.image),
+            prop;
 
         EventEmitter.call(this);
 
@@ -168,15 +169,9 @@ define(function (require) {
             this.el.style.height = elementDesc.height + "px";
         }
 
-        if (elementDesc.style !== undefined && elementDesc.style !== null) {
-            cssRules = elementDesc.style.split(";");
-            for (i = 0, l = cssRules.length; i < l; i += 1) {
-                prop = cssRules[i].split(":")[0].camelize();
-                value = cssRules[i].split(":")[1];
-
-                if (prop !== "") {
-                    this.$el.css(prop, value);
-                }
+        for (prop in elementDesc.style) {
+            if (elementDesc.style.hasOwnProperty(prop)) {
+                this.$el.css(prop, elementDesc.style[prop]);
             }
         }
 

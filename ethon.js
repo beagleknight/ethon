@@ -1362,6 +1362,7 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
         imagesLoaded = 0,
         soundsToLoad = 0,
         soundsLoaded = 0,
+        images       = {},
         Scene        = require("ethon/scene");
 
     /**
@@ -1391,17 +1392,17 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
      * @param {Function} callback Function to be called when the 
      * sound resource is loaded.
      */
-    function loadSound(path, callback) {
-        var sound = new window.Audio();
+    //function loadSound(path, callback) {
+    //    var sound = new window.Audio();
 
-        sound.src = path;
-        sound.type = "audio/mpeg";
-        sound.load();
+    //    sound.src = path;
+    //    sound.type = "audio/mpeg";
+    //    sound.load();
 
-        sound.addEventListener("loadedmetadata", function () {
-            callback(sound);
-        }, true);
-    }
+    //    sound.addEventListener("loadedmetadata", function () {
+    //        callback(sound);
+    //    }, true);
+    //}
 
     /**
      * TODO
@@ -1411,22 +1412,14 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
             imageLoadedCallback = function (object, prop) {
                 return function (image) {
                     imagesLoaded += 1;
-                    object[prop] = image;
+                    images[prop] = image;
                 };
             };
 
-        if (typeof object !== 'object') {
-            return;
-        }
-
         for (prop in object) {
             if (object.hasOwnProperty(prop)) {
-                if (prop === 'image' && object[prop] !== "") {
-                    imagesToLoad += 1;
-                    loadImage(object[prop], imageLoadedCallback(object, prop));
-                } else {
-                    loadImages(object[prop]);
-                }
+                imagesToLoad += 1;
+                loadImage(object[prop], imageLoadedCallback(object, prop));
             }
         }
     }
@@ -1434,30 +1427,30 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
     /**
      * TODO
      */
-    function loadSounds(object) {
-        var prop,
-            soundLoadedCallback = function (object, prop) {
-                return function (sound) {
-                    soundsLoaded += 1;
-                    object[prop] = sound;
-                };
-            };
+    //function loadSounds(object) {
+    //    var prop,
+    //        soundLoadedCallback = function (object, prop) {
+    //            return function (sound) {
+    //                soundsLoaded += 1;
+    //                object[prop] = sound;
+    //            };
+    //        };
 
-        if (typeof object !== 'object') {
-            return;
-        }
+    //    if (typeof object !== 'object') {
+    //        return;
+    //    }
 
-        for (prop in object) {
-            if (object.hasOwnProperty(prop)) {
-                if (prop === 'sound') {
-                    soundsToLoad += 1;
-                    loadSound(object[prop], soundLoadedCallback(object, prop));
-                } else {
-                    loadSounds(object[prop]);
-                }
-            }
-        }
-    }
+    //    for (prop in object) {
+    //        if (object.hasOwnProperty(prop)) {
+    //            if (prop === 'sound') {
+    //                soundsToLoad += 1;
+    //                loadSound(object[prop], soundLoadedCallback(object, prop));
+    //            } else {
+    //                loadSounds(object[prop]);
+    //            }
+    //        }
+    //    }
+    //}
 
     /**
      * TODO
@@ -1480,20 +1473,17 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
             settings = value;
         }
 
-        loadImages(settings);
-        loadSounds(settings);
+        loadImages(settings.assets);
+        //loadSounds(settings);
         loadingImagesInterval = setInterval(loadingImagesCallback, 500);
     }
 
     function loadComponents(game, viewId, components) {
         var component, i, l;
 
-        for (component in components) {
-            if (components.hasOwnProperty(component)) {
-                for (i = 0, l = components[component].length; i < l; i += 1) {
-                    game.gui.addElement(component, viewId, components[component][i]);
-                }
-            }
+        for (i = 0, l = components.length; i < l; i += 1) {
+            component = components[i];
+            game.gui.addElement(component.type, viewId, component);
         }
     }
 
@@ -1521,14 +1511,14 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
      * TODO
      */
     function loadGUI(game, callback) {
-        var view;
+        var i, l, view;
 
-        for (view in settings.gui) {
-            if (settings.gui.hasOwnProperty(view)) {
-                game.addScene(view, new Scene(game));
-                loadComponents(game, view, settings.gui[view].components);
-                loadTransitions(game, view, settings.gui[view].transitions);
-            }
+        for (i = 0, l = settings.gui.length; i < l; i += 1) {
+            view = settings.gui[i];
+
+            game.addScene(view.name, new Scene(game));
+            loadComponents(game, view.name, view.components);
+            loadTransitions(game, view.name, view.transitions);
         }
 
         callback();
@@ -1541,10 +1531,15 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
         return settings.data[name];
     }
 
+    function getImage(name) {
+        return images[name];
+    }
+
     return {
         loadSettings: loadSettings,
         loadGUI: loadGUI,
-        getData: getData
+        getData: getData,
+        getImage: getImage
     };
 
 });
@@ -1560,12 +1555,13 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
  * @requires EventEmitter
  * @requires proxy
  */
-define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy','jquery'],function (require) {
+define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy','ethon/resource_assistant','jquery'],function (require) {
     
 
     var inherit           = require("ethon/inherit"),
         EventEmitter      = require("ethon/event_emitter"),
         proxy             = require("ethon/proxy"),
+        resourceAssistant = require("ethon/resource_assistant"),
         $                 = require("jquery"),
         GUI;
 
@@ -1591,8 +1587,12 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
             "pos_y": "430",
             "width": "200",
             "height": "15",
-            "style": "color:#000;background-color:#fff;border:1px solid #000;",
-            "action": "loading_progress"
+            "action": "loading_progress",
+            "style": {
+                "color": "#000",
+                "background-color": "#fff",
+                "border": "1px solid #000;"
+            }
         });
         this.activeView = null;
         this.setActiveView("all");
@@ -1635,19 +1635,19 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         var element;
 
         switch (category) {
-        case "buttons":
+        case "button":
             element = new GUI.Button(elementDesc);
             break;
-        case "labels":
+        case "label":
             element = new GUI.Label(elementDesc);
             break;
-        case "backgrounds":
+        case "background":
             element = new GUI.Background(elementDesc);
             break;
-        case "iframes":
+        case "iframe":
             element = new GUI.iFrame(elementDesc);
             break;
-        case "links":
+        case "link":
             element = new GUI.Link(elementDesc);
             break;
         case "progress":
@@ -1690,12 +1690,8 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
      * TODO:
      */
     GUI.Element = function (elementDesc) {
-        var image = elementDesc.image,
-            cssRules,
-            i,
-            l,
-            prop,
-            value;
+        var image = resourceAssistant.getImage(elementDesc.image),
+            prop;
 
         EventEmitter.call(this);
 
@@ -1719,15 +1715,9 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
             this.el.style.height = elementDesc.height + "px";
         }
 
-        if (elementDesc.style !== undefined && elementDesc.style !== null) {
-            cssRules = elementDesc.style.split(";");
-            for (i = 0, l = cssRules.length; i < l; i += 1) {
-                prop = cssRules[i].split(":")[0].camelize();
-                value = cssRules[i].split(":")[1];
-
-                if (prop !== "") {
-                    this.$el.css(prop, value);
-                }
+        for (prop in elementDesc.style) {
+            if (elementDesc.style.hasOwnProperty(prop)) {
+                this.$el.css(prop, elementDesc.style[prop]);
             }
         }
 
