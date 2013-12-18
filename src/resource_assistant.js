@@ -10,11 +10,12 @@
 define(function (require) {
     "use strict";
 
-    var settings = {},
+    var settings     = {},
         imagesToLoad = 0,
         imagesLoaded = 0,
         soundsToLoad = 0,
         soundsLoaded = 0,
+        $            = require('jquery'),
         Scene        = require("ethon/scene");
 
     /**
@@ -30,7 +31,7 @@ define(function (require) {
         var image = new window.Image();
 
         image.src = path;
-        image.addEventListener("load", function () {
+        $(image).on("load", function () {
             callback(image);
         });
     }

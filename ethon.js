@@ -1354,14 +1354,15 @@ define('ethon/scene',['require','ethon/physics_assistant','ethon/inherit','ethon
  *
  * @class resource_assistant
  */
-define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
+define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (require) {
     
 
-    var settings = {},
+    var settings     = {},
         imagesToLoad = 0,
         imagesLoaded = 0,
         soundsToLoad = 0,
         soundsLoaded = 0,
+        $            = require('jquery'),
         Scene        = require("ethon/scene");
 
     /**
@@ -1377,7 +1378,7 @@ define('ethon/resource_assistant',['require','ethon/scene'],function (require) {
         var image = new window.Image();
 
         image.src = path;
-        image.addEventListener("load", function () {
+        $(image).on("load", function () {
             callback(image);
         });
     }
