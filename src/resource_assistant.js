@@ -52,7 +52,7 @@ define(function (require) {
         sound.type = "audio/mpeg";
         sound.load();
 
-        sound.addEventListener("loadedmetadata", function () {
+        $(sound).on("loadedmetadata", function () {
             callback(sound);
         }, true);
     }

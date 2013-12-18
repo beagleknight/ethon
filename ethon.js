@@ -1399,7 +1399,7 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
         sound.type = "audio/mpeg";
         sound.load();
 
-        sound.addEventListener("loadedmetadata", function () {
+        $(sound).on("loadedmetadata", function () {
             callback(sound);
         }, true);
     }
@@ -1786,7 +1786,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         this.el.style.cursor = "pointer";
         GUI.Element.call(this, buttonDesc);
 
-        this.el.addEventListener("click", proxy(this, function () {
+        this.$el.on("click", proxy(this, function () {
             this.broadcast(buttonDesc.action);
         }));
     };
