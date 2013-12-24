@@ -10,23 +10,44 @@ define(function (require) {
 
         Soul.call(this, "Particle", position.x, position.y);
 
-        this.color  = options.color;
-        this.size   = options.size;
-        this.forces = options.forces;
+        this.color   = options.color;
+        this.texture = options.texture;
+        this.size    = options.size;
+        this.forces  = options.forces;
     };
 
     inherit(Particle, Soul);
 
     Particle.prototype.render = function (renderAssistant) {
         var ctx = renderAssistant.getContext();
+            //data,
+            //i,
+            //l;
 
         ctx.save();
         ctx.fillStyle = this.color;
         ctx.globalAlpha = this.life / this.maxLife;
         ctx.translate(this.position.x, this.position.y);
-        ctx.beginPath();
-        ctx.arc(0, 0, this.size, 0, 2 * Math.PI);
-        ctx.fill();
+        if (this.texture) {
+            ctx.drawImage(this.texture, 0, 0);
+            //data = ctx.getImageData(this.position.x, this.position.y, this.texture.width, this.texture.height);
+
+            //for (i = 0, l = data.data.length; i < l; i += 4) {
+            //    if (data.data[i] === 0 && data.data[i + 1] === 0 && data.data[i + 2] === 0) {
+            //        data.data[i + 3] = 0;
+            //    } else {
+            //        data.data[i] = 221;
+            //        data.data[i + 1] = 217;
+            //        data.data[i + 2] = 45;
+            //    }
+            //}
+
+            //ctx.putImageData(data, this.position.x, this.position.y);
+        } else {
+            ctx.beginPath();
+            ctx.arc(0, 0, this.size, 0, 2 * Math.PI);
+            ctx.fill();
+        }
         ctx.restore();
     };
 
