@@ -84,7 +84,7 @@ define(function (require) {
 
     ParticleSystem.prototype.setParticleState = function (particle) {
         particle.position = { x: this.position.x, y: this.position.y };
-        particle.size = random(this.minParticleSize, this.maxParticleSize);
+        particle.setSize(random(this.minParticleSize, this.maxParticleSize));
         particle.setLife(random(this.minParticleLifeTime, this.maxParticleLifeTime));
         particle.forces =  [
             { 

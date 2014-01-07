@@ -2300,37 +2300,20 @@ define('ethon/particle',['require','ethon/soul','ethon/inherit'],function (requi
 
         this.color   = options.color;
         this.texture = options.texture;
-        this.size    = options.size;
-        this.forces  = options.forces;
     };
 
     inherit(Particle, Soul);
 
     Particle.prototype.render = function (renderAssistant) {
         var ctx = renderAssistant.getContext();
-            //data,
-            //i,
-            //l;
 
         ctx.save();
         ctx.fillStyle = this.color;
         ctx.globalAlpha = this.life / this.maxLife;
         ctx.translate(this.position.x, this.position.y);
         if (this.texture) {
+            ctx.scale(this.size, this.size);
             ctx.drawImage(this.texture, 0, 0);
-            //data = ctx.getImageData(this.position.x, this.position.y, this.texture.width, this.texture.height);
-
-            //for (i = 0, l = data.data.length; i < l; i += 4) {
-            //    if (data.data[i] === 0 && data.data[i + 1] === 0 && data.data[i + 2] === 0) {
-            //        data.data[i + 3] = 0;
-            //    } else {
-            //        data.data[i] = 221;
-            //        data.data[i + 1] = 217;
-            //        data.data[i + 2] = 45;
-            //    }
-            //}
-
-            //ctx.putImageData(data, this.position.x, this.position.y);
         } else {
             ctx.beginPath();
             ctx.arc(0, 0, this.size, 0, 2 * Math.PI);
@@ -2356,6 +2339,14 @@ define('ethon/particle',['require','ethon/soul','ethon/inherit'],function (requi
     Particle.prototype.setLife = function (life) {
         this.maxLife = life;
         this.life = life;
+    };
+
+    Particle.prototype.setSize = function (size) {
+        if (this.texture) {
+            this.size = 0.5 + (size / 10);
+        } else {
+            this.size = size;
+        }
     };
 
     return Particle;
@@ -2447,7 +2438,7 @@ define('ethon/particle_system',['require','ethon/inherit','ethon/soul','ethon/pa
 
     ParticleSystem.prototype.setParticleState = function (particle) {
         particle.position = { x: this.position.x, y: this.position.y };
-        particle.size = random(this.minParticleSize, this.maxParticleSize);
+        particle.setSize(random(this.minParticleSize, this.maxParticleSize));
         particle.setLife(random(this.minParticleLifeTime, this.maxParticleLifeTime));
         particle.forces =  [
             { 
