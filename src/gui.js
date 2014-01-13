@@ -229,7 +229,7 @@ define(function (require) {
         this.el.style.cursor = "pointer";
         GUI.Element.call(this, buttonDesc);
 
-        this.el.addEventListener("click", proxy(this, function () {
+        this.$el.on("click", proxy(this, function () {
             this.broadcast(buttonDesc.action);
         }));
     };

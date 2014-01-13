@@ -10,12 +10,13 @@
 define(function (require) {
     "use strict";
 
-    var settings = {},
+    var settings     = {},
         imagesToLoad = 0,
         imagesLoaded = 0,
         soundsToLoad = 0,
         soundsLoaded = 0,
         images       = {},
+        $            = require('jquery'),
         Scene        = require("ethon/scene");
 
     /**
@@ -31,7 +32,7 @@ define(function (require) {
         var image = new window.Image();
 
         image.src = path;
-        image.addEventListener("load", function () {
+        $(image).on("load", function () {
             callback(image);
         });
     }
@@ -51,8 +52,7 @@ define(function (require) {
     //    sound.src = path;
     //    sound.type = "audio/mpeg";
     //    sound.load();
-
-    //    sound.addEventListener("loadedmetadata", function () {
+    //    $(sound).on("loadedmetadata", function () {
     //        callback(sound);
     //    }, true);
     //}

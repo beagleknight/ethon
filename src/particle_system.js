@@ -18,9 +18,10 @@ define(function (require) {
     }
 
     ParticleSystem = function (options) {
-        var position      = valueOrDefault(options.position, { x: 0, y: 0 }),
-            nParticles    = valueOrDefault(options.nParticles, 10),
-            particleColor = valueOrDefault(options.particleColor, "#ffffff"),
+        var position        = valueOrDefault(options.position, { x: 0, y: 0 }),
+            nParticles      = valueOrDefault(options.nParticles, 10),
+            particleColor   = valueOrDefault(options.particleColor, "#ffffff"),
+            particleTexture = valueOrDefault(options.particleTexture, null),
             i,
             particle;
 
@@ -40,7 +41,8 @@ define(function (require) {
 
         for (i = 0; i < nParticles; i += 1) {
             particle = new Particle({
-                color: particleColor
+                color: particleColor,
+                texture: particleTexture
             });
             this.setParticleState(particle);
             this.particles.push(particle);
@@ -82,7 +84,7 @@ define(function (require) {
 
     ParticleSystem.prototype.setParticleState = function (particle) {
         particle.position = { x: this.position.x, y: this.position.y };
-        particle.size = random(this.minParticleSize, this.maxParticleSize);
+        particle.setSize(random(this.minParticleSize, this.maxParticleSize));
         particle.setLife(random(this.minParticleLifeTime, this.maxParticleLifeTime));
         particle.forces =  [
             { 

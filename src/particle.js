@@ -10,9 +10,8 @@ define(function (require) {
 
         Soul.call(this, "Particle", position.x, position.y);
 
-        this.color  = options.color;
-        this.size   = options.size;
-        this.forces = options.forces;
+        this.color   = options.color;
+        this.texture = options.texture;
     };
 
     inherit(Particle, Soul);
@@ -24,9 +23,14 @@ define(function (require) {
         ctx.fillStyle = this.color;
         ctx.globalAlpha = this.life / this.maxLife;
         ctx.translate(this.position.x, this.position.y);
-        ctx.beginPath();
-        ctx.arc(0, 0, this.size, 0, 2 * Math.PI);
-        ctx.fill();
+        if (this.texture) {
+            ctx.scale(this.size, this.size);
+            ctx.drawImage(this.texture, 0, 0);
+        } else {
+            ctx.beginPath();
+            ctx.arc(0, 0, this.size, 0, 2 * Math.PI);
+            ctx.fill();
+        }
         ctx.restore();
     };
 
@@ -47,6 +51,14 @@ define(function (require) {
     Particle.prototype.setLife = function (life) {
         this.maxLife = life;
         this.life = life;
+    };
+
+    Particle.prototype.setSize = function (size) {
+        if (this.texture) {
+            this.size = 0.5 + (size / 10);
+        } else {
+            this.size = size;
+        }
     };
 
     return Particle;
