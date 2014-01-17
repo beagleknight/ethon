@@ -1747,7 +1747,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
     inherit(GUI.Element, EventEmitter);
 
     GUI.Element.prototype.destroy = function () {
-        this.view.remove(this.$el);
+        this.$el.remove();
     };
 
     GUI.Element.prototype.hide = function () {
