@@ -1578,15 +1578,16 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
      * @method GUI
      */
     GUI = function (container) {
-        this.container = container;
+        this.$container = $(container);
         this.views = {};
-        this.addView("all");
-        this.addElement("progress", "all", {
+        this.activeView = null;
+        this.addView("loading");
+        this.addElement("progress", "loading", {
             "name": "loading",
-            "pos_x": "297",
-            "pos_y": "430",
-            "width": "200",
-            "height": "15",
+            "pos_x": 297,
+            "pos_y": 430,
+            "width": 200,
+            "height": 15,
             "action": "loading_progress",
             "style": {
                 "color": "#000",
@@ -1594,35 +1595,38 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
                 "border": "1px solid #000"
             }
         });
-        this.activeView = null;
-        this.setActiveView("all");
+        this.setActiveView("loading");
     };
 
     /**
      * TODO:
      */
     GUI.prototype.addView = function (viewId) {
-        this.views[viewId] = document.createElement('div');
-        this.views[viewId].id = viewId;
-        this.views[viewId].style.width = this.container.clientWidth + "px";
-        this.views[viewId].style.height = this.container.clientHeight + "px";
-        this.views[viewId].style.position = "absolute";
+        var view = document.createElement('div'),
+            $view = $(view);
+
+        $view.css('width', this.$container.clientWidth + "px");
+        $view.css('height', this.$container.clientHeight + "px");
+        $view.css('position', "absolute");
+        $view.attr('id', viewId);
+
+        this.views[viewId] = $view;
         this.hideView(viewId);
-        this.container.appendChild(this.views[viewId]);
+        this.$container.append(view);
     };
 
     /**
      * TODO:
      */
     GUI.prototype.hideView = function (viewId) {
-        this.views[viewId].style.visibility = "hidden";
+        this.views[viewId].css('visibility', "hidden");
     };
 
     /**
      * TODO:
      */
     GUI.prototype.showView = function (viewId) {
-        this.views[viewId].style.visibility = "visible";
+        this.views[viewId].css('visibility', "visible");
     };
 
 
@@ -1658,7 +1662,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         element.view = this.views[viewId];
         this.views[viewId].rawElements = this.views[viewId].rawElements || [];
         this.views[viewId].rawElements.push(element);
-        this.views[viewId].appendChild(element.el);
+        this.views[viewId].append(element.$el);
 
         return element;
     };
@@ -1698,21 +1702,22 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         this.name = elementDesc.name;
         this.$el = $(this.el);
         this.$el.addClass("component");
-        this.el.style.position = "absolute";
-        this.el.style.left = elementDesc.pos_x + "px";
-        this.el.style.top = elementDesc.pos_y + "px";
-        this.el.style.border = "0";
-        this.el.style.padding = "0";
-        this.el.style.zIndex = 2;
+        this.$el.css('position', "absolute");
+        this.$el.css('left', elementDesc.pos_x + "px");
+        this.$el.css('top', elementDesc.pos_y + "px");
+        this.$el.css('border', "0");
+        this.$el.css('padding', "0");
+        this.$el.css('z-index', 2);
+        this.$el.css('text-indent', elementDesc.style['text-indent']);
 
         if (elementDesc.image !== "" && elementDesc.image !== undefined && elementDesc.image !== null) {
             this.$el.css("background-image", "url(" + image.src + ")");
             this.$el.css("background-color", "transparent");
-            this.el.style.width = image.width + "px";
-            this.el.style.height = image.height + "px";
+            this.$el.css('width', image.width + "px");
+            this.$el.css('height', image.height + "px");
         } else {
-            this.el.style.width = elementDesc.width + "px";
-            this.el.style.height = elementDesc.height + "px";
+            this.$el.css('width', elementDesc.width + "px");
+            this.$el.css('height', elementDesc.height + "px");
         }
 
         for (prop in elementDesc.style) {
@@ -1732,6 +1737,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
             $contentEl.css("vertical-align", "middle");
             $contentEl.css("width", this.$el.css("width"));
             $contentEl.css("height", this.$el.css("height"));
+            $contentEl.css("text-indent", this.$el.css("text-indent"));
             $contentEl.html(elementDesc.text);
 
             this.$el.append($contentEl);
@@ -1741,15 +1747,15 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
     inherit(GUI.Element, EventEmitter);
 
     GUI.Element.prototype.destroy = function () {
-        this.view.removeChild(this.el);
+        this.view.remove(this.el);
     };
 
     GUI.Element.prototype.hide = function () {
-        this.el.style.display = 'none';
+        this.$el.css('display', 'none');
     };
 
     GUI.Element.prototype.show = function () {
-        this.el.style.display = 'block';
+        this.$el.css('display', 'block');
     };
 
     /**
@@ -1772,8 +1778,8 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
      */
     GUI.Button = function (buttonDesc) {
         this.el = document.createElement('button');
-        this.el.style.cursor = "pointer";
         GUI.Element.call(this, buttonDesc);
+        this.$el.css('cursor', "pointer");
 
         this.$el.on("click", proxy(this, function () {
             this.broadcast(buttonDesc.action);
@@ -1787,7 +1793,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
     GUI.Background = function (backgroundDesc) {
         this.el = document.createElement('div');
         GUI.Element.call(this, backgroundDesc);
-        this.el.style.zIndex = 0;
+        this.$el.css('z-index', 0);
     };
     inherit(GUI.Background, GUI.Element);
 
@@ -1798,7 +1804,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         this.el = document.createElement('iframe');
         this.el.scrolling = "no";
         GUI.Element.call(this, iFrameDesc);
-        this.el.style.zIndex = 1;
+        this.$el.css('z-index', 1);
 
         this.on(iFrameDesc.action, proxy(this, function (url) {
             this.el.src = url;
@@ -1822,16 +1828,17 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
      */
     GUI.Progress = function (progressDesc) {
         this.progress = document.createElement('div');
+        this.$progress = $(this.progress);
         this.el = document.createElement('div');
-        this.el.appendChild(this.progress);
         GUI.Element.call(this, progressDesc);
+        this.$el.append(this.$progress);
 
-        this.progress.style.width = "0%";
-        this.progress.style.height = this.el.style.height;
-        this.progress.style.background = this.el.style.color;
+        this.$progress.css('width', "0%");
+        this.$progress.css('height', this.$el.css('height'));
+        this.$progress.css('background', this.$el.css('color'));
 
         this.on(progressDesc.action, proxy(this, function (value) {
-            this.progress.style.width = value + "%";
+            this.$progress.css('width', value + "%");
         }));
     };
     inherit(GUI.Progress, GUI.Element);
@@ -1854,7 +1861,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
  * @requires map
  * @requires gui
  */
-define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','ethon/inherit','ethon/event_emitter','ethon/render_assistant','ethon/input_assistant','ethon/action_dispatcher','ethon/resource_assistant','ethon/gui','ethon/scene'],function (require) {
+define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','ethon/inherit','ethon/event_emitter','ethon/render_assistant','ethon/input_assistant','ethon/action_dispatcher','ethon/resource_assistant','ethon/gui'],function (require) {
     
 
     var requestAnimationFrame = require("ethon/request_animation_frame"),
@@ -1866,7 +1873,6 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
         ActionDispatcher      = require("ethon/action_dispatcher"),
         resourceAssistant     = require("ethon/resource_assistant"),
         GUI                   = require("ethon/gui"),
-        Scene                 = require("ethon/scene"),
         elapsedTime           = new Date(),
         lastUpdate            = new Date(),
         numFrames             = 0,
@@ -1899,9 +1905,8 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
 
         this.gui = new GUI(this.guiElement);
         this.scenes = {};
-        this.addScene("loading", new Scene(this));
         this.activeScene = null;
-        this.gameLoaded = true;
+        this.gameLoaded = false;
 
         showFPS = options.showFPS;
 
@@ -1965,12 +1970,10 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
      * @method loop
      */
     Game.prototype.loop = function () {
-        if (!this.cleaningGame) {
-            this.update();
-            this.render();
-            updateFPS();
-            requestAnimationFrame(proxy(this, this.loop));
-        }
+        this.update();
+        this.render();
+        updateFPS();
+        requestAnimationFrame(proxy(this, this.loop));
     };
 
     /**
@@ -2011,35 +2014,11 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
      *
      * @method start
      */
-    //Game.prototype.start = function () {
-    //    //var firstScene = this.activeScene,
-    //    //    loadingInterval,
-    //    //    loadingCallback = proxy(this, function () {
-    //    //        if (this.gameLoaded) {
-    //    //            clearInterval(loadingInterval);
-
-    //    //            var sceneId;
-    //    //            for (sceneId in this.scenes) {
-    //    //                if (this.scenes.hasOwnProperty(sceneId)) {
-    //    //                    this.scenes[sceneId].init();
-    //    //                }
-    //    //            }
-
-    //    //            this.gui.showView('all');
-    //    //            this.setActiveScene(firstScene);
-    //    //            requestAnimationFrame(proxy(this, this.loop));
-    //    //        }
-    //    //    });
-
-    //    //this.setActiveScene("loading");
-    //    //loadingInterval = setInterval(loadingCallback, 500);
-    //};
     Game.prototype.start = function (settings, options) {
-        this.clean();
         this.gameLoaded = false;
         this.renderAssistant.setOptions(options);
         resourceAssistant.loadSettings(this, settings, proxy(this, function () {
-            this.gui.getElement("all", "loading").hide();
+            this.gui.getElement("loading", "loading").hide();
             resourceAssistant.loadGUI(this, proxy(this, function () {
                 this.broadcast("game_loaded");
                 var sceneId;
@@ -2049,7 +2028,6 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
                     }
                 }
                 this.gui.showView('all');
-                this.cleaningGame = false;
                 requestAnimationFrame(proxy(this, this.loop));
             }));
         }));
@@ -2077,31 +2055,6 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
 
     Game.prototype.getScene = function (sceneId) {
         return this.scenes[sceneId];
-    };
-
-    Game.prototype.clean = function () {
-        var viewId, sceneId;
-
-        this.cleaningGame = true;
-
-        for (viewId in this.gui.views) {
-            if (this.gui.views.hasOwnProperty(viewId)) {
-                this.guiElement.removeChild(this.gui.views[viewId]);
-            }
-        }
-        delete this.gui;
-        this.gui = new GUI(this.guiElement);
-
-        for (sceneId in this.scenes) {
-            if (this.scenes.hasOwnProperty(sceneId)) {
-                delete this.scenes[sceneId];
-            }
-        }
-        delete this.scenes;
-
-        this.scenes = {};
-        this.addScene("loading", new Scene(this));
-        this.activeScene = null;
     };
 
     Game.prototype.onMouseDown = function (mouse) {

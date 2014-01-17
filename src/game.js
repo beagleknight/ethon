@@ -25,7 +25,6 @@ define(function (require) {
         ActionDispatcher      = require("ethon/action_dispatcher"),
         resourceAssistant     = require("ethon/resource_assistant"),
         GUI                   = require("ethon/gui"),
-        Scene                 = require("ethon/scene"),
         elapsedTime           = new Date(),
         lastUpdate            = new Date(),
         numFrames             = 0,
@@ -58,9 +57,8 @@ define(function (require) {
 
         this.gui = new GUI(this.guiElement);
         this.scenes = {};
-        this.addScene("loading", new Scene(this));
         this.activeScene = null;
-        this.gameLoaded = true;
+        this.gameLoaded = false;
 
         showFPS = options.showFPS;
 
@@ -124,12 +122,10 @@ define(function (require) {
      * @method loop
      */
     Game.prototype.loop = function () {
-        if (!this.cleaningGame) {
-            this.update();
-            this.render();
-            updateFPS();
-            requestAnimationFrame(proxy(this, this.loop));
-        }
+        this.update();
+        this.render();
+        updateFPS();
+        requestAnimationFrame(proxy(this, this.loop));
     };
 
     /**
@@ -170,35 +166,11 @@ define(function (require) {
      *
      * @method start
      */
-    //Game.prototype.start = function () {
-    //    //var firstScene = this.activeScene,
-    //    //    loadingInterval,
-    //    //    loadingCallback = proxy(this, function () {
-    //    //        if (this.gameLoaded) {
-    //    //            clearInterval(loadingInterval);
-
-    //    //            var sceneId;
-    //    //            for (sceneId in this.scenes) {
-    //    //                if (this.scenes.hasOwnProperty(sceneId)) {
-    //    //                    this.scenes[sceneId].init();
-    //    //                }
-    //    //            }
-
-    //    //            this.gui.showView('all');
-    //    //            this.setActiveScene(firstScene);
-    //    //            requestAnimationFrame(proxy(this, this.loop));
-    //    //        }
-    //    //    });
-
-    //    //this.setActiveScene("loading");
-    //    //loadingInterval = setInterval(loadingCallback, 500);
-    //};
     Game.prototype.start = function (settings, options) {
-        this.clean();
         this.gameLoaded = false;
         this.renderAssistant.setOptions(options);
         resourceAssistant.loadSettings(this, settings, proxy(this, function () {
-            this.gui.getElement("all", "loading").hide();
+            this.gui.getElement("loading", "loading").hide();
             resourceAssistant.loadGUI(this, proxy(this, function () {
                 this.broadcast("game_loaded");
                 var sceneId;
@@ -208,7 +180,6 @@ define(function (require) {
                     }
                 }
                 this.gui.showView('all');
-                this.cleaningGame = false;
                 requestAnimationFrame(proxy(this, this.loop));
             }));
         }));
@@ -236,31 +207,6 @@ define(function (require) {
 
     Game.prototype.getScene = function (sceneId) {
         return this.scenes[sceneId];
-    };
-
-    Game.prototype.clean = function () {
-        var viewId, sceneId;
-
-        this.cleaningGame = true;
-
-        for (viewId in this.gui.views) {
-            if (this.gui.views.hasOwnProperty(viewId)) {
-                this.guiElement.removeChild(this.gui.views[viewId]);
-            }
-        }
-        delete this.gui;
-        this.gui = new GUI(this.guiElement);
-
-        for (sceneId in this.scenes) {
-            if (this.scenes.hasOwnProperty(sceneId)) {
-                delete this.scenes[sceneId];
-            }
-        }
-        delete this.scenes;
-
-        this.scenes = {};
-        this.addScene("loading", new Scene(this));
-        this.activeScene = null;
     };
 
     Game.prototype.onMouseDown = function (mouse) {
