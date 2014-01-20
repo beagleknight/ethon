@@ -219,7 +219,7 @@ define(function (require) {
         this.el = document.createElement('span');
         GUI.Element.call(this, labelDesc);
 
-        this.el.innerHTML = labelDesc.initial_text;
+        this.el.innerHTML = labelDesc.text;
 
         this.on(labelDesc.action, proxy(this, function (text) {
             this.el.innerHTML = text;
