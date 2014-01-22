@@ -1695,7 +1695,8 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
      */
     GUI.Element = function (elementDesc) {
         var image = resourceAssistant.getImage(elementDesc.image),
-            prop;
+            prop,
+            value;
 
         EventEmitter.call(this);
 
@@ -1722,7 +1723,12 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
 
         for (prop in elementDesc.style) {
             if (elementDesc.style.hasOwnProperty(prop)) {
-                this.$el.css(prop, elementDesc.style[prop]);
+                value = elementDesc.style[prop];
+                if (prop === 'font-size') {
+                    value += 'px';
+                }
+
+                this.$el.css(prop, value);
             }
         }
 

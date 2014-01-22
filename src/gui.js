@@ -149,7 +149,8 @@ define(function (require) {
      */
     GUI.Element = function (elementDesc) {
         var image = resourceAssistant.getImage(elementDesc.image),
-            prop;
+            prop,
+            value;
 
         EventEmitter.call(this);
 
@@ -176,7 +177,12 @@ define(function (require) {
 
         for (prop in elementDesc.style) {
             if (elementDesc.style.hasOwnProperty(prop)) {
-                this.$el.css(prop, elementDesc.style[prop]);
+                value = elementDesc.style[prop];
+                if (prop === 'font-size') {
+                    value += 'px';
+                }
+
+                this.$el.css(prop, value);
             }
         }
 
