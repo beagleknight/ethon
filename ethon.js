@@ -1363,6 +1363,7 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
         soundsToLoad = 0,
         soundsLoaded = 0,
         images       = {},
+        files        = {},
         $            = require('jquery'),
         Scene        = require("ethon/scene");
 
@@ -1407,7 +1408,7 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
     /**
      * TODO
      */
-    function loadImages(object) {
+    function loadAssets(object) {
         var prop,
             imageLoadedCallback = function (object, prop) {
                 return function (image) {
@@ -1418,8 +1419,15 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
 
         for (prop in object) {
             if (object.hasOwnProperty(prop)) {
-                imagesToLoad += 1;
-                loadImage(object[prop], imageLoadedCallback(object, prop));
+                switch(object[prop].type) {
+                    case "image":
+                        imagesToLoad += 1;
+                        loadImage(object[prop].url, imageLoadedCallback(object, prop));
+                        break;
+                    default:
+                        files[prop] = object[prop].url;
+                        break;
+                }
             }
         }
     }
@@ -1456,13 +1464,13 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
      * TODO
      */
     function loadSettings(game, value, callback) {
-        console.log("Start load settings...");
-        var loadingImagesInterval,
-            loadingImagesCallback = function () {
-                console.log("Loading assets: " + imagesLoaded + "/" + imagesToLoad + " images and " + soundsLoaded + "/" + soundsToLoad + " sounds...");
+        //console.log("Start load settings...");
+        var loadingAssetsInterval,
+            loadingAssetsCallback = function () {
+                //console.log("Loading assets: " + imagesLoaded + "/" + imagesToLoad + " images and " + soundsLoaded + "/" + soundsToLoad + " sounds...");
                 game.broadcast("loading_progress", ((imagesLoaded + soundsLoaded) / (imagesToLoad + soundsToLoad)) * 100);
                 if (imagesToLoad === imagesLoaded && soundsToLoad === soundsLoaded) {
-                    clearInterval(loadingImagesInterval);
+                    clearInterval(loadingAssetsInterval);
                     callback();
                 }
             };
@@ -1473,9 +1481,8 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
             settings = value;
         }
 
-        loadImages(settings.assets);
-        //loadSounds(settings);
-        loadingImagesInterval = setInterval(loadingImagesCallback, 500);
+        loadAssets(settings.assets);
+        loadingAssetsInterval = setInterval(loadingAssetsCallback, 500);
     }
 
     function loadComponents(game, viewId, components) {
@@ -1535,11 +1542,16 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
         return images[name];
     }
 
+    function getFile(name) {
+        return files[name];
+    }
+
     return {
         loadSettings: loadSettings,
         loadGUI: loadGUI,
         getData: getData,
-        getImage: getImage
+        getImage: getImage,
+        getFile: getFile
     };
 
 });
@@ -1825,7 +1837,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         this.el = document.createElement('a');
         this.el.target = "_blank";
         GUI.Element.call(this, linkDesc);
-        this.el.href = linkDesc.url || linkDesc.file;
+        this.el.href = linkDesc.url || resourceAssistant.getFile(linkDesc.file);
     };
     inherit(GUI.Link, GUI.Element);
 

@@ -16,6 +16,7 @@ define(function (require) {
         soundsToLoad = 0,
         soundsLoaded = 0,
         images       = {},
+        files        = {},
         $            = require('jquery'),
         Scene        = require("ethon/scene");
 
@@ -60,7 +61,7 @@ define(function (require) {
     /**
      * TODO
      */
-    function loadImages(object) {
+    function loadAssets(object) {
         var prop,
             imageLoadedCallback = function (object, prop) {
                 return function (image) {
@@ -71,8 +72,15 @@ define(function (require) {
 
         for (prop in object) {
             if (object.hasOwnProperty(prop)) {
-                imagesToLoad += 1;
-                loadImage(object[prop], imageLoadedCallback(object, prop));
+                switch(object[prop].type) {
+                    case "image":
+                        imagesToLoad += 1;
+                        loadImage(object[prop].url, imageLoadedCallback(object, prop));
+                        break;
+                    default:
+                        files[prop] = object[prop].url;
+                        break;
+                }
             }
         }
     }
@@ -109,13 +117,13 @@ define(function (require) {
      * TODO
      */
     function loadSettings(game, value, callback) {
-        console.log("Start load settings...");
-        var loadingImagesInterval,
-            loadingImagesCallback = function () {
-                console.log("Loading assets: " + imagesLoaded + "/" + imagesToLoad + " images and " + soundsLoaded + "/" + soundsToLoad + " sounds...");
+        //console.log("Start load settings...");
+        var loadingAssetsInterval,
+            loadingAssetsCallback = function () {
+                //console.log("Loading assets: " + imagesLoaded + "/" + imagesToLoad + " images and " + soundsLoaded + "/" + soundsToLoad + " sounds...");
                 game.broadcast("loading_progress", ((imagesLoaded + soundsLoaded) / (imagesToLoad + soundsToLoad)) * 100);
                 if (imagesToLoad === imagesLoaded && soundsToLoad === soundsLoaded) {
-                    clearInterval(loadingImagesInterval);
+                    clearInterval(loadingAssetsInterval);
                     callback();
                 }
             };
@@ -126,9 +134,8 @@ define(function (require) {
             settings = value;
         }
 
-        loadImages(settings.assets);
-        //loadSounds(settings);
-        loadingImagesInterval = setInterval(loadingImagesCallback, 500);
+        loadAssets(settings.assets);
+        loadingAssetsInterval = setInterval(loadingAssetsCallback, 500);
     }
 
     function loadComponents(game, viewId, components) {
@@ -188,11 +195,16 @@ define(function (require) {
         return images[name];
     }
 
+    function getFile(name) {
+        return files[name];
+    }
+
     return {
         loadSettings: loadSettings,
         loadGUI: loadGUI,
         getData: getData,
-        getImage: getImage
+        getImage: getImage,
+        getFile: getFile
     };
 
 });

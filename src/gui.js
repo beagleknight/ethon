@@ -279,7 +279,7 @@ define(function (require) {
         this.el = document.createElement('a');
         this.el.target = "_blank";
         GUI.Element.call(this, linkDesc);
-        this.el.href = linkDesc.url || linkDesc.file;
+        this.el.href = linkDesc.url || resourceAssistant.getFile(linkDesc.file);
     };
     inherit(GUI.Link, GUI.Element);
 
