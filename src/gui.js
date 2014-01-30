@@ -118,6 +118,16 @@ define(function (require) {
         this.views[viewId].rawElements.push(element);
         this.views[viewId].append(element.$el);
 
+        if (element.action) {
+            element.$el.on("touchstart mousedown", proxy(element, function () {
+                element.broadcast(element.action);
+            }));
+
+            element.$el.on("touchend mouseup", proxy(element, function () {
+                element.broadcast(element.action + "_release");
+            }));
+        }
+
         return element;
     };
 
@@ -155,6 +165,7 @@ define(function (require) {
         EventEmitter.call(this);
 
         this.name = elementDesc.name;
+        this.action = elementDesc.action;
         this.$el = $(this.el);
         this.$el.addClass("component");
         this.$el.css('position', "absolute");
@@ -240,14 +251,6 @@ define(function (require) {
         this.el = document.createElement('button');
         GUI.Element.call(this, buttonDesc);
         this.$el.css('cursor', "pointer");
-
-        this.$el.on("touchstart mousedown", proxy(this, function () {
-            this.broadcast(buttonDesc.action);
-        }));
-
-        this.$el.on("touchend mouseup", proxy(this, function () {
-            this.broadcast(buttonDesc.action + "_release");
-        }));
     };
     inherit(GUI.Button, GUI.Element);
 
