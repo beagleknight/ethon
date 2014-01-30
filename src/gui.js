@@ -241,8 +241,12 @@ define(function (require) {
         GUI.Element.call(this, buttonDesc);
         this.$el.css('cursor', "pointer");
 
-        this.$el.on("click", proxy(this, function () {
+        this.$el.on("touchstart mousedown", proxy(this, function () {
             this.broadcast(buttonDesc.action);
+        }));
+
+        this.$el.on("touchend mouseup", proxy(this, function () {
+            this.broadcast(buttonDesc.action + "_release");
         }));
     };
     inherit(GUI.Button, GUI.Element);

@@ -168,7 +168,8 @@ define(function (require) {
      */
     Game.prototype.start = function (settings, options) {
         this.gameLoaded = false;
-        this.renderAssistant.setOptions(options);
+        this.options = options;
+        this.renderAssistant.setOptions(this.options);
         resourceAssistant.loadSettings(this, settings, proxy(this, function () {
             this.gui.getElement("loading", "loading").hide();
             resourceAssistant.loadGUI(this, proxy(this, function () {

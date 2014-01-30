@@ -1799,8 +1799,12 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         GUI.Element.call(this, buttonDesc);
         this.$el.css('cursor', "pointer");
 
-        this.$el.on("click", proxy(this, function () {
+        this.$el.on("touchstart mousedown", proxy(this, function () {
             this.broadcast(buttonDesc.action);
+        }));
+
+        this.$el.on("touchend mouseup", proxy(this, function () {
+            this.broadcast(buttonDesc.action + "_release");
         }));
     };
     inherit(GUI.Button, GUI.Element);
@@ -2034,7 +2038,8 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
      */
     Game.prototype.start = function (settings, options) {
         this.gameLoaded = false;
-        this.renderAssistant.setOptions(options);
+        this.options = options;
+        this.renderAssistant.setOptions(this.options);
         resourceAssistant.loadSettings(this, settings, proxy(this, function () {
             this.gui.getElement("loading", "loading").hide();
             resourceAssistant.loadGUI(this, proxy(this, function () {
