@@ -1847,6 +1847,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         this.el = document.createElement('button');
         GUI.Element.call(this, buttonDesc);
         this.$el.css('cursor', "pointer");
+        this.$el.css('-webkit-tap-highlight-color', 'rgba(0, 0, 0, 0)');
     };
     inherit(GUI.Button, GUI.Element);
 
