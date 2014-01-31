@@ -169,7 +169,10 @@ define(function (require) {
     Game.prototype.start = function (settings, options) {
         this.gameLoaded = false;
         this.options = options;
+
         this.renderAssistant.setOptions(this.options);
+        this.gui.setOptions(this.options);
+
         resourceAssistant.loadSettings(this, settings, proxy(this, function () {
             this.gui.getElement("loading", "loading").hide();
             resourceAssistant.loadGUI(this, proxy(this, function () {

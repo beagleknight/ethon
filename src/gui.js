@@ -55,6 +55,11 @@ define(function (require) {
         this.setActiveView("loading");
     };
 
+    GUI.prototype.setOptions = function (options) {
+        options = options || { mobile: false };
+        this.mobile = options.mobile;
+    };
+
     /**
      * TODO:
      */
@@ -93,72 +98,74 @@ define(function (require) {
      * @method addElement
      */
     GUI.prototype.addElement = function (category, viewId, elementDesc) {
-        var element;
+        if (!elementDesc.mobile || this.mobile) {
+            var element;
 
-        switch (category) {
-        case "button":
-            element = new GUI.Button(elementDesc);
-            break;
-        case "label":
-            element = new GUI.Label(elementDesc);
-            break;
-        case "background":
-            element = new GUI.Background(elementDesc);
-            break;
-        case "iframe":
-            element = new GUI.iFrame(elementDesc);
-            break;
-        case "link":
-            element = new GUI.Link(elementDesc);
-            break;
-        case "progress":
-            element = new GUI.Progress(elementDesc);
-            break;
-        }
+            switch (category) {
+            case "button":
+                element = new GUI.Button(elementDesc);
+                break;
+            case "label":
+                element = new GUI.Label(elementDesc);
+                break;
+            case "background":
+                element = new GUI.Background(elementDesc);
+                break;
+            case "iframe":
+                element = new GUI.iFrame(elementDesc);
+                break;
+            case "link":
+                element = new GUI.Link(elementDesc);
+                break;
+            case "progress":
+                element = new GUI.Progress(elementDesc);
+                break;
+            }
 
-        element.view = this.views[viewId];
-        this.views[viewId].rawElements = this.views[viewId].rawElements || [];
-        this.views[viewId].rawElements.push(element);
-        this.views[viewId].append(element.$el);
+            element.view = this.views[viewId];
+            this.views[viewId].rawElements = this.views[viewId].rawElements || [];
+            this.views[viewId].rawElements.push(element);
+            this.views[viewId].append(element.$el);
 
-        if (element.action) {
-            element.$el.on("touchstart mousedown", proxy(element, function () {
-                element.isPressed = true;
-                element.broadcast(element.action);
-            }));
+            if (element.action) {
+                element.$el.on("touchstart mousedown", proxy(element, function () {
+                    element.isPressed = true;
+                    element.broadcast(element.action);
+                }));
 
-            element.$el.on("touchend mouseup", proxy(element, function () {
-                element.isPressed = false;
-                element.broadcast(element.action + "_release");
-            }));
+                element.$el.on("touchend mouseup", proxy(element, function () {
+                    element.isPressed = false;
+                    element.broadcast(element.action + "_release");
+                }));
 
-            $(document).on("touchmove", proxy(element, function (event) {
-                if (element.isPressed) {
-                    var lastTouch = event.originalEvent.touches[0],
-                        coords = {
-                            x: lastTouch.clientX,
-                            y: lastTouch.clientY
-                        },
-                        mouseSoul,
-                        elementSoul;
+                $(document).on("touchmove", proxy(element, function (event) {
+                    if (element.isPressed) {
+                        var lastTouch = event.originalEvent.touches[0],
+                            coords = {
+                                x: lastTouch.clientX,
+                                y: lastTouch.clientY
+                            },
+                            mouseSoul,
+                            elementSoul;
 
-                    mouseSoul = new Soul("mouse", coords.x, coords.y);
-                    mouseSoul.setBody(new QuadBody(0, 0, 1, 1));
+                        mouseSoul = new Soul("mouse", coords.x, coords.y);
+                        mouseSoul.setBody(new QuadBody(0, 0, 1, 1));
 
-                    elementSoul = new Soul("element", element.posX, element.posY);
-                    elementSoul.setBody(new QuadBody(0, 0, element.width, element.height));
+                        elementSoul = new Soul("element", element.posX, element.posY);
+                        elementSoul.setBody(new QuadBody(0, 0, element.width, element.height));
 
-                    if (!physicsAssistant.soulsCollision(mouseSoul, elementSoul)) {
-                        element.isPressed = false;
-                        element.broadcast(element.action + "_release");
+                        if (!physicsAssistant.soulsCollision(mouseSoul, elementSoul)) {
+                            element.isPressed = false;
+                            element.broadcast(element.action + "_release");
+                        }
                     }
-                }
 
-                event.preventDefault();
-            }));
+                    event.preventDefault();
+                }));
+            }
+
+            return element;
         }
-
-        return element;
     };
 
     GUI.prototype.getElement = function (viewId, elementName) {
