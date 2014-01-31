@@ -121,7 +121,7 @@ define(function (require) {
             }));
 
             $(canvas).on("touchend", proxy(this, function (event) {
-                    if (lastTouch) {
+                if (lastTouch) {
                     onmouseup(this, lastTouch);
                     dismissEvent(event);
                     lastTouch = null;

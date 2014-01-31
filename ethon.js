@@ -705,7 +705,7 @@ define('ethon/input_assistant',['require','ethon/event_emitter','ethon/physics_a
             }));
 
             $(canvas).on("touchend", proxy(this, function (event) {
-                    if (lastTouch) {
+                if (lastTouch) {
                     onmouseup(this, lastTouch);
                     dismissEvent(event);
                     lastTouch = null;
@@ -1567,13 +1567,16 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
  * @requires EventEmitter
  * @requires proxy
  */
-define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy','ethon/resource_assistant','jquery'],function (require) {
+define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy','ethon/resource_assistant','ethon/soul','ethon/quad_body','ethon/physics_assistant','jquery'],function (require) {
     
 
     var inherit           = require("ethon/inherit"),
         EventEmitter      = require("ethon/event_emitter"),
         proxy             = require("ethon/proxy"),
         resourceAssistant = require("ethon/resource_assistant"),
+        Soul              = require("ethon/soul"),
+        QuadBody          = require("ethon/quad_body"),
+        physicsAssistant  = require("ethon/physics_assistant"),
         $                 = require("jquery"),
         GUI;
 
@@ -1678,11 +1681,38 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
 
         if (element.action) {
             element.$el.on("touchstart mousedown", proxy(element, function () {
+                element.isPressed = true;
                 element.broadcast(element.action);
             }));
 
             element.$el.on("touchend mouseup", proxy(element, function () {
+                element.isPressed = false;
                 element.broadcast(element.action + "_release");
+            }));
+
+            $(document).on("touchmove", proxy(element, function (event) {
+                if (element.isPressed) {
+                    var lastTouch = event.originalEvent.touches[0],
+                        coords = {
+                            x: lastTouch.clientX,
+                            y: lastTouch.clientY
+                        },
+                        mouseSoul,
+                        elementSoul;
+
+                    mouseSoul = new Soul("mouse", coords.x, coords.y);
+                    mouseSoul.setBody(new QuadBody(0, 0, 1, 1));
+
+                    elementSoul = new Soul("element", element.posX, element.posY);
+                    elementSoul.setBody(new QuadBody(0, 0, element.width, element.height));
+
+                    if (!physicsAssistant.soulsCollision(mouseSoul, elementSoul)) {
+                        element.isPressed = false;
+                        element.broadcast(element.action + "_release");
+                    }
+                }
+
+                event.preventDefault();
             }));
         }
 
@@ -1724,6 +1754,10 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
 
         this.name = elementDesc.name;
         this.action = elementDesc.action;
+        this.posX = parseInt(elementDesc.pos_x, 10);
+        this.posY = parseInt(elementDesc.pos_y, 10);
+        this.width = parseInt(elementDesc.width, 10);
+        this.height = parseInt(elementDesc.height, 10);
         this.$el = $(this.el);
         this.$el.addClass("component");
         this.$el.css('position', "absolute");
@@ -1737,12 +1771,9 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         if (elementDesc.image !== "" && elementDesc.image !== undefined && elementDesc.image !== null) {
             this.$el.css("background-image", "url(" + image.src + ")");
             this.$el.css("background-color", "transparent");
-            this.$el.css('width', image.width + "px");
-            this.$el.css('height', image.height + "px");
-        } else {
-            this.$el.css('width', elementDesc.width + "px");
-            this.$el.css('height', elementDesc.height + "px");
         }
+        this.$el.css('width', elementDesc.width + "px");
+        this.$el.css('height', elementDesc.height + "px");
 
         for (prop in elementDesc.style) {
             if (elementDesc.style.hasOwnProperty(prop)) {
