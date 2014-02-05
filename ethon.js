@@ -1685,7 +1685,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
             this.views[viewId].rawElements.push(element);
             this.views[viewId].append(element.$el);
 
-            if (element.action) {
+            if (element.action && category === "button") {
                 element.$el.on("touchstart mousedown", proxy(element, function () {
                     element.isPressed = true;
                     element.broadcast(element.action);
