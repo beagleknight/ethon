@@ -1691,35 +1691,37 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
                     element.broadcast(element.action);
                 }));
 
-                element.$el.on("touchend mouseup", proxy(element, function () {
-                    element.isPressed = false;
-                    element.broadcast(element.action + "_release");
-                }));
+                if (elementDesc.mobile) {
+                    element.$el.on("touchend mouseup", proxy(element, function () {
+                        element.isPressed = false;
+                        element.broadcast(element.action + "_release");
+                    }));
 
-                $(document).on("touchmove", proxy(element, function (event) {
-                    if (element.isPressed) {
-                        var lastTouch = event.originalEvent.touches[0],
-                            coords = {
-                                x: lastTouch.clientX,
-                                y: lastTouch.clientY
-                            },
-                            mouseSoul,
-                            elementSoul;
+                    $(document).on("touchmove", proxy(element, function (event) {
+                        if (element.isPressed) {
+                            var lastTouch = event.originalEvent.touches[0],
+                                coords = {
+                                    x: lastTouch.clientX,
+                                    y: lastTouch.clientY
+                                },
+                                mouseSoul,
+                                elementSoul;
 
-                        mouseSoul = new Soul("mouse", coords.x, coords.y);
-                        mouseSoul.setBody(new QuadBody(0, 0, 1, 1));
+                            mouseSoul = new Soul("mouse", coords.x, coords.y);
+                            mouseSoul.setBody(new QuadBody(0, 0, 1, 1));
 
-                        elementSoul = new Soul("element", element.posX, element.posY);
-                        elementSoul.setBody(new QuadBody(0, 0, element.width, element.height));
+                            elementSoul = new Soul("element", element.posX, element.posY);
+                            elementSoul.setBody(new QuadBody(0, 0, element.width, element.height));
 
-                        if (!physicsAssistant.soulsCollision(mouseSoul, elementSoul)) {
-                            element.isPressed = false;
-                            element.broadcast(element.action + "_release");
+                            if (!physicsAssistant.soulsCollision(mouseSoul, elementSoul)) {
+                                element.isPressed = false;
+                                element.broadcast(element.action + "_release");
+                            }
                         }
-                    }
 
-                    event.preventDefault();
-                }));
+                        event.preventDefault();
+                    }));
+                }
             }
 
             return element;
