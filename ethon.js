@@ -1363,6 +1363,7 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
         soundsToLoad = 0,
         soundsLoaded = 0,
         images       = {},
+        sounds       = {},
         files        = {},
         $            = require('jquery'),
         Scene        = require("ethon/scene");
@@ -1394,16 +1395,16 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
      * @param {Function} callback Function to be called when the 
      * sound resource is loaded.
      */
-    //function loadSound(path, callback) {
-    //    var sound = new window.Audio();
+    function loadSound(path, callback) {
+        var sound = new window.Audio();
 
-    //    sound.src = path;
-    //    sound.type = "audio/mpeg";
-    //    sound.load();
-    //    $(sound).on("loadedmetadata", function () {
-    //        callback(sound);
-    //    }, true);
-    //}
+        sound.src = path;
+        sound.type = "audio/mpeg";
+        sound.load();
+        $(sound).on("loadedmetadata", function () {
+            callback(sound);
+        });
+    }
 
     /**
      * TODO
@@ -1415,6 +1416,12 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
                     imagesLoaded += 1;
                     images[prop] = image;
                 };
+            },
+            soundLoadedCallback = function (object, prop) {
+                return function (sound) {
+                    soundsLoaded += 1;
+                    sounds[prop] = sound;
+                };
             };
 
         for (prop in object) {
@@ -1424,6 +1431,10 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
                         imagesToLoad += 1;
                         loadImage(object[prop].url, imageLoadedCallback(object, prop));
                         break;
+                    case "sound":
+                        soundsToLoad += 1;
+                        loadSound(object[prop].url, soundLoadedCallback(object, prop));
+                        break;
                     default:
                         files[prop] = object[prop].url;
                         break;
@@ -1431,34 +1442,6 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
             }
         }
     }
-
-    /**
-     * TODO
-     */
-    //function loadSounds(object) {
-    //    var prop,
-    //        soundLoadedCallback = function (object, prop) {
-    //            return function (sound) {
-    //                soundsLoaded += 1;
-    //                object[prop] = sound;
-    //            };
-    //        };
-
-    //    if (typeof object !== 'object') {
-    //        return;
-    //    }
-
-    //    for (prop in object) {
-    //        if (object.hasOwnProperty(prop)) {
-    //            if (prop === 'sound') {
-    //                soundsToLoad += 1;
-    //                loadSound(object[prop], soundLoadedCallback(object, prop));
-    //            } else {
-    //                loadSounds(object[prop]);
-    //            }
-    //        }
-    //    }
-    //}
 
     /**
      * TODO
@@ -1542,6 +1525,10 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
         return images[name];
     }
 
+    function getSound(name) {
+        return sounds[name];
+    }
+
     function getFile(name) {
         return files[name];
     }
@@ -1551,6 +1538,7 @@ define('ethon/resource_assistant',['require','jquery','ethon/scene'],function (r
         loadGUI: loadGUI,
         getData: getData,
         getImage: getImage,
+        getSound: getSound,
         getFile: getFile
     };
 
@@ -1755,11 +1743,15 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
      * TODO:
      */
     GUI.Element = function (elementDesc) {
-        var image = resourceAssistant.getImage(elementDesc.image),
+        var image,
             prop,
             value;
 
         EventEmitter.call(this);
+
+        if (elementDesc.image) {
+            image = resourceAssistant.getImage(elementDesc.image);
+        }
 
         this.name = elementDesc.name;
         this.action = elementDesc.action;

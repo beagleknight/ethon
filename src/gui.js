@@ -197,11 +197,15 @@ define(function (require) {
      * TODO:
      */
     GUI.Element = function (elementDesc) {
-        var image = resourceAssistant.getImage(elementDesc.image),
+        var image,
             prop,
             value;
 
         EventEmitter.call(this);
+
+        if (elementDesc.image) {
+            image = resourceAssistant.getImage(elementDesc.image);
+        }
 
         this.name = elementDesc.name;
         this.action = elementDesc.action;
