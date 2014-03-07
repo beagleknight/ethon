@@ -2499,6 +2499,7 @@ define('ethon/sound_assistant',['require','jquery','ethon/resource_assistant'],f
             $('.audio-controls').on('click', function () {
                 toggleMute();
                 $('.audio-controls .mute').toggle();
+                $('.audio-controls .button').toggle();
                 if (muted) {
                     stopBackgroundMusic();
                 } else {
