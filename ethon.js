@@ -2474,8 +2474,11 @@ define('ethon/sound_assistant',['require','jquery','ethon/resource_assistant'],f
     }
 
     function playBackgroundMusic() {
-        if (backgroundMusic && !muted && enabled) {
-            backgroundMusic.play();
+        if (backgroundMusic) {
+            backgroundMusic.firstTime = true;
+            if (!muted && enabled) {
+                backgroundMusic.play();
+            }
         }
     }
 
@@ -2483,6 +2486,16 @@ define('ethon/sound_assistant',['require','jquery','ethon/resource_assistant'],f
         if (backgroundMusic) {
             backgroundMusic.pause();
             backgroundMusic.currentTime = 0;
+        }
+    }
+
+    function toggleBackgroundMusic() {
+        if (backgroundMusic && backgroundMusic.firstTime) {
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+            } else {
+                backgroundMusic.pause();
+            }
         }
     }
 
@@ -2498,25 +2511,22 @@ define('ethon/sound_assistant',['require','jquery','ethon/resource_assistant'],f
             $('.audio-controls').show();
             $('.audio-controls').on('click', function () {
                 toggleMute();
-                $('.audio-controls .mute').toggle();
-                $('.audio-controls .button').toggle();
-                if (muted) {
-                    stopBackgroundMusic();
-                } else {
-                    playBackgroundMusic();
-                }
             });
         }
     }
 
     function toggleMute () {
         muted = !muted;
+        $('.audio-controls .mute').toggle();
+        $('.audio-controls .button').toggle();
+        toggleBackgroundMusic();
     }
 
     return {
         setBackgroundMusic: setBackgroundMusic,
         playBackgroundMusic: playBackgroundMusic,
         stopBackgroundMusic: stopBackgroundMusic,
+        toggleBackgroundMusic: toggleBackgroundMusic,
         playSoundEffect: playSoundEffect,
         setEnabled: setEnabled, 
         toggleMute: toggleMute
