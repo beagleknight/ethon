@@ -2455,10 +2455,12 @@ define('ethon/particle_system',['require','ethon/inherit','ethon/soul','ethon/pa
     return ParticleSystem;
 });
 
-define('ethon/sound_assistant',['require','ethon/resource_assistant'],function (require) {
+define('ethon/sound_assistant',['require','jquery','ethon/resource_assistant'],function (require) {
     
 
-    var resourceAssistant = require("ethon/resource_assistant"),
+    var $                 = require("jquery"),
+        resourceAssistant = require("ethon/resource_assistant"),
+        enabled           = false,
         muted             = false,
         backgroundMusic   = null;
 
@@ -2472,7 +2474,7 @@ define('ethon/sound_assistant',['require','ethon/resource_assistant'],function (
     }
 
     function playBackgroundMusic() {
-        if (backgroundMusic && !muted) {
+        if (backgroundMusic && !muted && enabled) {
             backgroundMusic.play();
         }
     }
@@ -2485,13 +2487,29 @@ define('ethon/sound_assistant',['require','ethon/resource_assistant'],function (
     }
 
     function playSoundEffect(soundEffect) {
-        if (!muted) {
+        if (!muted && enabled) {
             resourceAssistant.getSound(soundEffect).play();
         }
     }
 
-    function setMuted (m) {
-        muted = m;
+    function setEnabled (e) {
+        enabled = e;
+        if (enabled) {
+            $('.audio-controls').show();
+            $('.audio-controls').on('click', function () {
+                toggleMute();
+                $('.audio-controls .mute').toggle();
+                if (muted) {
+                    stopBackgroundMusic();
+                } else {
+                    playBackgroundMusic();
+                }
+            });
+        }
+    }
+
+    function toggleMute () {
+        muted = !muted;
     }
 
     return {
@@ -2499,7 +2517,8 @@ define('ethon/sound_assistant',['require','ethon/resource_assistant'],function (
         playBackgroundMusic: playBackgroundMusic,
         stopBackgroundMusic: stopBackgroundMusic,
         playSoundEffect: playSoundEffect,
-        setMuted: setMuted
+        setEnabled: setEnabled, 
+        toggleMute: toggleMute
     };
 });
 

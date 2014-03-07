@@ -1,7 +1,9 @@
 define(function (require) {
     "use strict";
 
-    var resourceAssistant = require("ethon/resource_assistant"),
+    var $                 = require("jquery"),
+        resourceAssistant = require("ethon/resource_assistant"),
+        enabled           = false,
         muted             = false,
         backgroundMusic   = null;
 
@@ -15,7 +17,7 @@ define(function (require) {
     }
 
     function playBackgroundMusic() {
-        if (backgroundMusic && !muted) {
+        if (backgroundMusic && !muted && enabled) {
             backgroundMusic.play();
         }
     }
@@ -28,13 +30,29 @@ define(function (require) {
     }
 
     function playSoundEffect(soundEffect) {
-        if (!muted) {
+        if (!muted && enabled) {
             resourceAssistant.getSound(soundEffect).play();
         }
     }
 
-    function setMuted (m) {
-        muted = m;
+    function setEnabled (e) {
+        enabled = e;
+        if (enabled) {
+            $('.audio-controls').show();
+            $('.audio-controls').on('click', function () {
+                toggleMute();
+                $('.audio-controls .mute').toggle();
+                if (muted) {
+                    stopBackgroundMusic();
+                } else {
+                    playBackgroundMusic();
+                }
+            });
+        }
+    }
+
+    function toggleMute () {
+        muted = !muted;
     }
 
     return {
@@ -42,6 +60,7 @@ define(function (require) {
         playBackgroundMusic: playBackgroundMusic,
         stopBackgroundMusic: stopBackgroundMusic,
         playSoundEffect: playSoundEffect,
-        setMuted: setMuted
+        setEnabled: setEnabled, 
+        toggleMute: toggleMute
     };
 });
