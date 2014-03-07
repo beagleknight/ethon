@@ -8,12 +8,14 @@ define(function (require) {
         backgroundMusic   = null;
 
     function setBackgroundMusic(music) {
-        backgroundMusic = resourceAssistant.getSound(music);
-        backgroundMusic.volume = 0.5;
-        backgroundMusic.addEventListener('ended', function () {
-            this.currentTime = 0;
-            this.play();
-        }, false);
+        if (music) {
+            backgroundMusic = resourceAssistant.getSound(music);
+            backgroundMusic.volume = 0.5;
+            backgroundMusic.addEventListener('ended', function () {
+                this.currentTime = 0;
+                this.play();
+            }, false);
+        }
     }
 
     function playBackgroundMusic() {
@@ -43,7 +45,7 @@ define(function (require) {
     }
 
     function playSoundEffect(soundEffect) {
-        if (!muted && enabled) {
+        if (soundEffect && !muted && enabled) {
             resourceAssistant.getSound(soundEffect).play();
         }
     }
