@@ -91,6 +91,19 @@ define(function (require) {
         this.views[viewId].css('visibility', "visible");
     };
 
+    GUI.prototype.showState = function (state) {
+        var i, l, element;
+
+        for (i = 0, l = this.views[this.activeView].rawElements.length; i < l; i += 1) {
+            element = this.views[this.activeView].rawElements[i];
+            if (element.state === state) {
+                element.show();
+            } else {
+                element.hide();
+            }
+        }
+    };
+
 
     /**
      * Add GUI element for being rendered.
@@ -123,6 +136,7 @@ define(function (require) {
             }
 
             element.view = this.views[viewId];
+            element.state = elementDesc.state;
             this.views[viewId].rawElements = this.views[viewId].rawElements || [];
             this.views[viewId].rawElements.push(element);
             this.views[viewId].append(element.$el);

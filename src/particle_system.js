@@ -4,6 +4,7 @@ define(function (require) {
     var inherit  = require("ethon/inherit"),
         Soul     = require("ethon/soul"),
         Particle = require("ethon/particle"),
+        QuadBody = require("ethon/quad_body"),
         ParticleSystem;
 
     function valueOrDefault(value, _default) {
@@ -38,6 +39,8 @@ define(function (require) {
         this.minParticleVelocityY = valueOrDefault(options.minParticleVelocityY, -50);
         this.maxParticleVelocityY = valueOrDefault(options.maxParticleVelocityY, 50);
         this.particleForces       = valueOrDefault(options.particleForces, []);
+
+        this.setBody(new QuadBody(0, 0, 0, 0, "particles"));
 
         for (i = 0; i < nParticles; i += 1) {
             particle = new Particle({

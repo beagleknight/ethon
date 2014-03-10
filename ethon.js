@@ -1637,6 +1637,19 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         this.views[viewId].css('visibility', "visible");
     };
 
+    GUI.prototype.showState = function (state) {
+        var i, l, element;
+
+        for (i = 0, l = this.views[this.activeView].rawElements.length; i < l; i += 1) {
+            element = this.views[this.activeView].rawElements[i];
+            if (element.state === state) {
+                element.show();
+            } else {
+                element.hide();
+            }
+        }
+    };
+
 
     /**
      * Add GUI element for being rendered.
@@ -1669,6 +1682,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
             }
 
             element.view = this.views[viewId];
+            element.state = elementDesc.state;
             this.views[viewId].rawElements = this.views[viewId].rawElements || [];
             this.views[viewId].rawElements.push(element);
             this.views[viewId].append(element.$el);
@@ -2356,12 +2370,13 @@ define('ethon/particle',['require','ethon/soul','ethon/inherit'],function (requi
     return Particle;
 });
 
-define('ethon/particle_system',['require','ethon/inherit','ethon/soul','ethon/particle'],function (require) {
+define('ethon/particle_system',['require','ethon/inherit','ethon/soul','ethon/particle','ethon/quad_body'],function (require) {
     
     
     var inherit  = require("ethon/inherit"),
         Soul     = require("ethon/soul"),
         Particle = require("ethon/particle"),
+        QuadBody = require("ethon/quad_body"),
         ParticleSystem;
 
     function valueOrDefault(value, _default) {
@@ -2396,6 +2411,8 @@ define('ethon/particle_system',['require','ethon/inherit','ethon/soul','ethon/pa
         this.minParticleVelocityY = valueOrDefault(options.minParticleVelocityY, -50);
         this.maxParticleVelocityY = valueOrDefault(options.maxParticleVelocityY, 50);
         this.particleForces       = valueOrDefault(options.particleForces, []);
+
+        this.setBody(new QuadBody(0, 0, 0, 0, "particles"));
 
         for (i = 0; i < nParticles; i += 1) {
             particle = new Particle({
