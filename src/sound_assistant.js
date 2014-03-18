@@ -67,6 +67,14 @@ define(function (require) {
         toggleBackgroundMusic();
     }
 
+    function setMuted (_muted) {
+        muted = _muted;
+        if (!muted) {
+            $('.audio-controls .mute').hide();
+            $('.audio-controls .button').hide();
+        }
+    }
+
     return {
         setBackgroundMusic: setBackgroundMusic,
         playBackgroundMusic: playBackgroundMusic,
@@ -74,6 +82,7 @@ define(function (require) {
         toggleBackgroundMusic: toggleBackgroundMusic,
         playSoundEffect: playSoundEffect,
         setEnabled: setEnabled, 
-        toggleMute: toggleMute
+        toggleMute: toggleMute,
+        setMuted: setMuted
     };
 });

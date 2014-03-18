@@ -2541,6 +2541,14 @@ define('ethon/sound_assistant',['require','jquery','ethon/resource_assistant'],f
         toggleBackgroundMusic();
     }
 
+    function setMuted (_muted) {
+        muted = _muted;
+        if (!muted) {
+            $('.audio-controls .mute').hide();
+            $('.audio-controls .button').hide();
+        }
+    }
+
     return {
         setBackgroundMusic: setBackgroundMusic,
         playBackgroundMusic: playBackgroundMusic,
@@ -2548,7 +2556,8 @@ define('ethon/sound_assistant',['require','jquery','ethon/resource_assistant'],f
         toggleBackgroundMusic: toggleBackgroundMusic,
         playSoundEffect: playSoundEffect,
         setEnabled: setEnabled, 
-        toggleMute: toggleMute
+        toggleMute: toggleMute,
+        setMuted: setMuted
     };
 });
 
