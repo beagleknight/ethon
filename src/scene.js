@@ -90,7 +90,7 @@ define(function (require) {
 
         // Check souls collisions
         for (i = 0, l = this.souls.length; i < l; i += 1) {
-            if (this.souls[i].checkCollision) {
+            if (this.souls[i] && this.souls[i].checkCollision) {
                 for (j = 0, ll = this.souls.length; j < ll; j += 1) {
                     soul1 = this.souls[i];
                     soul2 = this.souls[j];

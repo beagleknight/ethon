@@ -531,6 +531,9 @@ define('ethon/physics_assistant',['require','ethon/circle_body','ethon/quad_body
      * @param {Object} soul2
      */
     function soulsCollision(soul1, soul2) {
+        if (soul1 === undefined || soul2 === undefined) {
+            return false;
+        }
         var body1 = soul1.getBody(),
             body2 = soul2.getBody(),
             result = false;
@@ -1185,7 +1188,7 @@ define('ethon/scene',['require','ethon/physics_assistant','ethon/inherit','ethon
 
         // Check souls collisions
         for (i = 0, l = this.souls.length; i < l; i += 1) {
-            if (this.souls[i].checkCollision) {
+            if (this.souls[i] && this.souls[i].checkCollision) {
                 for (j = 0, ll = this.souls.length; j < ll; j += 1) {
                     soul1 = this.souls[i];
                     soul2 = this.souls[j];

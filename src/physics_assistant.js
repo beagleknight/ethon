@@ -97,6 +97,9 @@ define(function (require) {
      * @param {Object} soul2
      */
     function soulsCollision(soul1, soul2) {
+        if (soul1 === undefined || soul2 === undefined) {
+            return false;
+        }
         var body1 = soul1.getBody(),
             body2 = soul2.getBody(),
             result = false;
