@@ -2546,8 +2546,8 @@ define('ethon/sound_assistant',['require','jquery','ethon/resource_assistant'],f
 
     function setMuted (_muted) {
         muted = _muted;
-        if (!muted) {
-            $('.audio-controls .mute').hide();
+        if (muted) {
+            $('.audio-controls .mute').show();
             $('.audio-controls .button').hide();
         }
     }

@@ -69,8 +69,8 @@ define(function (require) {
 
     function setMuted (_muted) {
         muted = _muted;
-        if (!muted) {
-            $('.audio-controls .mute').hide();
+        if (muted) {
+            $('.audio-controls .mute').show();
             $('.audio-controls .button').hide();
         }
     }
