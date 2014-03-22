@@ -276,12 +276,6 @@ define(function (require) {
                 $contentEl = $(contentEl);
 
             $contentEl.addClass("content");
-            //$contentEl.css("display", "table-cell");
-            //$contentEl.css("text-align", "center");
-            //$contentEl.css("vertical-align", "middle");
-            //$contentEl.css("width", this.$el.css("width"));
-            //$contentEl.css("height", this.$el.css("height"));
-            //$contentEl.css("text-indent", this.$el.css("text-indent"));
             $contentEl.html(elementDesc.text);
 
             this.$el.append($contentEl);

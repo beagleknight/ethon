@@ -184,22 +184,29 @@ define('ethon/event_emitter',['require','ethon/event_galaxy'],function (require)
  *
  * @class render_assistant
  */
-define('ethon/render_assistant',[],function () {
+define('ethon/render_assistant',['require','ethon/inherit','ethon/proxy','ethon/event_emitter'],function (require) {
     
 
-    var RenderAssistant;
+    var inherit          = require("ethon/inherit"),
+        proxy            = require("ethon/proxy"),
+        EventEmitter     = require("ethon/event_emitter"),
+        RenderAssistant;
 
     RenderAssistant = function (container, canvas) {
+        EventEmitter.call(this);
+        this.container = container;
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
 
-        function resize () {
-            canvas.width = parseInt(container.css("width"), 10);
-            canvas.height = parseInt(container.css("height"), 10);
-        }
+        window.addEventListener('resize', proxy(this, this.onResize), false);
+        this.onResize();
+    };
+    inherit(RenderAssistant, EventEmitter);
 
-        window.addEventListener('resize', resize, false);
-        resize();
+    RenderAssistant.prototype.onResize = function () {
+        this.canvas.width = parseInt(this.container.css("width"), 10);
+        this.canvas.height = parseInt(this.container.css("height"), 10);
+        this.broadcast("canvas:resized", this.canvas);
     };
 
     /**
@@ -1830,12 +1837,6 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
                 $contentEl = $(contentEl);
 
             $contentEl.addClass("content");
-            //$contentEl.css("display", "table-cell");
-            //$contentEl.css("text-align", "center");
-            //$contentEl.css("vertical-align", "middle");
-            //$contentEl.css("width", this.$el.css("width"));
-            //$contentEl.css("height", this.$el.css("height"));
-            //$contentEl.css("text-indent", this.$el.css("text-indent"));
             $contentEl.html(elementDesc.text);
 
             this.$el.append($contentEl);

@@ -5,22 +5,29 @@
  *
  * @class render_assistant
  */
-define(function () {
+define(function (require) {
     "use strict";
 
-    var RenderAssistant;
+    var inherit          = require("ethon/inherit"),
+        proxy            = require("ethon/proxy"),
+        EventEmitter     = require("ethon/event_emitter"),
+        RenderAssistant;
 
     RenderAssistant = function (container, canvas) {
+        EventEmitter.call(this);
+        this.container = container;
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
 
-        function resize () {
-            canvas.width = parseInt(container.css("width"), 10);
-            canvas.height = parseInt(container.css("height"), 10);
-        }
+        window.addEventListener('resize', proxy(this, this.onResize), false);
+        this.onResize();
+    };
+    inherit(RenderAssistant, EventEmitter);
 
-        window.addEventListener('resize', resize, false);
-        resize();
+    RenderAssistant.prototype.onResize = function () {
+        this.canvas.width = parseInt(this.container.css("width"), 10);
+        this.canvas.height = parseInt(this.container.css("height"), 10);
+        this.broadcast("canvas:resized", this.canvas);
     };
 
     /**
