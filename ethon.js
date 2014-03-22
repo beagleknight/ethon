@@ -1817,7 +1817,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
             if (elementDesc.style.hasOwnProperty(prop)) {
                 value = elementDesc.style[prop];
                 if (prop === 'font-size') {
-                    value += 'px';
+                    value += 'em';
                 }
 
                 this.$el.css(prop, value);
@@ -1860,13 +1860,11 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
      * TODO:
      */
     GUI.Label = function (labelDesc) {
-        this.el = document.createElement('span');
+        this.el = document.createElement('div');
         GUI.Element.call(this, labelDesc);
 
-        this.el.innerHTML = labelDesc.text;
-
         this.on(labelDesc.action, proxy(this, function (text) {
-            this.el.innerHTML = text;
+            this.$el.find('.content').html(text);
         }));
     };
     inherit(GUI.Label, GUI.Element);
