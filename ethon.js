@@ -1592,21 +1592,21 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         this.$container = $(container);
         this.views = {};
         this.activeView = null;
-        this.addView("loading");
-        this.addElement("progress", "loading", {
-            "name": "loading",
-            "pos_x": 297,
-            "pos_y": 430,
-            "width": 200,
-            "height": 15,
-            "action": "loading_progress",
-            "style": {
-                "color": "#000",
-                "background-color": "#fff",
-                "border": "1px solid #000"
-            }
-        });
-        this.setActiveView("loading");
+        //this.addView("loading");
+        //this.addElement("progress", "loading", {
+        //    "name": "loading",
+        //    "pos_x": 297,
+        //    "pos_y": 430,
+        //    "width": 200,
+        //    "height": 15,
+        //    "action": "loading_progress",
+        //    "style": {
+        //        "color": "#000",
+        //        "background-color": "#fff",
+        //        "border": "1px solid #000"
+        //    }
+        //});
+        //this.setActiveView("loading");
     };
 
     GUI.prototype.setOptions = function (options) {
@@ -1621,9 +1621,10 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         var view = document.createElement('div'),
             $view = $(view);
 
-        $view.css('width', this.$container.clientWidth + "px");
-        $view.css('height', this.$container.clientHeight + "px");
-        $view.css('position', "absolute");
+        //$view.css('width', this.$container.clientWidth + "px");
+        //$view.css('height', this.$container.clientHeight + "px");
+        //$view.css('position', "absolute");
+        $view.addClass('scene');
         $view.attr('id', viewId);
 
         this.views[viewId] = $view;
@@ -1782,21 +1783,35 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
         this.width = parseInt(elementDesc.width, 10);
         this.height = parseInt(elementDesc.height, 10);
         this.$el = $(this.el);
-        this.$el.addClass("component");
-        this.$el.css('position', "absolute");
-        this.$el.css('left', elementDesc.pos_x + "px");
-        this.$el.css('top', elementDesc.pos_y + "px");
-        this.$el.css('border', "0");
-        this.$el.css('padding', "0");
-        this.$el.css('z-index', 2);
-        this.$el.css('text-indent', elementDesc.style['text-indent']);
+        this.$el.addClass("gui-component");
+
+        //var textContent = $element.find('p');
+
+        //textContent.css("font-size", $scope.component.style['font-size'] + "px");
+        //textContent.css("font-family", $scope.component.style['font-family']);
+        //textContent.css("color", $scope.component.style['color']);
+        
+        var container           = $('#container'),
+            rows                = 28,
+            rowHeight           = parseInt(container.css("height"), 10) / rows,
+            rowHeightPercentage = rowHeight / parseInt(container.css("height"), 10) * 100,
+            cols                = 32,
+            colWidth            = parseInt(container.css("width"), 10) / cols,
+            colWidthPercentage  = colWidth / parseInt(container.css("width"), 10) * 100;
+
+        this.$el.css("left"   , (elementDesc.pos_x * colWidthPercentage) + "%");
+        this.$el.css("top"    , (elementDesc.pos_y * rowHeightPercentage) + "%");
 
         if (elementDesc.image !== "" && elementDesc.image !== undefined && elementDesc.image !== null) {
-            this.$el.css("background-image", "url(" + image.src + ")");
-            this.$el.css("background-color", "transparent");
+            this.$el.css("background", "url(" + image.src + ") center center no-repeat");
+        } else {
+            this.$el.css("background", "");
+            this.$el.css("background", elementDesc.style['background-color']);
         }
-        this.$el.css('width', elementDesc.width + "px");
-        this.$el.css('height', elementDesc.height + "px");
+
+        this.$el.css("width"  , (elementDesc.width * colWidthPercentage) + "%");
+        this.$el.css("height" , (elementDesc.height * rowHeightPercentage) + "%");
+
 
         for (prop in elementDesc.style) {
             if (elementDesc.style.hasOwnProperty(prop)) {
@@ -1811,16 +1826,16 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
 
         if (elementDesc.text !== undefined && elementDesc.text !== null) {
 
-            var contentEl = document.createElement('div'),
+            var contentEl = document.createElement('p'),
                 $contentEl = $(contentEl);
 
             $contentEl.addClass("content");
-            $contentEl.css("display", "table-cell");
-            $contentEl.css("text-align", "center");
-            $contentEl.css("vertical-align", "middle");
-            $contentEl.css("width", this.$el.css("width"));
-            $contentEl.css("height", this.$el.css("height"));
-            $contentEl.css("text-indent", this.$el.css("text-indent"));
+            //$contentEl.css("display", "table-cell");
+            //$contentEl.css("text-align", "center");
+            //$contentEl.css("vertical-align", "middle");
+            //$contentEl.css("width", this.$el.css("width"));
+            //$contentEl.css("height", this.$el.css("height"));
+            //$contentEl.css("text-indent", this.$el.css("text-indent"));
             $contentEl.html(elementDesc.text);
 
             this.$el.append($contentEl);
@@ -1860,7 +1875,7 @@ define('ethon/gui',['require','ethon/inherit','ethon/event_emitter','ethon/proxy
      * TODO:
      */
     GUI.Button = function (buttonDesc) {
-        this.el = document.createElement('button');
+        this.el = document.createElement('div');
         GUI.Element.call(this, buttonDesc);
         this.$el.css('cursor', "pointer");
         this.$el.css('-webkit-tap-highlight-color', 'rgba(0, 0, 0, 0)');
@@ -2100,7 +2115,7 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
         this.gui.setOptions(this.options);
 
         resourceAssistant.loadSettings(this, settings, proxy(this, function () {
-            this.gui.getElement("loading", "loading").hide();
+            //this.gui.getElement("loading", "loading").hide();
             resourceAssistant.loadGUI(this, proxy(this, function () {
                 this.broadcast("game_loaded");
                 var sceneId;
