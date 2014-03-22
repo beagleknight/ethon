@@ -40,17 +40,15 @@ define(function (require) {
      * @method Game
      * @param {Object} canvas Canvas object where the game will be rendered.
      * @param {Object} guiElement HTML element where the gui will be rendered.
-     * @param {Number} width Canvas width
-     * @param {Number} height Canvas height
      * @param {Object} options An options object used for configuration.
      */
-    Game = function (canvas, guiElement, width, height, options) {
+    Game = function (canvas, guiElement, options) {
         var canvasRect;
 
         EventEmitter.call(this);
         options = options || { showFPS: false };
 
-        this.renderAssistant = new RenderAssistant(canvas, width, height);
+        this.renderAssistant = new RenderAssistant(guiElement, canvas);
         this.inputAssistant = new InputAssistant(canvas);
         this.actionDispatcher = new ActionDispatcher(this.inputAssistant);
         this.guiElement = guiElement;
@@ -111,7 +109,7 @@ define(function (require) {
         this.scenes[name] = scene;
         this.gui.addView(name);
 
-        if (this.activeScene === null && name !== "loading" && name !== "all") {
+        if (this.activeScene === null && name !== "loading") {
             this.setActiveScene(name);
         }
     };
@@ -183,7 +181,6 @@ define(function (require) {
                         this.scenes[sceneId].init();
                     }
                 }
-                this.gui.showView('all');
                 requestAnimationFrame(proxy(this, this.loop));
             }));
         }));

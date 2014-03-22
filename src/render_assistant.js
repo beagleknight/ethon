@@ -10,12 +10,17 @@ define(function () {
 
     var RenderAssistant;
 
-    RenderAssistant = function (canvas, width, height) {
+    RenderAssistant = function (container, canvas) {
         this.canvas = canvas;
-        this.canvas.width = width;
-        this.canvas.height = height;
-        this.canvas.style.zIndex = 1;
         this.ctx = this.canvas.getContext("2d");
+
+        function resize () {
+            canvas.width = parseInt(container.css("width"), 10);
+            canvas.height = parseInt(container.css("height"), 10);
+        }
+
+        window.addEventListener('resize', resize, false);
+        resize();
     };
 
     /**

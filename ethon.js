@@ -189,12 +189,17 @@ define('ethon/render_assistant',[],function () {
 
     var RenderAssistant;
 
-    RenderAssistant = function (canvas, width, height) {
+    RenderAssistant = function (container, canvas) {
         this.canvas = canvas;
-        this.canvas.width = width;
-        this.canvas.height = height;
-        this.canvas.style.zIndex = 1;
         this.ctx = this.canvas.getContext("2d");
+
+        function resize () {
+            canvas.width = parseInt(container.css("width"), 10);
+            canvas.height = parseInt(container.css("height"), 10);
+        }
+
+        window.addEventListener('resize', resize, false);
+        resize();
     };
 
     /**
@@ -1963,17 +1968,15 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
      * @method Game
      * @param {Object} canvas Canvas object where the game will be rendered.
      * @param {Object} guiElement HTML element where the gui will be rendered.
-     * @param {Number} width Canvas width
-     * @param {Number} height Canvas height
      * @param {Object} options An options object used for configuration.
      */
-    Game = function (canvas, guiElement, width, height, options) {
+    Game = function (canvas, guiElement, options) {
         var canvasRect;
 
         EventEmitter.call(this);
         options = options || { showFPS: false };
 
-        this.renderAssistant = new RenderAssistant(canvas, width, height);
+        this.renderAssistant = new RenderAssistant(guiElement, canvas);
         this.inputAssistant = new InputAssistant(canvas);
         this.actionDispatcher = new ActionDispatcher(this.inputAssistant);
         this.guiElement = guiElement;
@@ -2034,7 +2037,7 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
         this.scenes[name] = scene;
         this.gui.addView(name);
 
-        if (this.activeScene === null && name !== "loading" && name !== "all") {
+        if (this.activeScene === null && name !== "loading") {
             this.setActiveScene(name);
         }
     };
@@ -2106,7 +2109,6 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
                         this.scenes[sceneId].init();
                     }
                 }
-                this.gui.showView('all');
                 requestAnimationFrame(proxy(this, this.loop));
             }));
         }));
