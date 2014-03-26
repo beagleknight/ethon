@@ -61,26 +61,9 @@ define(function (require) {
         showFPS = options.showFPS;
 
         canvasRect = this.renderAssistant.getCanvasRect();
-        this.actionDispatcher.registerMouseClickAction("MOUSE_LEFT", {
-            x: 0,
-            y: 0,
-            w: canvasRect.width,
-            h: canvasRect.height
-        }, proxy(this, this.onMouseDown));
-
-        this.actionDispatcher.registerMouseMotionAction({
-            x: 0,
-            y: 0,
-            w: canvasRect.width,
-            h: canvasRect.height
-        }, proxy(this, this.onMouseMove));
-
-        this.actionDispatcher.registerMouseReleaseAction("MOUSE_LEFT", {
-            x: 0,
-            y: 0,
-            w: canvasRect.width,
-            h: canvasRect.height
-        }, proxy(this, this.onMouseUp));
+        this.actionDispatcher.registerMouseClickAction("MOUSE_LEFT", proxy(this, this.onMouseDown));
+        this.actionDispatcher.registerMouseMotionAction(proxy(this, this.onMouseMove));
+        this.actionDispatcher.registerMouseReleaseAction("MOUSE_LEFT", proxy(this, this.onMouseUp));
     };
 
     // inherit EventEmitter for register and trigger custom events.

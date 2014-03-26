@@ -875,11 +875,9 @@ define('ethon/action_dispatcher',['require','ethon/proxy'],function (require) {
      * @param {Object} quad Quad-like object with position and dimensions
      * @param {Function} callback Function to be invoked when action happens
      */
-    ActionDispatcher.prototype.registerMouseMotionAction = function (quad, callback) {
+    ActionDispatcher.prototype.registerMouseMotionAction = function (callback) {
         this.inputAssistant.on("mousemotion", proxy(this, function (mouse) {
-            if (this.inputAssistant.isMouseInsideQuad(quad, mouse)) {
-                callback(this.inputAssistant.normalizeMouse(mouse));
-            }
+            callback(this.inputAssistant.normalizeMouse(mouse));
         }));
     };
 
@@ -892,12 +890,10 @@ define('ethon/action_dispatcher',['require','ethon/proxy'],function (require) {
      * @param {Object} quad Quad-like object with position and dimensions
      * @param {Function} callback Function to be invoked when action happens
      */
-    ActionDispatcher.prototype.registerMouseClickAction = function (button, quad, callback) {
+    ActionDispatcher.prototype.registerMouseClickAction = function (button, callback) {
         this.inputAssistant.on("mousedown", proxy(this, function (mouse, buttonPressed) {
             if (button === buttonPressed) {
-                if (this.inputAssistant.isMouseInsideQuad(quad, mouse)) {
-                    callback(this.inputAssistant.normalizeMouse(mouse));
-                }
+                callback(this.inputAssistant.normalizeMouse(mouse));
             }
         }));
     };
@@ -911,12 +907,10 @@ define('ethon/action_dispatcher',['require','ethon/proxy'],function (require) {
      * @param {Object} quad Quad-like object with position and dimensions
      * @param {Function} callback Function to be invoked when action happens
      */
-    ActionDispatcher.prototype.registerMouseReleaseAction = function (button, quad, callback) {
+    ActionDispatcher.prototype.registerMouseReleaseAction = function (button, callback) {
         this.inputAssistant.on("mouseup", proxy(this, function (mouse, buttonReleased) {
             if (button === buttonReleased) {
-                if (this.inputAssistant.isMouseInsideQuad(quad, mouse)) {
-                    callback(this.inputAssistant.normalizeMouse(mouse));
-                }
+                callback(this.inputAssistant.normalizeMouse(mouse));
             }
         }));
     };
@@ -2003,26 +1997,9 @@ define('ethon/game',['require','ethon/request_animation_frame','ethon/proxy','et
         showFPS = options.showFPS;
 
         canvasRect = this.renderAssistant.getCanvasRect();
-        this.actionDispatcher.registerMouseClickAction("MOUSE_LEFT", {
-            x: 0,
-            y: 0,
-            w: canvasRect.width,
-            h: canvasRect.height
-        }, proxy(this, this.onMouseDown));
-
-        this.actionDispatcher.registerMouseMotionAction({
-            x: 0,
-            y: 0,
-            w: canvasRect.width,
-            h: canvasRect.height
-        }, proxy(this, this.onMouseMove));
-
-        this.actionDispatcher.registerMouseReleaseAction("MOUSE_LEFT", {
-            x: 0,
-            y: 0,
-            w: canvasRect.width,
-            h: canvasRect.height
-        }, proxy(this, this.onMouseUp));
+        this.actionDispatcher.registerMouseClickAction("MOUSE_LEFT", proxy(this, this.onMouseDown));
+        this.actionDispatcher.registerMouseMotionAction(proxy(this, this.onMouseMove));
+        this.actionDispatcher.registerMouseReleaseAction("MOUSE_LEFT", proxy(this, this.onMouseUp));
     };
 
     // inherit EventEmitter for register and trigger custom events.

@@ -56,7 +56,7 @@ module.exports = function(grunt) {
     watch: {
         all: {
             files: '<%= jshint.ethon.files.src %>',
-            tasks: ['jshint', 'karma:unit:run', 'requirejs']
+            tasks: ['jshint', 'requirejs']
         }
     }
   });
@@ -68,7 +68,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
 
   // Default task.
-  grunt.registerTask('dev', ['karma:unit', 'watch']);
-  grunt.registerTask('default', ['jshint', 'karma:build', 'requirejs']);
+  grunt.registerTask('dev', ['watch']);
+  grunt.registerTask('default', ['jshint', 'requirejs']);
 
 };
