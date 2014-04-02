@@ -237,7 +237,7 @@ define(function (require) {
         //textContent.css("font-family", $scope.component.style['font-family']);
         //textContent.css("color", $scope.component.style['color']);
         
-        var container           = $('#container'),
+        var container           = $('#gui'),
             rows                = 28,
             rowHeight           = parseInt(container.css("height"), 10) / rows,
             rowHeightPercentage = rowHeight / parseInt(container.css("height"), 10) * 100,
