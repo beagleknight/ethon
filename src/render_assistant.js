@@ -183,7 +183,7 @@ define(function (require) {
      * @param {Number} frameWidth Width of a frame in pixels
      * @param {Number} frameHeight Height of a frame in pixels
      */
-    RenderAssistant.prototype.drawSubImage = function (x, y, image, frameId, frameWidth, frameHeight) {
+    RenderAssistant.prototype.drawSubImage = function (x, y, image, frameId, frameWidth, frameHeight, width, height) {
         var sx,
             sy,
             rows,
@@ -195,7 +195,7 @@ define(function (require) {
         sx = (frameId % cols) * frameWidth;
         sy = Math.floor(frameId / cols) * frameHeight;
 
-        this.ctx.drawImage(image, sx, sy, frameWidth, frameHeight, x, y, frameWidth, frameHeight);
+        this.ctx.drawImage(image, sx, sy, frameWidth, frameHeight, x, y, width, height);
     };
 
     RenderAssistant.prototype.setOptions = function (options) {
