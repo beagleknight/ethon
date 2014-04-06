@@ -1,4 +1,4 @@
-(function (require) {
+(function () {
     "use strict";
 
     var eventGalaxy = require("./event_galaxy"),

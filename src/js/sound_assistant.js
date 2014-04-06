@@ -1,4 +1,4 @@
-(function (require) {
+(function () {
     "use strict";
 
     var resourceAssistant = require("./resource_assistant"),

@@ -12,6 +12,7 @@ gulp.task('lint', function() {
 gulp.task('build', function() {
     gulp.src('src/js/main.js')
         .pipe(browserify({
+            standalone: 'ethon'
         }))
         .pipe(gulp.dest('./dist/js'));
 });

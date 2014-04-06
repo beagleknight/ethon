@@ -1,6 +1,5 @@
 (function () {
-    require('./sprite');
-    require('./extend');
-    require('./particle_system');
-    require('./sound_assistant');
+    module.exports = {
+        Game: require('./game')
+    };
 }());

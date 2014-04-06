@@ -1,4 +1,4 @@
-(function (require) {
+(function () {
     "use strict";
 
     var requestAnimationFrame = require("./request_animation_frame"),
