@@ -1,35 +1,13 @@
-/*global define*/
-
-/**
- * Provides a structure for check collisions in a 
- * Tile-based game.
- *
- * @class CollisionTileMap
- */
-define(function () {
+(function () {
     "use strict";
 
     var CollisionTileMap;
 
-    /**
-     * Constructor
-     *
-     * @method CollisionTileMap
-     * @param {Array} map Bidimensional array where 1 means collision and 
-     * 0 means no-collision.
-     * @param {Number} tileSize Size in pixes of a tile.
-     */
     CollisionTileMap = function (map, tileSize) {
         this.map = map;
         this.tileSize = tileSize;
     };
 
-    /**
-     * Check if a soul is colliding with the map.
-     *
-     * @method checkCollision
-     * @param {Object} soul Soul for checking collision.
-     */
     CollisionTileMap.prototype.checkCollision = function (soul) {
         var collision = { x: false, y: false }, i1, j1, i2, j2, i3, j3, i4, j4,
             body = soul.getBody(),
@@ -57,5 +35,5 @@ define(function () {
         return collision;
     };
 
-    return CollisionTileMap;
-});
+    module.exports = CollisionTileMap;
+}());

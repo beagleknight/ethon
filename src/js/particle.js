@@ -1,8 +1,8 @@
-define(function (require) {
+(function () {
     "use strict";
 
-    var Soul      = require("ethon/soul"),
-        inherit   = require("ethon/inherit"),
+    var Soul      = require("./soul"),
+        inherit   = require("./inherit"),
         Particle;
 
     Particle = function (options) {
@@ -61,5 +61,5 @@ define(function (require) {
         }
     };
 
-    return Particle;
-});
+    module.exports = Particle;
+}());

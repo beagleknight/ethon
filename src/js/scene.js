@@ -1,23 +1,11 @@
-/*jslint browser: true*/
-/*global define*/
-
-/**
- * Core class for all game scenes
- *
- * @class Scene
- * @requires physics_assistant
- * @requires extend
- * @requires event_emitter
- */
-
-define(function (require) {
+(function (require) {
     "use strict";
 
-    var physicsAssistant = require("ethon/physics_assistant"),
-        inherit          = require("ethon/inherit"),
-        EventEmitter     = require("ethon/event_emitter"),
-        Soul             = require("ethon/soul"),
-        QuadBody         = require("ethon/quad_body"),
+    var physicsAssistant = require("./physics_assistant"),
+        inherit          = require("./inherit"),
+        EventEmitter     = require("./event_emitter"),
+        Soul             = require("./soul"),
+        QuadBody         = require("./quad_body"),
         Scene;
 
     /**
@@ -247,5 +235,5 @@ define(function (require) {
         this.emit("mouseup", mouse);
     };
 
-    return Scene;
-});
+    module.exports = Scene;
+}());

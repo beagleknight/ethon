@@ -1,11 +1,4 @@
-/*global define*/
-
-/**
- * Provides an object to store all event listeners.
- *
- * @class event_galaxy
- */
-define(function () {
+(function () {
     "use strict";
 
     var eventEmitters = {};
@@ -30,9 +23,8 @@ define(function () {
         }
     }
 
-    return {
+    module.exports = {
         register: register,
         emit: emit
     };
-
-});
+}());

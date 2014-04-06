@@ -18,5 +18,9 @@
   "license": "BSD",
   "gitHead": "2da77b7211a8b61b1849acc5ee6a0285d9b95642",
   "devDependencies": {
+    "gulp": "^3.6.0",
+    "gulp-browserify": "^0.5.0",
+    "gulp-jshint": "^1.5.3",
+    "gulp-watch": "^0.5.3"
   }
 }

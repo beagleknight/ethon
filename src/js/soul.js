@@ -1,20 +1,8 @@
-/*global define*/
-
-/**
- * Minimum object used on a game.
- *
- * Represents a single point on a specific position
- * with a specific velocity.
- *
- * @class Soul
- * @extends event_emitter
- * @requires extend 
- */
-define(function (require) {
+(function (require) {
     "use strict";
 
-    var inherit      = require("ethon/inherit"),
-        EventEmitter = require("ethon/event_emitter"),
+    var inherit      = require("./inherit"),
+        EventEmitter = require("./event_emitter"),
         Soul;
 
 
@@ -179,5 +167,5 @@ define(function (require) {
         this.remove = true;
     };
 
-    return Soul;
-});
+    module.exports = Soul;
+}());

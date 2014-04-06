@@ -1,12 +1,4 @@
-/*jslint browser: true*/
-/*global define*/
-
-/**
- * Provides a polyfill function for requestAnimationFrame
- * 
- * @class request_animation_frame
- */
-define(function () {
+(function () {
     "use strict";
 
     if (!window.requestAnimationFrame) {
@@ -22,7 +14,7 @@ define(function () {
         }());
     }
 
-    return function (callback) {
+    module.exports = function (callback) {
         window.requestAnimationFrame(callback);
     };
-});
+}());

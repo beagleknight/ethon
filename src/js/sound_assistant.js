@@ -1,8 +1,7 @@
-define(function (require) {
+(function (require) {
     "use strict";
 
-    var $                 = require("jquery"),
-        resourceAssistant = require("ethon/resource_assistant"),
+    var resourceAssistant = require("./resource_assistant"),
         enabled           = false,
         muted             = false,
         backgroundMusic   = null;
@@ -75,7 +74,7 @@ define(function (require) {
         }
     }
 
-    return {
+    module.exports = {
         setBackgroundMusic: setBackgroundMusic,
         playBackgroundMusic: playBackgroundMusic,
         stopBackgroundMusic: stopBackgroundMusic,
@@ -85,4 +84,4 @@ define(function (require) {
         toggleMute: toggleMute,
         setMuted: setMuted
     };
-});
+}());

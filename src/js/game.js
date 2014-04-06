@@ -1,30 +1,15 @@
-/*jslint browser: true*/
-/*global define*/
-
-/**
- * Core class for all games developed using Ethon engine.
- *
- * @class Game
- * @requires request_animation_frame
- * @requires proxy
- * @requires extend
- * @requires event_emitter
- * @requires render_assistant
- * @requires map
- * @requires gui
- */
-define(function (require) {
+(function (require) {
     "use strict";
 
-    var requestAnimationFrame = require("ethon/request_animation_frame"),
-        proxy                 = require("ethon/proxy"),
-        inherit               = require("ethon/inherit"),
-        EventEmitter          = require("ethon/event_emitter"),
-        RenderAssistant       = require("ethon/render_assistant"),
-        InputAssistant        = require("ethon/input_assistant"),
-        ActionDispatcher      = require("ethon/action_dispatcher"),
-        resourceAssistant     = require("ethon/resource_assistant"),
-        GUI                   = require("ethon/gui"),
+    var requestAnimationFrame = require("./request_animation_frame"),
+        proxy                 = require("./proxy"),
+        inherit               = require("./inherit"),
+        EventEmitter          = require("./event_emitter"),
+        RenderAssistant       = require("./render_assistant"),
+        InputAssistant        = require("./input_assistant"),
+        ActionDispatcher      = require("./action_dispatcher"),
+        resourceAssistant     = require("./resource_assistant"),
+        GUI                   = require("./gui"),
         elapsedTime           = new Date(),
         lastUpdate            = new Date(),
         numFrames             = 0,
@@ -32,16 +17,6 @@ define(function (require) {
         showFPS,
         Game;
 
-    /**
-     * Constructor
-     *
-     * It initialize render_assistant with given canvas.
-     *
-     * @method Game
-     * @param {Object} canvas Canvas object where the game will be rendered.
-     * @param {Object} guiElement HTML element where the gui will be rendered.
-     * @param {Object} options An options object used for configuration.
-     */
     Game = function (canvas, guiElement, options) {
         var canvasRect;
 
@@ -84,10 +59,6 @@ define(function (require) {
         }
     }
 
-    /**
-     * TODO:
-     * @method addScene
-     */
     Game.prototype.addScene = function (name, scene) {
         this.scenes[name] = scene;
         this.gui.addView(name);
@@ -97,11 +68,6 @@ define(function (require) {
         }
     };
 
-    /**
-     * Execute a update-render cycle
-     *
-     * @method loop
-     */
     Game.prototype.loop = function () {
         this.update();
         this.render();
@@ -109,12 +75,6 @@ define(function (require) {
         requestAnimationFrame(proxy(this, this.loop));
     };
 
-    /**
-     * TODO:
-     * Update souls and check collisions between them.
-     *
-     * @method update
-     */
     Game.prototype.update = function () {
         var now           = new Date(),
             dt            = new Date(now.getTime() - elapsedTime.getTime()).getMilliseconds() / 1000;
@@ -124,13 +84,6 @@ define(function (require) {
         elapsedTime = now;
     };
 
-    /**
-     * TODO: 
-     * Render map, souls and GUI in strict order. Use requestAnimationFrame for better
-     * performance.
-     *
-     * @method render
-     */
     Game.prototype.render = function () {
         this.scenes[this.activeScene].render(this.renderAssistant);
         this.scenes[this.activeScene].afterRender(this.renderAssistant);
@@ -211,5 +164,5 @@ define(function (require) {
         }
     };
 
-    return Game;
-});
+    module.exports = Game;
+}());

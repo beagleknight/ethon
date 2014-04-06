@@ -1,13 +1,4 @@
-/*jslint browser: true*/
-/*global define*/
-
-/**
- * Provides methods for loading and storing resources
- * for a further usage.
- *
- * @class resource_assistant
- */
-define(function (require) {
+(function (require) {
     "use strict";
 
     var settings     = {},
@@ -18,8 +9,7 @@ define(function (require) {
         images       = {},
         sounds       = {},
         files        = {},
-        $            = require('jquery'),
-        Scene        = require("ethon/scene");
+        Scene        = require("./scene");
 
     /**
      * Load an image and store it for a further usage.
@@ -186,7 +176,7 @@ define(function (require) {
         return files[name];
     }
 
-    return {
+    module.exports = {
         loadSettings: loadSettings,
         loadGUI: loadGUI,
         getData: getData,
@@ -194,5 +184,4 @@ define(function (require) {
         getSound: getSound,
         getFile: getFile
     };
-
-});
+}());

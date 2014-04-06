@@ -1,25 +1,13 @@
-/*jslint browser: true, regexp: true, nomen: true*/
-/*global define*/
-
-/**
- * Acts as a container for all GUI elements
- *
- * @class GUI
- * @requires inherit
- * @requires EventEmitter
- * @requires proxy
- */
-define(function (require) {
+(function (require) {
     "use strict";
 
-    var inherit           = require("ethon/inherit"),
-        EventEmitter      = require("ethon/event_emitter"),
-        proxy             = require("ethon/proxy"),
-        resourceAssistant = require("ethon/resource_assistant"),
-        Soul              = require("ethon/soul"),
-        QuadBody          = require("ethon/quad_body"),
-        physicsAssistant  = require("ethon/physics_assistant"),
-        $                 = require("jquery"),
+    var inherit           = require("./inherit"),
+        EventEmitter      = require("./event_emitter"),
+        proxy             = require("./proxy"),
+        resourceAssistant = require("./resource_assistant"),
+        Soul              = require("./soul"),
+        QuadBody          = require("./quad_body"),
+        physicsAssistant  = require("./physics_assistant"),
         GUI;
 
     String.prototype.camelize = function () {
@@ -376,5 +364,5 @@ define(function (require) {
     };
     inherit(GUI.Progress, GUI.Element);
 
-    return GUI;
-});
+    module.exports = GUI;
+}());

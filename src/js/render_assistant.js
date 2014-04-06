@@ -1,16 +1,9 @@
-/*global define*/
-
-/**
- * Provides methods for using HTML5 API Canvas
- *
- * @class render_assistant
- */
-define(function (require) {
+(function (require) {
     "use strict";
 
-    var inherit          = require("ethon/inherit"),
-        proxy            = require("ethon/proxy"),
-        EventEmitter     = require("ethon/event_emitter"),
+    var inherit          = require("./inherit"),
+        proxy            = require("./proxy"),
+        EventEmitter     = require("./event_emitter"),
         RenderAssistant;
 
     RenderAssistant = function (container, canvas) {
@@ -203,5 +196,5 @@ define(function (require) {
         this.mobile = options.mobile;
     };
 
-    return RenderAssistant;
-});
+    module.exports = RenderAssistant;
+}());

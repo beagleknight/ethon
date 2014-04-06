@@ -1,30 +1,10 @@
-/*global define*/
-
-/**
- * Provides a Class for handling 2d sprites.
- *
- * @class Sprite
- * @requires soul
- * @requires inherit
- * @requires resource_assistant
- * @requires render_assistant
- */
-define(function (require) {
+(function () {
     "use strict";
 
-    var Soul              = require("ethon/soul"),
-        inherit           = require("ethon/inherit"),
+    var Soul    = require("./soul"),
+        inherit = require("./inherit"),
         Sprite;
 
-    /**
-     * Constructor
-     *
-     * @method Sprite
-     * @param {String} name Sprite's name
-     * @param {Number} x Position on the x-axis
-     * @param {Number} y Position on the y-axis
-     * @param {String} texture Sprite's texture
-     */
     Sprite = function (name, x, y, texture) {
         Soul.call(this, name, x, y);
         this.texture = texture;
@@ -40,35 +20,15 @@ define(function (require) {
     // Sprite inherit from Soul
     inherit(Sprite, Soul);
 
-    /**
-     * Set the current animation for sprite
-     *
-     * @method setCurrentAnimation
-     * @param {String} animationId Animation identifier
-     */
     Sprite.prototype.setCurrentAnimation = function (animationId) {
         this.currentAnimation = animationId;
     };
 
-    /**
-     * Add frame id and duration to the sprite animation. 
-     * The time is given in seconds.
-     *
-     * @method addFrame
-     * @param {String} animationId Animation identifier
-     * @param {Number} frameId Frame identifier of sprite to be added
-     * @param {Number} time Time in seconds for this animation frame
-     */
     Sprite.prototype.addFrame = function (animationId, frameId, time) {
         this.animations[animationId] = this.animations[animationId] || [];
         this.animations[animationId].push({ frame: frameId, time: time });
     };
 
-    /**
-     * Render the sprite texture based on the current frame
-     *
-     * @method render
-     */
     Sprite.prototype.render = function (renderAssistant) {
         var ctx = renderAssistant.getContext(),
             currentFrame;
@@ -91,12 +51,6 @@ define(function (require) {
         ctx.restore();
     };
 
-    /**
-     * Update Sprite following his animation
-     *
-     * @method update
-     * @param {Number} dt Number of milliseconds since last update
-     */
     Sprite.prototype.update = function (dt) {
         var now = new Date(),
             currentFrame,
@@ -116,5 +70,5 @@ define(function (require) {
         }
     };
 
-    return Sprite;
-});
+    module.exports = Sprite;
+}());

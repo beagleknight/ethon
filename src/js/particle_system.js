@@ -1,10 +1,10 @@
-define(function (require) {
+(function () {
     "use strict";
     
-    var inherit  = require("ethon/inherit"),
-        Soul     = require("ethon/soul"),
-        Particle = require("ethon/particle"),
-        QuadBody = require("ethon/quad_body"),
+    var inherit  = require("./inherit"),
+        Soul     = require("./soul"),
+        Particle = require("./particle"),
+        QuadBody = require("./quad_body"),
         ParticleSystem;
 
     function valueOrDefault(value, _default) {
@@ -97,5 +97,5 @@ define(function (require) {
         ].concat(this.particleForces);
     };
 
-    return ParticleSystem;
-});
+    module.exports = ParticleSystem;
+}());

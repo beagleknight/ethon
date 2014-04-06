@@ -1,18 +1,8 @@
-/*global define*/
-
-/**
- * Provides methods for checking collisions quad vs quad,
- * quad vs circle and circle vs circle
- *
- * @class physics_assistant
- * @requires CircleBody
- * @requires QuadBody
- */
-define(function (require) {
+(function () {
     "use strict";
 
-    var CircleBody = require("ethon/circle_body"),
-        QuadBody   = require("ethon/quad_body");
+    var CircleBody = require("./circle_body"),
+        QuadBody   = require("./quad_body");
 
     /**
      * Checks for a collision between two quads
@@ -143,10 +133,10 @@ define(function (require) {
         return result;
     }
 
-    return {
+    module.exports = {
         quadsCollision: quadsCollision,
         circlesCollision: circlesCollision,
         circleQuadCollision: circleQuadCollision,
         soulsCollision: soulsCollision
     };
-});
+}());

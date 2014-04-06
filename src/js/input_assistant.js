@@ -1,20 +1,10 @@
-/*jslint browser: true*/
-/*global define*/
-
-/**
- * Provides methods for keyboard and mouse interaction.
- *
- * @class input_assistant
- * @requires event_emitter
- */
-define(function (require) {
+(function () {
     "use strict";
 
-    var EventEmitter     = require("ethon/event_emitter"),
-        physicsAssistant = require("ethon/physics_assistant"),
-        inherit          = require("ethon/inherit"),
-        proxy            = require("ethon/proxy"),
-        $                = require("jquery"),
+    var EventEmitter     = require("./event_emitter"),
+        physicsAssistant = require("./physics_assistant"),
+        inherit          = require("./inherit"),
+        proxy            = require("./proxy"),
         lut = {
             32: "KEY_SPACEBAR",
             37: "KEY_LEFT_ARROW",
@@ -219,5 +209,5 @@ define(function (require) {
         return physicsAssistant.quadsCollision(quad, mouseQuad);
     };
 
-    return InputAssistant;
-});
+    module.exports = InputAssistant;
+}());
