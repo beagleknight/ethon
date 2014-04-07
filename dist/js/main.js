@@ -143,13 +143,14 @@
         proxy: _dereq_('./proxy'),
         ParticleSystem: _dereq_('./particle_system'),
         Soul: _dereq_('./soul'),
+        Sprite: _dereq_('./sprite'),
         inherit: _dereq_('./inherit'),
         QuadBody: _dereq_('./quad_body'),
         EventEmitter: _dereq_('./event_emitter')
     };
 }());
 
-},{"./event_emitter":3,"./game":6,"./inherit":8,"./particle_system":11,"./proxy":13,"./quad_body":14,"./resource_assistant":17,"./soul":19}],6:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./game":6,"./inherit":8,"./particle_system":11,"./proxy":13,"./quad_body":14,"./resource_assistant":17,"./soul":19,"./sprite":20}],6:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -2084,6 +2085,82 @@
     module.exports = Soul;
 }());
 
-},{"./event_emitter":3,"./inherit":8}]},{},[5])
+},{"./event_emitter":3,"./inherit":8}],20:[function(_dereq_,module,exports){
+(function () {
+    "use strict";
+
+    var Soul    = _dereq_("./soul"),
+        inherit = _dereq_("./inherit"),
+        Sprite;
+
+    Sprite = function (name, x, y, texture) {
+        Soul.call(this, name, x, y);
+        this.texture = texture;
+        this.width = this.texture.width;
+        this.height = this.texture.height;
+        this.rotation = 0;
+        this.animations = {};
+        this.currentAnimation = null;
+        this.currentAnimationIndex = 0;
+        this.lastAnimationUpdate = new Date();
+    };
+
+    // Sprite inherit from Soul
+    inherit(Sprite, Soul);
+
+    Sprite.prototype.setCurrentAnimation = function (animationId) {
+        this.currentAnimation = animationId;
+    };
+
+    Sprite.prototype.addFrame = function (animationId, frameId, time) {
+        this.animations[animationId] = this.animations[animationId] || [];
+        this.animations[animationId].push({ frame: frameId, time: time });
+    };
+
+    Sprite.prototype.render = function (renderAssistant) {
+        var ctx = renderAssistant.getContext(),
+            currentFrame;
+
+        ctx.save();
+        ctx.translate(this.position.x, this.position.y);
+
+        ctx.translate(this.width / 2, this.height / 2);
+        ctx.rotate(this.rotation * (Math.PI / 180));
+        ctx.scale(this.scale, this.scale);
+        ctx.translate(-this.width / 2, -this.height / 2);
+
+        if (this.currentAnimation !== null && this.animations[this.currentAnimation].length > 0) {
+            currentFrame = this.animations[this.currentAnimation][this.currentAnimationIndex];
+            renderAssistant.drawSubImage(0, 0, this.texture, currentFrame.frame, this.width, this.height);
+        } else {
+            renderAssistant.drawImage(0, 0, this.texture);
+        }
+
+        ctx.restore();
+    };
+
+    Sprite.prototype.update = function (dt) {
+        var now = new Date(),
+            currentFrame,
+            animationDt;
+
+        // Call base object update
+        Soul.prototype.update.call(this, dt);
+
+        if (this.currentAnimation !== null && this.animations[this.currentAnimation].length > 0) {
+            currentFrame = this.animations[this.currentAnimation][this.currentAnimationIndex];
+            animationDt = new Date(now.getTime() - this.lastAnimationUpdate.getTime()).getMilliseconds() / 1000;
+
+            if (animationDt > currentFrame.time) {
+                this.currentAnimationIndex = (this.currentAnimationIndex + 1) % this.animations[this.currentAnimation].length;
+                this.lastAnimationUpdate = now;
+            }
+        }
+    };
+
+    module.exports = Sprite;
+}());
+
+},{"./inherit":8,"./soul":19}]},{},[5])
 (5)
 });
