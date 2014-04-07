@@ -4,5 +4,4 @@ node_modules
 *.log
 *.pdf
 doc
-dist
 bower_components
