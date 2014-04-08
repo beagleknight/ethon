@@ -15,6 +15,16 @@
         var x1_1, y1_1, x1_2, y1_2,
             x2_1, y2_1, x2_2, y2_2;
 
+        // alias width and height
+        if (!quad_1.w) {
+            quad_1.w = quad_1.width;
+            quad_1.h = quad_1.height;
+        }
+        if (!quad_2.w) {
+            quad_2.w = quad_2.width;
+            quad_2.h = quad_2.height;
+        }
+
         x1_1 = quad_1.x;
         y1_1 = quad_1.y;
         x2_1 = quad_1.x + quad_1.w;
@@ -105,6 +115,16 @@
         body1.y += soul1.getPosition().y;
         body2.x += soul2.getPosition().x;
         body2.y += soul2.getPosition().y;
+
+        // alias width and height
+        if (!body1.w) {
+            body1.w = body1.width;
+            body1.h = body1.height;
+        }
+        if (!body2.w) {
+            body2.w = body2.width;
+            body2.h = body2.height;
+        }
 
         if (body1 instanceof CircleBody) {
             if (body2 instanceof CircleBody) {
