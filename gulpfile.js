@@ -21,5 +21,5 @@ gulp.task('build', function() {
 });
 
 gulp.task('default', function() {
-    gulp.watch('src/**/*.js', ['lint', 'build']);
+    gulp.watch('src/js/**/*.js', ['lint', 'build']);
 });
