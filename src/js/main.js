@@ -8,6 +8,7 @@
         Sprite: require('./sprite'),
         inherit: require('./inherit'),
         QuadBody: require('./quad_body'),
-        EventEmitter: require('./event_emitter')
+        EventEmitter: require('./event_emitter'),
+        physicsAssistant: require('./physics_assistant')
     };
 }());

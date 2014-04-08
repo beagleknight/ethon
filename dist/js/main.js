@@ -146,11 +146,12 @@
         Sprite: _dereq_('./sprite'),
         inherit: _dereq_('./inherit'),
         QuadBody: _dereq_('./quad_body'),
-        EventEmitter: _dereq_('./event_emitter')
+        EventEmitter: _dereq_('./event_emitter'),
+        physicsAssistant: _dereq_('./physics_assistant')
     };
 }());
 
-},{"./event_emitter":3,"./game":6,"./inherit":8,"./particle_system":11,"./proxy":13,"./quad_body":14,"./resource_assistant":17,"./soul":19,"./sprite":20}],6:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./game":6,"./inherit":8,"./particle_system":11,"./physics_assistant":12,"./proxy":13,"./quad_body":14,"./resource_assistant":17,"./soul":19,"./sprite":20}],6:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
