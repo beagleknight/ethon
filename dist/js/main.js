@@ -1285,6 +1285,9 @@
         this.container = container;
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
+
+        this.canvas.width = 794;
+        this.canvas.height = 600;
     };
     inherit(RenderAssistant, EventEmitter);
 
