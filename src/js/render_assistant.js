@@ -2,7 +2,6 @@
     "use strict";
 
     var inherit          = require("./inherit"),
-        proxy            = require("./proxy"),
         EventEmitter     = require("./event_emitter"),
         RenderAssistant;
 
@@ -11,9 +10,6 @@
         this.container = container;
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
-
-        window.addEventListener('resize', proxy(this, this.onResize), false);
-        this.onResize();
     };
     inherit(RenderAssistant, EventEmitter);
 

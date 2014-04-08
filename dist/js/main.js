@@ -1277,7 +1277,6 @@
     "use strict";
 
     var inherit          = _dereq_("./inherit"),
-        proxy            = _dereq_("./proxy"),
         EventEmitter     = _dereq_("./event_emitter"),
         RenderAssistant;
 
@@ -1286,9 +1285,6 @@
         this.container = container;
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
-
-        window.addEventListener('resize', proxy(this, this.onResize), false);
-        this.onResize();
     };
     inherit(RenderAssistant, EventEmitter);
 
@@ -1474,7 +1470,7 @@
     module.exports = RenderAssistant;
 }());
 
-},{"./event_emitter":3,"./inherit":9,"./proxy":14}],17:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./inherit":9}],17:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
