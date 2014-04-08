@@ -236,7 +236,7 @@
         this.scenes[name] = scene;
         this.gui.addView(name);
 
-        if (this.activeScene === null && name !== "loading") {
+        if (this.activeScene === null && name !== "loading" && name !== "all") {
             this.setActiveScene(name);
         }
     };
@@ -290,6 +290,7 @@
                         this.scenes[sceneId].init();
                     }
                 }
+                this.gui.showView('all');
                 requestAnimationFrame(proxy(this, this.loop));
             }));
         }));
