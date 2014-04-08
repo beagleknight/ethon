@@ -2134,7 +2134,7 @@
             currentFrame = this.animations[this.currentAnimation][this.currentAnimationIndex];
             renderAssistant.drawSubImage(0, 0, this.texture, currentFrame.frame, this.width, this.height);
         } else {
-            renderAssistant.drawImage(0, 0, this.texture);
+            renderAssistant.drawImage(0, 0, this.texture, this.width, this.height);
         }
 
         ctx.restore();
