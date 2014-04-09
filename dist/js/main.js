@@ -624,7 +624,7 @@
     };
 
     GUI.Element.prototype.show = function () {
-        this.$el.css('display', 'block');
+        this.$el.css('display', 'table');
     };
 
     /**
