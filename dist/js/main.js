@@ -50,7 +50,7 @@
     module.exports = ActionDispatcher;
 }());
 
-},{"./proxy":13}],2:[function(_dereq_,module,exports){
+},{"./proxy":14}],2:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -137,21 +137,40 @@
 
 },{}],5:[function(_dereq_,module,exports){
 (function () {
-    module.exports = {
-        Game: _dereq_('./game'),
-        resourceAssistant: _dereq_('./resource_assistant'),
-        proxy: _dereq_('./proxy'),
-        ParticleSystem: _dereq_('./particle_system'),
-        Soul: _dereq_('./soul'),
-        Sprite: _dereq_('./sprite'),
-        inherit: _dereq_('./inherit'),
-        QuadBody: _dereq_('./quad_body'),
-        EventEmitter: _dereq_('./event_emitter'),
-        physicsAssistant: _dereq_('./physics_assistant')
+    "use strict";
+
+    module.exports = function (object, methods) {
+        var o = object || {},
+            method;
+
+        for (method in methods) {
+            if (methods.hasOwnProperty(method)) {
+                o[method] = methods[method];
+            }
+        }
+        return o;
     };
 }());
 
-},{"./event_emitter":3,"./game":6,"./inherit":8,"./particle_system":11,"./physics_assistant":12,"./proxy":13,"./quad_body":14,"./resource_assistant":17,"./soul":19,"./sprite":20}],6:[function(_dereq_,module,exports){
+},{}],6:[function(_dereq_,module,exports){
+(function () {
+    module.exports = {
+        proxy: _dereq_('./proxy'),
+        inherit: _dereq_('./inherit'),
+        extend: _dereq_('./extend'),
+        resourceAssistant: _dereq_('./resource_assistant'),
+        physicsAssistant: _dereq_('./physics_assistant'),
+        soundAssistant: _dereq_('./sound_assistant'),
+        Game: _dereq_('./game'),
+        ParticleSystem: _dereq_('./particle_system'),
+        Soul: _dereq_('./soul'),
+        Sprite: _dereq_('./sprite'),
+        QuadBody: _dereq_('./quad_body'),
+        EventEmitter: _dereq_('./event_emitter')
+    };
+}());
+
+},{"./event_emitter":3,"./extend":5,"./game":7,"./inherit":9,"./particle_system":12,"./physics_assistant":13,"./proxy":14,"./quad_body":15,"./resource_assistant":18,"./soul":20,"./sound_assistant":21,"./sprite":22}],7:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -321,7 +340,7 @@
     module.exports = Game;
 }());
 
-},{"./action_dispatcher":1,"./event_emitter":3,"./gui":7,"./inherit":8,"./input_assistant":9,"./proxy":13,"./render_assistant":15,"./request_animation_frame":16,"./resource_assistant":17}],7:[function(_dereq_,module,exports){
+},{"./action_dispatcher":1,"./event_emitter":3,"./gui":8,"./inherit":9,"./input_assistant":10,"./proxy":14,"./render_assistant":16,"./request_animation_frame":17,"./resource_assistant":18}],8:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -691,7 +710,7 @@
     module.exports = GUI;
 }());
 
-},{"./event_emitter":3,"./inherit":8,"./physics_assistant":12,"./proxy":13,"./quad_body":14,"./resource_assistant":17,"./soul":19}],8:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./inherit":9,"./physics_assistant":13,"./proxy":14,"./quad_body":15,"./resource_assistant":18,"./soul":20}],9:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -704,7 +723,7 @@
     };
 }());
 
-},{}],9:[function(_dereq_,module,exports){
+},{}],10:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -919,7 +938,7 @@
     module.exports = InputAssistant;
 }());
 
-},{"./event_emitter":3,"./inherit":8,"./physics_assistant":12,"./proxy":13}],10:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./inherit":9,"./physics_assistant":13,"./proxy":14}],11:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -986,7 +1005,7 @@
     module.exports = Particle;
 }());
 
-},{"./inherit":8,"./soul":19}],11:[function(_dereq_,module,exports){
+},{"./inherit":9,"./soul":20}],12:[function(_dereq_,module,exports){
 (function () {
     "use strict";
     
@@ -1089,7 +1108,7 @@
     module.exports = ParticleSystem;
 }());
 
-},{"./inherit":8,"./particle":10,"./quad_body":14,"./soul":19}],12:[function(_dereq_,module,exports){
+},{"./inherit":9,"./particle":11,"./quad_body":15,"./soul":20}],13:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1253,7 +1272,7 @@
     };
 }());
 
-},{"./circle_body":2,"./quad_body":14}],13:[function(_dereq_,module,exports){
+},{"./circle_body":2,"./quad_body":15}],14:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1264,7 +1283,7 @@
     };
 }());
 
-},{}],14:[function(_dereq_,module,exports){
+},{}],15:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1279,7 +1298,7 @@
     module.exports = QuadBody;
 }());
 
-},{}],15:[function(_dereq_,module,exports){
+},{}],16:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1481,7 +1500,7 @@
     module.exports = RenderAssistant;
 }());
 
-},{"./event_emitter":3,"./inherit":8,"./proxy":13}],16:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./inherit":9,"./proxy":14}],17:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1503,7 +1522,7 @@
     };
 }());
 
-},{}],17:[function(_dereq_,module,exports){
+},{}],18:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1692,7 +1711,7 @@
     };
 }());
 
-},{"./scene":18}],18:[function(_dereq_,module,exports){
+},{"./scene":19}],19:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1933,7 +1952,7 @@
     module.exports = Scene;
 }());
 
-},{"./event_emitter":3,"./inherit":8,"./physics_assistant":12,"./quad_body":14,"./soul":19}],19:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./inherit":9,"./physics_assistant":13,"./quad_body":15,"./soul":20}],20:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -2106,7 +2125,96 @@
     module.exports = Soul;
 }());
 
-},{"./event_emitter":3,"./inherit":8}],20:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./inherit":9}],21:[function(_dereq_,module,exports){
+(function () {
+    "use strict";
+
+    var resourceAssistant = _dereq_("./resource_assistant"),
+        enabled           = false,
+        muted             = false,
+        backgroundMusic   = null;
+
+    function setBackgroundMusic(music) {
+        if (music) {
+            backgroundMusic = resourceAssistant.getSound(music);
+            backgroundMusic.volume = 0.5;
+            backgroundMusic.addEventListener('ended', function () {
+                this.currentTime = 0;
+                this.play();
+            }, false);
+        }
+    }
+
+    function playBackgroundMusic() {
+        if (backgroundMusic) {
+            backgroundMusic.firstTime = true;
+            if (!muted && enabled) {
+                backgroundMusic.play();
+            }
+        }
+    }
+
+    function stopBackgroundMusic() {
+        if (backgroundMusic) {
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+        }
+    }
+
+    function toggleBackgroundMusic() {
+        if (backgroundMusic && backgroundMusic.firstTime) {
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+            } else {
+                backgroundMusic.pause();
+            }
+        }
+    }
+
+    function playSoundEffect(soundEffect) {
+        if (soundEffect && !muted && enabled) {
+            resourceAssistant.getSound(soundEffect).play();
+        }
+    }
+
+    function setEnabled (e) {
+        enabled = e;
+        if (enabled) {
+            $('.audio-controls').show();
+            $('.audio-controls').on('click', function () {
+                toggleMute();
+            });
+        }
+    }
+
+    function toggleMute () {
+        muted = !muted;
+        $('.audio-controls .mute').toggle();
+        $('.audio-controls .button').toggle();
+        toggleBackgroundMusic();
+    }
+
+    function setMuted (_muted) {
+        muted = _muted;
+        if (muted) {
+            $('.audio-controls .mute').show();
+            $('.audio-controls .button').hide();
+        }
+    }
+
+    module.exports = {
+        setBackgroundMusic: setBackgroundMusic,
+        playBackgroundMusic: playBackgroundMusic,
+        stopBackgroundMusic: stopBackgroundMusic,
+        toggleBackgroundMusic: toggleBackgroundMusic,
+        playSoundEffect: playSoundEffect,
+        setEnabled: setEnabled, 
+        toggleMute: toggleMute,
+        setMuted: setMuted
+    };
+}());
+
+},{"./resource_assistant":18}],22:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -2182,6 +2290,6 @@
     module.exports = Sprite;
 }());
 
-},{"./inherit":8,"./soul":19}]},{},[5])
-(5)
+},{"./inherit":9,"./soul":20}]},{},[6])
+(6)
 });

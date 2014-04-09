@@ -11,19 +11,11 @@
   "boss": true,
   "eqnull": true,
   "browser": true,
+  "node": true,
+  "expr": true,
   "globals": {
-    "dump": false,
-    "require": false,
-    "requirejs": false,
-    "beforeEach": false,
-    "afterEach": false,
     "define": false,
-    "describe": false,
-    "it": false,
-    "expect": false,
-    "jQuery": false,
-    "$": false,
-    "triggerEvent": false,
-    "console": false
+    "angular": false,
+    "$": false
   }
 }
