@@ -579,11 +579,15 @@
         this.$el.css("left"   , (elementDesc.pos_x * colWidthPercentage) + "%");
         this.$el.css("top"    , (elementDesc.pos_y * rowHeightPercentage) + "%");
 
+        this.$el.css("background-position", "center center");
+        this.$el.css("background-repeat", "no-repeat");
+        this.$el.css("background-color", "transparent");
+        this.$el.css("background-size", "cover");
+
         if (elementDesc.image !== "" && elementDesc.image !== undefined && elementDesc.image !== null) {
-            this.$el.css("background", "url(" + image.src + ") center center no-repeat");
+            this.$el.css("background-image", "url(" + image.src + ")");
         } else {
-            this.$el.css("background", "");
-            this.$el.css("background", elementDesc.style['background-color']);
+            this.$el.css("background-color", elementDesc.style['background-color']);
         }
 
         this.$el.css("width"  , (elementDesc.width * colWidthPercentage) + "%");
