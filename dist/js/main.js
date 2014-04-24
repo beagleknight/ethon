@@ -1317,7 +1317,7 @@
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
 
-        window.addEventListener('resize', proxy(this, this.onResize), false);
+        $(window).on('resize', proxy(this, this.onResize));
         this.onResize();
     };
     inherit(RenderAssistant, EventEmitter);
