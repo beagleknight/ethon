@@ -5,14 +5,14 @@ var gulp          = require('gulp'),
     plumber       = require('gulp-plumber');
 
 gulp.task('lint', function() {
-    gulp.src('src/**/*.js')
+    return gulp.src('src/**/*.js')
         .pipe(plumber())
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
 
-gulp.task('build', function() {
-    gulp.src('src/js/main.js')
+gulp.task('build:js', function() {
+    return gulp.src('src/js/main.js')
         .pipe(plumber())
         .pipe(browserify({
             standalone: 'ethon'
@@ -20,6 +20,11 @@ gulp.task('build', function() {
         .pipe(gulp.dest('./dist/js'));
 });
 
-gulp.task('default', function() {
-    gulp.watch('src/**/*.js', ['lint', 'build']);
+gulp.task('build', [
+    'lint',
+    'build:js'
+]);
+
+gulp.task('dev', ['build'], function() {
+    gulp.watch('src/**/*.js', ['build']);
 });
