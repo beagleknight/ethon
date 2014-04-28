@@ -302,17 +302,19 @@
      * @param {String} scene Scene's identifier
      */
     Game.prototype.setActiveScene = function (sceneId) {
-        // Exit current scene
-        if (this.activeScene !== null) {
-            this.scenes[this.activeScene].exit();
-            this.broadcast("exit_scene_" + this.activeScene);
-        }
-        // Set active scene
-        this.activeScene = sceneId;
-        this.gui.setActiveView(sceneId);
-        // Enter current scene
-        this.broadcast("enter_scene_" + sceneId);
-        this.scenes[this.activeScene].enter();
+        this.gui.exitView(proxy(this, function () {
+            // Exit current scene
+            if (this.activeScene !== null) {
+                this.scenes[this.activeScene].exit();
+                this.broadcast("exit_scene_" + this.activeScene);
+            }
+            // Set active scene
+            this.activeScene = sceneId;
+            this.gui.setActiveView(sceneId, proxy(this, function () {
+                this.broadcast("scene_" + this.activeScene + "_loaded");
+            }));
+            this.scenes[this.activeScene].enter();
+        }));
     };
 
     Game.prototype.getScene = function (sceneId) {
@@ -367,6 +369,7 @@
      */
     GUI = function (container) {
         this.$container = $(container);
+        this.$curtain = $('#curtain');
         this.views = {};
         this.activeView = null;
         //this.addView("loading");
@@ -385,6 +388,7 @@
         //});
         //this.setActiveView("loading");
     };
+    inherit(GUI, EventEmitter);
 
     GUI.prototype.setOptions = function (options) {
         options = options || { mobile: false };
@@ -528,15 +532,23 @@
         return false;
     };
 
-    /**
-     * TODO:
-     */
-    GUI.prototype.setActiveView = function (viewId) {
+    GUI.prototype.exitView = function (cb) {
+        this.$curtain.fadeIn({
+            complete: cb
+        });
+    };
+
+    GUI.prototype.setActiveView = function (viewId, cb) {
         if (this.activeView !== null) {
             this.hideView(this.activeView);
         }
         this.activeView = viewId;
         this.showView(this.activeView);
+        // Enter current scene
+        this.broadcast("enter_scene_" + viewId);
+        this.$curtain.fadeOut({
+            complete: cb
+        });
     };
 
     /**

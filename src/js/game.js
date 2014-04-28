@@ -129,17 +129,19 @@
      * @param {String} scene Scene's identifier
      */
     Game.prototype.setActiveScene = function (sceneId) {
-        // Exit current scene
-        if (this.activeScene !== null) {
-            this.scenes[this.activeScene].exit();
-            this.broadcast("exit_scene_" + this.activeScene);
-        }
-        // Set active scene
-        this.activeScene = sceneId;
-        this.gui.setActiveView(sceneId);
-        // Enter current scene
-        this.broadcast("enter_scene_" + sceneId);
-        this.scenes[this.activeScene].enter();
+        this.gui.exitView(proxy(this, function () {
+            // Exit current scene
+            if (this.activeScene !== null) {
+                this.scenes[this.activeScene].exit();
+                this.broadcast("exit_scene_" + this.activeScene);
+            }
+            // Set active scene
+            this.activeScene = sceneId;
+            this.gui.setActiveView(sceneId, proxy(this, function () {
+                this.broadcast("scene_" + this.activeScene + "_loaded");
+            }));
+            this.scenes[this.activeScene].enter();
+        }));
     };
 
     Game.prototype.getScene = function (sceneId) {
