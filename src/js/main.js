@@ -4,6 +4,7 @@
         inherit: require('./inherit'),
         extend: require('./extend'),
         resourceAssistant: require('./resource_assistant'),
+        pluginsAssistant: require('./plugins_assistant'),
         physicsAssistant: require('./physics_assistant'),
         soundAssistant: require('./sound_assistant'),
         Game: require('./game'),

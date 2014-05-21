@@ -50,7 +50,7 @@
     module.exports = ActionDispatcher;
 }());
 
-},{"./proxy":14}],2:[function(_dereq_,module,exports){
+},{"./proxy":15}],2:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -159,6 +159,7 @@
         inherit: _dereq_('./inherit'),
         extend: _dereq_('./extend'),
         resourceAssistant: _dereq_('./resource_assistant'),
+        pluginsAssistant: _dereq_('./plugins_assistant'),
         physicsAssistant: _dereq_('./physics_assistant'),
         soundAssistant: _dereq_('./sound_assistant'),
         Game: _dereq_('./game'),
@@ -170,7 +171,7 @@
     };
 }());
 
-},{"./event_emitter":3,"./extend":5,"./game":7,"./inherit":9,"./particle_system":12,"./physics_assistant":13,"./proxy":14,"./quad_body":15,"./resource_assistant":18,"./soul":20,"./sound_assistant":21,"./sprite":22}],7:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./extend":5,"./game":7,"./inherit":9,"./particle_system":12,"./physics_assistant":13,"./plugins_assistant":14,"./proxy":15,"./quad_body":16,"./resource_assistant":19,"./soul":21,"./sound_assistant":22,"./sprite":23}],7:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -182,6 +183,7 @@
         InputAssistant        = _dereq_("./input_assistant"),
         ActionDispatcher      = _dereq_("./action_dispatcher"),
         resourceAssistant     = _dereq_("./resource_assistant"),
+        pluginsAssistant      = _dereq_("./plugins_assistant"),
         GUI                   = _dereq_("./gui"),
         elapsedTime           = new Date(),
         lastUpdate            = new Date(),
@@ -293,6 +295,8 @@
                 requestAnimationFrame(proxy(this, this.loop));
             }));
         }));
+
+        pluginsAssistant.loadPlugins(this.options.plugins);
     };
 
     /**
@@ -342,7 +346,7 @@
     module.exports = Game;
 }());
 
-},{"./action_dispatcher":1,"./event_emitter":3,"./gui":8,"./inherit":9,"./input_assistant":10,"./proxy":14,"./render_assistant":16,"./request_animation_frame":17,"./resource_assistant":18}],8:[function(_dereq_,module,exports){
+},{"./action_dispatcher":1,"./event_emitter":3,"./gui":8,"./inherit":9,"./input_assistant":10,"./plugins_assistant":14,"./proxy":15,"./render_assistant":17,"./request_animation_frame":18,"./resource_assistant":19}],8:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -726,7 +730,7 @@
     module.exports = GUI;
 }());
 
-},{"./event_emitter":3,"./inherit":9,"./physics_assistant":13,"./proxy":14,"./quad_body":15,"./resource_assistant":18,"./soul":20}],9:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./inherit":9,"./physics_assistant":13,"./proxy":15,"./quad_body":16,"./resource_assistant":19,"./soul":21}],9:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -954,7 +958,7 @@
     module.exports = InputAssistant;
 }());
 
-},{"./event_emitter":3,"./inherit":9,"./physics_assistant":13,"./proxy":14}],11:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./inherit":9,"./physics_assistant":13,"./proxy":15}],11:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1021,7 +1025,7 @@
     module.exports = Particle;
 }());
 
-},{"./inherit":9,"./soul":20}],12:[function(_dereq_,module,exports){
+},{"./inherit":9,"./soul":21}],12:[function(_dereq_,module,exports){
 (function () {
     "use strict";
     
@@ -1124,7 +1128,7 @@
     module.exports = ParticleSystem;
 }());
 
-},{"./inherit":9,"./particle":11,"./quad_body":15,"./soul":20}],13:[function(_dereq_,module,exports){
+},{"./inherit":9,"./particle":11,"./quad_body":16,"./soul":21}],13:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1288,7 +1292,33 @@
     };
 }());
 
-},{"./circle_body":2,"./quad_body":15}],14:[function(_dereq_,module,exports){
+},{"./circle_body":2,"./quad_body":16}],14:[function(_dereq_,module,exports){
+(function () {
+    "use strict";
+
+    var pluginsConfig = {};
+
+    function loadPlugins (plugins) {
+        var pluginId;
+
+        for (pluginId in plugins) {
+            if (plugins.hasOwnProperty(pluginId)) {
+                pluginsConfig[pluginId] = JSON.parse(plugins[pluginId]);
+            }
+        }
+    }
+
+    function getConfig (pluginId) {
+        return pluginsConfig[pluginId];
+    }
+
+    module.exports = {
+        loadPlugins: loadPlugins,
+        getConfig: getConfig
+    };
+}());
+
+},{}],15:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1299,7 +1329,7 @@
     };
 }());
 
-},{}],15:[function(_dereq_,module,exports){
+},{}],16:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1314,7 +1344,7 @@
     module.exports = QuadBody;
 }());
 
-},{}],16:[function(_dereq_,module,exports){
+},{}],17:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1516,7 +1546,7 @@
     module.exports = RenderAssistant;
 }());
 
-},{"./event_emitter":3,"./inherit":9,"./proxy":14}],17:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./inherit":9,"./proxy":15}],18:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1538,7 +1568,7 @@
     };
 }());
 
-},{}],18:[function(_dereq_,module,exports){
+},{}],19:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1727,7 +1757,7 @@
     };
 }());
 
-},{"./scene":19}],19:[function(_dereq_,module,exports){
+},{"./scene":20}],20:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -1968,7 +1998,7 @@
     module.exports = Scene;
 }());
 
-},{"./event_emitter":3,"./inherit":9,"./physics_assistant":13,"./quad_body":15,"./soul":20}],20:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./inherit":9,"./physics_assistant":13,"./quad_body":16,"./soul":21}],21:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -2141,7 +2171,7 @@
     module.exports = Soul;
 }());
 
-},{"./event_emitter":3,"./inherit":9}],21:[function(_dereq_,module,exports){
+},{"./event_emitter":3,"./inherit":9}],22:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -2230,7 +2260,7 @@
     };
 }());
 
-},{"./resource_assistant":18}],22:[function(_dereq_,module,exports){
+},{"./resource_assistant":19}],23:[function(_dereq_,module,exports){
 (function () {
     "use strict";
 
@@ -2306,6 +2336,6 @@
     module.exports = Sprite;
 }());
 
-},{"./inherit":9,"./soul":20}]},{},[6])
+},{"./inherit":9,"./soul":21}]},{},[6])
 (6)
 });

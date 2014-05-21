@@ -9,6 +9,7 @@
         InputAssistant        = require("./input_assistant"),
         ActionDispatcher      = require("./action_dispatcher"),
         resourceAssistant     = require("./resource_assistant"),
+        pluginsAssistant      = require("./plugins_assistant"),
         GUI                   = require("./gui"),
         elapsedTime           = new Date(),
         lastUpdate            = new Date(),
@@ -120,6 +121,8 @@
                 requestAnimationFrame(proxy(this, this.loop));
             }));
         }));
+
+        pluginsAssistant.loadPlugins(this.options.plugins);
     };
 
     /**
