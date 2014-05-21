@@ -236,10 +236,10 @@
         //textContent.css("color", $scope.component.style['color']);
         
         var container           = $('#gui'),
-            rows                = 28,
+            rows                = 33,
             rowHeight           = parseInt(container.css("height"), 10) / rows,
             rowHeightPercentage = rowHeight / parseInt(container.css("height"), 10) * 100,
-            cols                = 32,
+            cols                = 45,
             colWidth            = parseInt(container.css("width"), 10) / cols,
             colWidthPercentage  = colWidth / parseInt(container.css("width"), 10) * 100;
 
