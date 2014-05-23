@@ -27,21 +27,6 @@
         this.$curtain = $('#curtain');
         this.views = {};
         this.activeView = null;
-        //this.addView("loading");
-        //this.addElement("progress", "loading", {
-        //    "name": "loading",
-        //    "pos_x": 297,
-        //    "pos_y": 430,
-        //    "width": 200,
-        //    "height": 15,
-        //    "action": "loading_progress",
-        //    "style": {
-        //        "color": "#000",
-        //        "background-color": "#fff",
-        //        "border": "1px solid #000"
-        //    }
-        //});
-        //this.setActiveView("loading");
     };
     inherit(GUI, EventEmitter);
 
@@ -50,9 +35,6 @@
         this.mobile = options.mobile;
     };
 
-    /**
-     * TODO:
-     */
     GUI.prototype.addView = function (viewId) {
         var view = document.createElement('div'),
             $view = $(view);
@@ -68,16 +50,10 @@
         this.$container.append(view);
     };
 
-    /**
-     * TODO:
-     */
     GUI.prototype.hideView = function (viewId) {
         this.views[viewId].css('visibility', "hidden");
     };
 
-    /**
-     * TODO:
-     */
     GUI.prototype.showView = function (viewId) {
         this.views[viewId].css('visibility', "visible");
     };
@@ -136,12 +112,17 @@
                 element.$el.on("touchstart mousedown", proxy(element, function () {
                     element.isPressed = true;
                     element.broadcast(element.action);
+
+                    if (element.elementDesc.use_clicked_state) {
+                        element.setClickedState();
+                    }
                 }));
 
                 if (elementDesc.mobile) {
                     element.$el.on("touchend mouseup", proxy(element, function () {
                         element.isPressed = false;
                         element.broadcast(element.action + "_release");
+                        element.setNormalState();
                     }));
 
                     $(document).on("touchmove", proxy(element, function (event) {
@@ -167,6 +148,11 @@
                         }
 
                         event.preventDefault();
+                    }));
+                } else {
+                    element.$el.on("touchend mouseup", proxy(element, function () {
+                        element.isPressed = false;
+                        element.setNormalState();
                     }));
                 }
             }
@@ -206,64 +192,54 @@
         });
     };
 
-    /**
-     * TODO:
-     */
     GUI.Element = function (elementDesc) {
-        var image,
-            prop,
-            value;
-
-        EventEmitter.call(this);
-
-        if (elementDesc.image) {
-            image = resourceAssistant.getImage(elementDesc.image);
-        }
-
-        this.name = elementDesc.name;
-        this.action = elementDesc.action;
-        this.posX = parseInt(elementDesc.pos_x, 10);
-        this.posY = parseInt(elementDesc.pos_y, 10);
-        this.width = parseInt(elementDesc.width, 10);
-        this.height = parseInt(elementDesc.height, 10);
-        this.$el = $(this.el);
-        this.$el.addClass("gui-component");
-
-        //var textContent = $element.find('p');
-
-        //textContent.css("font-size", $scope.component.style['font-size'] + "px");
-        //textContent.css("font-family", $scope.component.style['font-family']);
-        //textContent.css("color", $scope.component.style['color']);
-        
         var container           = $('#gui'),
             rows                = 33,
             rowHeight           = parseInt(container.css("height"), 10) / rows,
             rowHeightPercentage = rowHeight / parseInt(container.css("height"), 10) * 100,
             cols                = 45,
             colWidth            = parseInt(container.css("width"), 10) / cols,
-            colWidthPercentage  = colWidth / parseInt(container.css("width"), 10) * 100;
+            colWidthPercentage  = colWidth / parseInt(container.css("width"), 10) * 100,
+            prop,
+            value;
 
-        this.$el.css("left"   , (elementDesc.pos_x * colWidthPercentage) + "%");
-        this.$el.css("top"    , (elementDesc.pos_y * rowHeightPercentage) + "%");
+        EventEmitter.call(this);
+
+        this.elementDesc = elementDesc;
+
+        if (this.elementDesc.image) {
+            this.image = resourceAssistant.getImage(this.elementDesc.image);
+        }
+
+        this.name = this.elementDesc.name;
+        this.action = this.elementDesc.action;
+        this.posX = parseInt(this.elementDesc.pos_x, 10);
+        this.posY = parseInt(this.elementDesc.pos_y, 10);
+        this.width = parseInt(this.elementDesc.width, 10);
+        this.height = parseInt(this.elementDesc.height, 10);
+        this.$el = $(this.el);
+        this.$el.addClass("gui-component");
+
+        this.$el.css("left"   , (this.elementDesc.pos_x * colWidthPercentage) + "%");
+        this.$el.css("top"    , (this.elementDesc.pos_y * rowHeightPercentage) + "%");
 
         this.$el.css("background-position", "center center");
         this.$el.css("background-repeat", "no-repeat");
         this.$el.css("background-color", "transparent");
         this.$el.css("background-size", "cover");
 
-        if (elementDesc.image !== "" && elementDesc.image !== undefined && elementDesc.image !== null) {
-            this.$el.css("background-image", "url(" + image.src + ")");
+        if (this.elementDesc.image !== "" && this.elementDesc.image !== undefined && this.elementDesc.image !== null) {
+            this.$el.css("background-image", "url(" + this.image.src + ")");
         } else {
-            this.$el.css("background-color", elementDesc.style['background-color']);
+            this.$el.css("background-color", this.elementDesc.style['background-color']);
         }
 
-        this.$el.css("width"  , (elementDesc.width * colWidthPercentage) + "%");
-        this.$el.css("height" , (elementDesc.height * rowHeightPercentage) + "%");
+        this.$el.css("width"  , (this.elementDesc.width * colWidthPercentage) + "%");
+        this.$el.css("height" , (this.elementDesc.height * rowHeightPercentage) + "%");
 
-
-        for (prop in elementDesc.style) {
-            if (elementDesc.style.hasOwnProperty(prop)) {
-                value = elementDesc.style[prop];
+        for (prop in this.elementDesc.style) {
+            if (this.elementDesc.style.hasOwnProperty(prop)) {
+                value = this.elementDesc.style[prop];
                 if (prop === 'font-size') {
                     value += 'em';
                 }
@@ -272,13 +248,13 @@
             }
         }
 
-        if (elementDesc.text !== undefined && elementDesc.text !== null) {
+        if (this.elementDesc.text !== undefined && this.elementDesc.text !== null) {
 
             var contentEl = document.createElement('p'),
                 $contentEl = $(contentEl);
 
             $contentEl.addClass("content");
-            $contentEl.html(elementDesc.text);
+            $contentEl.html(this.elementDesc.text);
 
             this.$el.append($contentEl);
         }
@@ -298,9 +274,6 @@
         this.$el.css('display', 'table');
     };
 
-    /**
-     * TODO:
-     */
     GUI.Label = function (labelDesc) {
         this.el = document.createElement('div');
         GUI.Element.call(this, labelDesc);
@@ -311,16 +284,33 @@
     };
     inherit(GUI.Label, GUI.Element);
 
-    /**
-     * TODO:
-     */
     GUI.Button = function (buttonDesc) {
         this.el = document.createElement('div');
         GUI.Element.call(this, buttonDesc);
         this.$el.css('cursor', "pointer");
         this.$el.css('-webkit-tap-highlight-color', 'rgba(0, 0, 0, 0)');
+
+        if (this.elementDesc.clicked_state && this.elementDesc.clicked_state.image) {
+            this.clickedStateImage = resourceAssistant.getImage(this.elementDesc.clicked_state.image);
+        }
     };
     inherit(GUI.Button, GUI.Element);
+
+    GUI.Button.prototype.setNormalState = function () {
+        if (this.elementDesc.image !== "" && this.elementDesc.image !== undefined && this.elementDesc.image !== null) {
+            this.$el.css("background-image", "url(" + this.image.src + ")");
+        } else {
+            this.$el.css("background-color", this.elementDesc.style['background-color']);
+        }
+    };
+
+    GUI.Button.prototype.setClickedState = function () {
+        if (this.elementDesc.clicked_state.image !== "" && this.elementDesc.clicked_state.image !== undefined && this.elementDesc.clicked_state.image !== null) {
+            this.$el.css("background-image", "url(" + this.clickedStateImage.src + ")");
+        } else {
+            this.$el.css("background-color", this.elementDesc.clicked_state.style['background-color']);
+        }
+    };
 
     /**
      * TODO:
