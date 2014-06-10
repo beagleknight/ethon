@@ -78,7 +78,7 @@
      * @method addElement
      */
     GUI.prototype.addElement = function (category, viewId, elementDesc) {
-        if (!elementDesc.mobile || this.mobile) {
+        if ((!elementDesc.mobile || this.mobile) && !elementDesc.hidden) {
             var element;
 
             switch (category) {
