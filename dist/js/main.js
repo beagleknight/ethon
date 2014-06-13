@@ -192,6 +192,34 @@
         showFPS,
         Game;
 
+    function isHidden() {
+        var prop = getHiddenProp();
+        if (!prop) {
+            return false;
+        }
+
+        return document[prop];
+    }
+
+    function getHiddenProp(){
+        var prefixes = ['webkit','moz','ms','o'];
+
+        // if 'hidden' is natively supported just return it
+        if ('hidden' in document) {
+            return 'hidden';
+        }
+
+        // otherwise loop over all the known prefixes until we find one
+        for (var i = 0; i < prefixes.length; i++){
+            if ((prefixes[i] + 'Hidden') in document)  {
+                return prefixes[i] + 'Hidden';
+            }
+        }
+
+        // otherwise it's not supported
+        return null;
+    }
+
     Game = function (canvas, guiElement, options) {
         var canvasRect;
 
@@ -207,6 +235,7 @@
         this.scenes = {};
         this.activeScene = null;
         this.gameLoaded = false;
+        this.paused = false;
 
         showFPS = options.showFPS;
 
@@ -214,6 +243,31 @@
         this.actionDispatcher.registerMouseClickAction("MOUSE_LEFT", proxy(this, this.onMouseDown));
         this.actionDispatcher.registerMouseMotionAction(proxy(this, this.onMouseMove));
         this.actionDispatcher.registerMouseReleaseAction("MOUSE_LEFT", proxy(this, this.onMouseUp));
+
+        $(window).on("blur", proxy(this, function () {
+            $('#paused').show();
+            this.paused = true;
+        }));
+
+        $(window).on("focus", proxy(this, function () {
+            $('#paused').hide();
+            this.paused = false;
+        }));
+        
+        var visProp = getHiddenProp();
+        if (visProp) {
+            var evtname = visProp.replace(/[H|h]idden/,'') + 'visibilitychange';
+            document.addEventListener(evtname, proxy(this, function () {
+                var txtFld = document.getElementById('gui');
+
+                if (txtFld) {
+                    if (isHidden()) {
+                        $('#paused').show();
+                        this.paused = true;
+                    }
+                }
+            }));
+        }
     };
 
     // inherit EventEmitter for register and trigger custom events.
@@ -244,7 +298,9 @@
     };
 
     Game.prototype.loop = function () {
-        this.update();
+        if (!this.paused) {
+            this.update();
+        }
         this.render();
         updateFPS();
         requestAnimationFrame(proxy(this, this.loop));
