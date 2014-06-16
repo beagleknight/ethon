@@ -70,15 +70,8 @@
         this.actionDispatcher.registerMouseMotionAction(proxy(this, this.onMouseMove));
         this.actionDispatcher.registerMouseReleaseAction("MOUSE_LEFT", proxy(this, this.onMouseUp));
 
-        $(window).on("blur", proxy(this, function () {
-            $('#paused').show();
-            this.paused = true;
-        }));
-
-        $(window).on("focus", proxy(this, function () {
-            $('#paused').hide();
-            this.paused = false;
-        }));
+        $(window).on("blur", proxy(this, this.pause));
+        $(window).on("focus", proxy(this, this.resume));
         
         var visProp = getHiddenProp();
         if (visProp) {
@@ -88,8 +81,7 @@
 
                 if (txtFld) {
                     if (isHidden()) {
-                        $('#paused').show();
-                        this.paused = true;
+                        this.pause();
                     }
                 }
             }));
@@ -223,6 +215,18 @@
         if (this.scenes[this.activeScene]) {
             this.scenes[this.activeScene].onMouseUp(mouse);
         }
+    };
+
+    Game.prototype.pause = function () {
+        if (this.gui.activeView === 'main') {
+            $('#paused').show();
+            this.paused = true;
+        }
+    };
+
+    Game.prototype.resume = function () {
+        $('#paused').hide();
+        this.paused = false;
     };
 
     module.exports = Game;
