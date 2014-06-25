@@ -45,7 +45,8 @@
 
     function playSoundEffect(soundEffect) {
         if (soundEffect && !muted && enabled) {
-            resourceAssistant.getSound(soundEffect).play();
+            //TODO: bad idea... sound is downloaded again and again
+            resourceAssistant.getSound(soundEffect).cloneNode().play();
         }
     }
 
