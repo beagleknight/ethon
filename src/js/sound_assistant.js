@@ -4,7 +4,8 @@
     var resourceAssistant = require("./resource_assistant"),
         enabled           = false,
         muted             = false,
-        backgroundMusic   = null;
+        backgroundMusic   = null,
+        soundEffectsPool  = {};
 
     function setBackgroundMusic(music) {
         if (music) {
@@ -44,9 +45,22 @@
     }
 
     function playSoundEffect(soundEffect) {
+        var poolData, pool, current;
+
         if (soundEffect && !muted && enabled) {
-            //TODO: bad idea... sound is downloaded again and again
-            resourceAssistant.getSound(soundEffect).cloneNode().play();
+            if (soundEffectsPool[soundEffect]) {
+                poolData = soundEffectsPool[soundEffect];
+                current = poolData.current;
+                pool = poolData.pool;
+
+                if (pool[current].currentTime === 0 || pool[current].ended) {
+                    pool[current].play();
+                }
+
+                poolData.current = (poolData.current + 1) % pool.length;
+            } else {
+                resourceAssistant.getSound(soundEffect).play();
+            }
         }
     }
 
@@ -75,11 +89,33 @@
         }
     }
 
+    function loadSoundEffectsPool (soundEffects, poolSize) {
+        var id, soundEffect, sound, pool, i;
+
+        for (id in soundEffects) {
+            if (soundEffects.hasOwnProperty(id) && soundEffects[id].sound) {
+                soundEffect = soundEffects[id].sound;
+                sound = resourceAssistant.getSound(soundEffect);
+                pool = [sound];
+
+                for (i = 0; i < poolSize - 1; i += 1) {
+                    pool.push(sound.cloneNode());
+                }
+
+                soundEffectsPool[soundEffect] = {
+                    current: 0,
+                    pool: pool
+                };
+            }
+        }
+    }
+
     module.exports = {
         setBackgroundMusic: setBackgroundMusic,
         playBackgroundMusic: playBackgroundMusic,
         stopBackgroundMusic: stopBackgroundMusic,
         toggleBackgroundMusic: toggleBackgroundMusic,
+        loadSoundEffectsPool: loadSoundEffectsPool,
         playSoundEffect: playSoundEffect,
         setEnabled: setEnabled, 
         toggleMute: toggleMute,
