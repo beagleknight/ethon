@@ -290,21 +290,21 @@
     };
 
     Game.prototype.loop = function () {
-        if (!this.paused) {
-            this.update();
-        }
-        this.render();
-        updateFPS();
-        requestAnimationFrame(proxy(this, this.loop));
-    };
-
-    Game.prototype.update = function () {
         var now           = new Date(),
             dt            = new Date(now.getTime() - elapsedTime.getTime()).getMilliseconds() / 1000;
 
+        if (!this.paused) {
+            this.update(dt);
+        }
+        this.render();
+        updateFPS();
+        elapsedTime = now;
+        requestAnimationFrame(proxy(this, this.loop));
+    };
+
+    Game.prototype.update = function (dt) {
         this.scenes[this.activeScene].update(dt);
         this.scenes[this.activeScene].afterUpdate(dt);
-        elapsedTime = now;
     };
 
     Game.prototype.render = function () {
