@@ -50,7 +50,7 @@
         var canvasRect;
 
         EventEmitter.call(this);
-        options = options || { showFPS: false };
+        options = options || { showFPS: true };
 
         this.renderAssistant = new RenderAssistant(guiElement, canvas);
         this.inputAssistant = new InputAssistant(canvas);
@@ -138,7 +138,7 @@
         this.scenes[this.activeScene].afterRender(this.renderAssistant);
 
         if (showFPS) {
-            this.renderAssistant.drawText(10, 10, "FPS: " + fps);
+            this.renderAssistant.drawText(10, 10, "FPS: " + fps, { fillStyle: "rgba(0, 0, 0, 0)" });
         }
     };
 
