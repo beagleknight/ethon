@@ -487,7 +487,7 @@
      * @method addElement
      */
     GUI.prototype.addElement = function (category, viewId, elementDesc) {
-        if ((!elementDesc.mobile || this.mobile) && !elementDesc.hidden) {
+        if ((!elementDesc.mobile || this.mobile) && (!elementDesc.hidden || elementDesc.name === 'time_label')) {
             var element;
 
             switch (category) {
